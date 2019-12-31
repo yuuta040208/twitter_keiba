@@ -5,6 +5,7 @@ class CreateTweet < ActiveRecord::Migration[6.0]
       t.string :unique_id
       t.string :user_id
       t.string :user_name
+      t.text :user_uri
       t.text :content
       t.datetime :tweeted_at
 

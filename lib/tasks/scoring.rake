@@ -23,14 +23,16 @@ namespace :scoring do
           end
         end
 
-        Forecast.create!(
-            race_id: race.id,
-            tweet_id: tweet.id,
-            honmei: forecast[:honmei],
-            taikou: forecast[:taikou],
-            tanana: forecast[:tanana],
-            renka: forecast[:renka],
-        )
+        if forecast.present?
+          Forecast.create!(
+              race_id: race.id,
+              tweet_id: tweet.id,
+              honmei: forecast[:honmei],
+              taikou: forecast[:taikou],
+              tanana: forecast[:tanana],
+              renka: forecast[:renka],
+          )
+        end
       end
 
       puts "#{Forecast.where(race_id: race.id).count}件のスコアリングを完了しました。"

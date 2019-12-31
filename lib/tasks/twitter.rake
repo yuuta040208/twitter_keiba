@@ -20,7 +20,8 @@ namespace :twitter do
                   unique_id: tweet.id,
                   race_id: race.id,
                   user_id: tweet.user.id,
-                  user_name: tweet.user.screen_name,
+                  user_uri: tweet.uri,
+                  user_name: tweet.user.name,
                   content: tweet.text,
                   tweeted_at: tweet.created_at,
               )

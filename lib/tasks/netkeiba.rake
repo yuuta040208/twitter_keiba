@@ -13,12 +13,16 @@ namespace :netkeiba do
 
     puts "#{url} からデータを取得します..."
 
-    doc.css('div.racename > a').each do |a|
-      Race.create!(
-          date: "#{Date.today.year}#{args['date']}",
-          name: a[:title].sub(/\(.*?\)/, ''),
-          url: a[:href],
-      )
+    doc.css('dl.race_top_hold_list').each do |race_top_hold_list|
+      race_top_hold_list.css('dl.race_top_data_info').each do |race_top_data_info|
+        Race.create!(
+            date: "#{Date.today.year}#{args['date']}",
+            number: race_top_data_info.css('img').first[:alt],
+            hold: race_top_hold_list.css('p.kaisaidata').text,
+            name: race_top_data_info.css('div.racename > a').first[:title].sub(/\(.*?\)/, ''),
+            url: race_top_data_info.css('div.racename > a').first[:href],
+        )
+      end
     end
 
     puts "#{Race.where(date: "#{Date.today.year}#{args['date']}").count}件をデータベースに追加しました。"

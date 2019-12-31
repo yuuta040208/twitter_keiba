@@ -1,2 +1,25 @@
-<h1>Races#index</h1>
-<p>Find me in app/views/races/index.html.erb</p>
+<h1>Twitter競馬予想</h1>
+<p><%= link_to '@Evitch', 'https://twitter.com/unkEVI' %></p>
+<br>
+
+<div class="row">
+  <% @races.pluck(:hold).uniq.each do |hold| %>
+    <div class="col-sm-2">
+      <div class="card">
+        <div class="card-header">
+          <%= hold %>
+        </div>
+        <div class="card-body">
+          <table>
+            <% @races.where(hold: hold).each do |hold_race| %>
+              <tr>
+                <td><%= hold_race.number %></td>
+                <td><%= link_to hold_race.name, race_path(hold_race) %></td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

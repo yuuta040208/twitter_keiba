@@ -38,6 +38,8 @@ ActiveRecord::Schema.define(version: 2019_12_31_063335) do
 
   create_table "races", force: :cascade do |t|
     t.string "date"
+    t.string "number"
+    t.string "hold"
     t.string "name"
     t.text "url"
     t.datetime "created_at", precision: 6, null: false
@@ -49,6 +51,7 @@ ActiveRecord::Schema.define(version: 2019_12_31_063335) do
     t.string "unique_id"
     t.string "user_id"
     t.string "user_name"
+    t.text "user_uri"
     t.text "content"
     t.datetime "tweeted_at"
     t.datetime "created_at", precision: 6, null: false
