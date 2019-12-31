@@ -10,9 +10,50 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 2019_12_31_063335) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "forecasts", force: :cascade do |t|
+    t.bigint "tweet_id"
+    t.bigint "race_id"
+    t.string "honmei"
+    t.string "taikou"
+    t.string "tanana"
+    t.string "renka"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["race_id"], name: "index_forecasts_on_race_id"
+    t.index ["tweet_id"], name: "index_forecasts_on_tweet_id"
+  end
+
+  create_table "horses", force: :cascade do |t|
+    t.bigint "race_id"
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["race_id"], name: "index_horses_on_race_id"
+  end
+
+  create_table "races", force: :cascade do |t|
+    t.string "date"
+    t.string "name"
+    t.text "url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "tweets", force: :cascade do |t|
+    t.bigint "race_id"
+    t.string "unique_id"
+    t.string "user_id"
+    t.string "user_name"
+    t.text "content"
+    t.datetime "tweeted_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["race_id"], name: "index_tweets_on_race_id"
+  end
 
 end
