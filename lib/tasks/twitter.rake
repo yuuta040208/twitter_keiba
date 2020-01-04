@@ -8,28 +8,35 @@ namespace :twitter do
 
     Race.where(date: "#{Date.today.year}#{args['date']}").each do |race|
       queries = [race.name]
-      queries.push(race.name.chop + 'ステークス') if race.name.end_with?('S')
+      queries.push(race.name.chop + 'ステークス') if race.name.end_with?('S') || race.name.end_with?('Ｓ')
 
       queries.each do |query|
         puts "#{query} をTwitterで検索します..."
 
-        client.search(query, count: 1000, result_type: 'recent',  exclude: 'retweets').each do |tweet|
-          if tweet.text.include?('◎')
-            if Tweet.where(unique_id: tweet.id).empty?
-              Tweet.create!(
-                  unique_id: tweet.id,
-                  race_id: race.id,
-                  user_id: tweet.user.id,
-                  user_uri: tweet.uri,
-                  user_name: tweet.user.name,
-                  content: tweet.text,
-                  tweeted_at: tweet.created_at,
-              )
+        begin
+          client.search(query, count: 1000, result_type: 'recent',  exclude: 'retweets').each do |tweet|
+            if tweet.text.include?('◎')
+              if Tweet.where(unique_id: tweet.id).empty?
+                Tweet.create!(
+                    unique_id: tweet.id,
+                    race_id: race.id,
+                    user_id: tweet.user.id,
+                    user_uri: tweet.uri,
+                    user_name: tweet.user.name,
+                    content: tweet.text,
+                    tweeted_at: tweet.created_at,
+                    )
+              end
             end
           end
+        rescue
+          puts '取得できないツイートがありました。'
         end
 
         puts "#{Tweet.where(race_id: race.id).count}件をデータベースに追加しました。"
+
+        # APIリミットに到達しないように30秒スリープさせる
+        sleep 30
       end
     end
   end

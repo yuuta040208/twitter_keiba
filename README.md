@@ -1,24 +1,15 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## herokuでvimを使う方法
+```
+mkdir ~/vim
+cd ~/vim
 
-Things you may want to cover:
+# Staically linked vim version compiled from https://github.com/ericpruitt/static-vim
+# Compiled on Jul 20 2017
+curl 'https://s3.amazonaws.com/bengoa/vim-static.tar.gz' | tar -xz
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+export VIMRUNTIME="$HOME/vim/runtime"
+export PATH="$HOME/vim:$PATH"
+cd -
+```

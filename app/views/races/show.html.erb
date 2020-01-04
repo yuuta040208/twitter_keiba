@@ -4,50 +4,69 @@
 
 <table class="table table-bordered table-striped table-sm">
   <thead>
-    <tr>
-      <th></th>
-      <% @race.horses.each do |horse| %>
-        <th class="horse">
-          <span class="vertical"><%= horse.name %></span>
-        </th>
-      <% end %>
-    </tr>
+  <tr>
+    <th></th>
+    <% @race.horses.reverse_each do |horse| %>
+      <th class="horse">
+            <span class="vertical">
+              <span class="text-combine"><%= horse.umaban %></span>
+              <%= horse.name %>
+            </span>
+      </th>
+    <% end %>
+  </tr>
   </thead>
 
   <tbody>
+  <tr>
+    <th>騎手</th>
+    <% @race.horses.each do |horse| %>
+      <td align="center"><span class="vertical"><%= horse.jockey_name %></span></td>
+    <% end %>
+  </tr>
+  <tr>
+    <th>予想オッズ</th>
+    <% @race.horses.each do |horse| %>
+      <td align="center"><%= horse.odds %></td>
+    <% end %>
+  </tr>
+  <tr>
+    <th>予想指数</th>
+    <% honmeis = @race.forecasts.pluck(:honmei) %>
+    <% taikous = @race.forecasts.pluck(:taikou) %>
+    <% tananas = @race.forecasts.pluck(:tanana) %>
+    <% renkas = @race.forecasts.pluck(:renka) %>
+    <% @race.horses.each do |horse| %>
+      <% point = 0 %>
+      <% point += honmeis.count(horse.name) * 4 %>
+      <% point += taikous.count(horse.name) * 3 %>
+      <% point += tananas.count(horse.name) * 2 %>
+      <% point += renkas.count(horse.name) * 1 %>
+      <td align="center"><%= point.zero? ? '-' : point %></td>
+    <% end %>
+  </tr>
+
+  <tr>
+    <td></td>
+  </tr>
+
+  <% @forecasts.each do |forecast| %>
     <tr>
-      <th>予想指数</th>
+      <th align="left"><%= link_to forecast.tweet.user_name, forecast.tweet.user_uri, target: '_blank' %></th>
       <% @race.horses.each do |horse| %>
-        <% point = 0 %>
-        <% point += @race.forecasts.where(honmei: horse.name).count * 4 %>
-        <% point += @race.forecasts.where(taikou: horse.name).count * 3 %>
-        <% point += @race.forecasts.where(tanana: horse.name).count * 2 %>
-        <% point += @race.forecasts.where(renka: horse.name).count * 1 %>
-        <td align="center"><%= point.zero? ? '-' : point %></td>
+        <% mark = '' %>
+        <% if forecast.honmei == horse.name %>
+          <% mark = '◎' %>
+        <% elsif forecast.taikou == horse.name %>
+          <% mark = '◯' %>
+        <% elsif forecast.tanana == horse.name %>
+          <% mark = '▲' %>
+        <% elsif forecast.renka == horse.name %>
+          <% mark = '△' %>
+        <% end %>
+        <td align="center"><%= mark %></td>
       <% end %>
     </tr>
-
-    <tr>
-      <td></td>
-    </tr>
-
-    <% @race.forecasts.each do |forecast| %>
-      <tr>
-        <th align="left"><%= link_to forecast.tweet.user_name, forecast.tweet.user_uri, target: '_blank' %></th>
-        <% @race.horses.each do |horse| %>
-          <% mark = '' %>
-          <% if forecast.honmei == horse.name %>
-            <% mark = '◎' %>
-          <% elsif forecast.taikou == horse.name %>
-            <% mark = '◯' %>
-          <% elsif forecast.tanana == horse.name %>
-            <% mark = '▲' %>
-          <% elsif forecast.renka == horse.name %>
-            <% mark = '△' %>
-          <% end %>
-          <td align="center"><%= mark %></td>
-        <% end %>
-      </tr>
-    <% end %>
+  <% end %>
   </tbody>
 </table>

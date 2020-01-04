@@ -2,24 +2,40 @@
 <p><%= link_to '@Evitch', 'https://twitter.com/unkEVI' %></p>
 <br>
 
-<div class="row">
-  <% @races.pluck(:hold).uniq.each do |hold| %>
-    <div class="col-sm-2">
-      <div class="card">
-        <div class="card-header">
-          <%= hold %>
+<% @races.pluck(:date).uniq.each do |date| %>
+  <div class="border-bottom" style="margin-bottom: 1%;">
+    <div style="margin-bottom: 0.5%;">・<%= date_format(date) %></div>
+
+    <div class="row">
+      <% day_races = @races.where(date: date) %>
+      <% day_races.pluck(:hold).uniq.each do |hold| %>
+        <div class="col-sm-2">
+          <div class="card">
+            <div class="card-header bg-primary text-white">
+              <%= hold %>
+            </div>
+            <div class="card-body">
+              <table>
+                <% day_races.where(hold: hold).each do |hold_race| %>
+                  <tr>
+                    <td><%= hold_race.number %></td>
+                    <td>
+                      <% if hold_race.forecasts.empty? %>
+                        <%= hold_race.name %>
+                      <% else %>
+                        <%= link_to hold_race.name, race_path(hold_race) %>
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              </table>
+            </div>
+          </div>
         </div>
-        <div class="card-body">
-          <table>
-            <% @races.where(hold: hold).each do |hold_race| %>
-              <tr>
-                <td><%= hold_race.number %></td>
-                <td><%= link_to hold_race.name, race_path(hold_race) %></td>
-              </tr>
-            <% end %>
-          </table>
-        </div>
-      </div>
+      <% end %>
     </div>
-  <% end %>
-</div>
+
+    <br>
+
+  </div>
+<% end %>

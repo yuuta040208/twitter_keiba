@@ -8,11 +8,18 @@ span {
     -ms-writing-mode: tb-rl;
     writing-mode: vertical-rl;
   }
+
+  &.text-combine {
+    -webkit-text-combine: horizontal;
+    -ms-text-combine-horizontal: all;
+    text-combine-upright: all;
+  }
 }
 
 th {
   &.horse {
     text-align: center;
+    vertical-align: top !important;;
   }
 }
 

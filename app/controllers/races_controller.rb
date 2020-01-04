@@ -1,12 +1,10 @@
 class RacesController < ApplicationController
   def index
-    @races = Race.all
+    @races = Race.includes(:forecasts).all.order(date: 'desc')
   end
 
   def show
-    @race = Race.joins(:horses)
-                .joins(:tweets)
-                .joins(:forecasts)
-                .find(params[:id])
+    @race = Race.includes(:horses).find_by(id: params[:id])
+    @forecasts = @race.forecasts.includes(:tweet)
   end
 end

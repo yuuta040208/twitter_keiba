@@ -14,14 +14,16 @@ namespace :netkeiba do
     puts "#{url} からデータを取得します..."
 
     doc.css('dl.race_top_hold_list').each do |race_top_hold_list|
-      race_top_hold_list.css('dl.race_top_data_info').each do |race_top_data_info|
-        Race.create!(
-            date: "#{Date.today.year}#{args['date']}",
-            number: race_top_data_info.css('img').first[:alt],
-            hold: race_top_hold_list.css('p.kaisaidata').text,
-            name: race_top_data_info.css('div.racename > a').first[:title].sub(/\(.*?\)/, ''),
-            url: race_top_data_info.css('div.racename > a').first[:href],
-        )
+      race_top_hold_list.css('dl.race_top_data_info').each_with_index do |race_top_data_info, index|
+        if index.between?(8, 10)
+          Race.create!(
+              date: "#{Date.today.year}#{args['date']}",
+              number: race_top_data_info.css('img').first[:alt],
+              hold: race_top_hold_list.css('p.kaisaidata').text,
+              name: race_top_data_info.css('div.racename > a').first[:title].sub(/\(.*?\)/, ''),
+              url: race_top_data_info.css('div.racename > a').first[:href],
+          )
+        end
       end
     end
 
@@ -39,14 +41,21 @@ namespace :netkeiba do
 
       puts "#{url} からデータを取得します..."
 
-      doc.css('td.horsename a').each do |a|
-        Horse.create!(race_id: race.id, name: a.text)
+      doc.css('tr.bml1').each do |tr|
+        Horse.create!(
+            race_id: race.id,
+            name: tr.css('td.horsename a').text,
+            wakuban: tr.css('td:nth-child(1) > span').text.to_i,
+            umaban: tr.css('td.umaban').text.to_i,
+            jockey_name: tr.css('td:nth-child(8)').text,
+            odds: tr.css('td.txt_r').text.to_f
+        )
       end
 
       puts "#{Horse.where(race_id: race.id).count}件をデータベースに追加しました。"
 
-      # BOT認識されないように1秒スリープさせる
-      sleep 1
+      # BOT認識されないように2秒スリープさせる
+      sleep 2
     end
   end
 end
