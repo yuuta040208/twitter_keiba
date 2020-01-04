@@ -20,13 +20,13 @@
   <tbody>
   <tr>
     <th>騎手</th>
-    <% @race.horses.each do |horse| %>
+    <% @race.horses.reverse_each do |horse| %>
       <td align="center"><span class="vertical"><%= horse.jockey_name %></span></td>
     <% end %>
   </tr>
   <tr>
     <th>予想オッズ</th>
-    <% @race.horses.each do |horse| %>
+    <% @race.horses.reverse_each do |horse| %>
       <td align="center"><%= horse.odds %></td>
     <% end %>
   </tr>
@@ -36,7 +36,7 @@
     <% taikous = @race.forecasts.pluck(:taikou) %>
     <% tananas = @race.forecasts.pluck(:tanana) %>
     <% renkas = @race.forecasts.pluck(:renka) %>
-    <% @race.horses.each do |horse| %>
+    <% @race.horses.reverse_each do |horse| %>
       <% point = 0 %>
       <% point += honmeis.count(horse.name) * 4 %>
       <% point += taikous.count(horse.name) * 3 %>
@@ -53,7 +53,7 @@
   <% @forecasts.each do |forecast| %>
     <tr>
       <th align="left"><%= link_to forecast.tweet.user_name, forecast.tweet.user_uri, target: '_blank' %></th>
-      <% @race.horses.each do |horse| %>
+      <% @race.horses.reverse_each do |horse| %>
         <% mark = '' %>
         <% if forecast.honmei == horse.name %>
           <% mark = '◎' %>
