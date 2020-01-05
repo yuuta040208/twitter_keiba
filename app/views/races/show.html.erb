@@ -7,13 +7,13 @@
 <table class="table table-bordered table-striped table-sm">
   <thead>
   <tr>
-    <th></th>
+    <th class="sticky" style="background-color: darkgrey; width: 15%;"></th>
     <% @race.horses.each_with_index.reverse_each do |horse, i| %>
       <% index = Settings[:index][@race.horses.count][i] %>
       <% background_color = Settings[:color][index] %>
       <% text_color = background_color == 'black' || background_color == 'red' || background_color == 'blue' ? 'white' : 'black' %>
 
-      <th class="horse" style="background-color: <%= background_color %>; color: <%= text_color %>;">
+      <th class="horse sticky" style="background-color: <%= background_color %>; color: <%= text_color %>;">
         <span class="vertical">
           <span class="text-combine"><%= horse.umaban %></span>
           <%= horse.name %>
@@ -21,9 +21,9 @@
       </th>
     <% end %>
   </tr>
+
   </thead>
 
-  <tbody>
   <tr>
     <th>予想オッズ</th>
     <% @race.horses.reverse_each do |horse| %>
@@ -66,6 +66,8 @@
   <tr>
     <td></td>
   </tr>
+
+  <tbody>
 
   <% @forecasts.each do |forecast| %>
     <tr>

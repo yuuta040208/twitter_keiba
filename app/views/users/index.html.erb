@@ -1,0 +1,22 @@
+<h2>ユーザ一覧</h2>
+
+
+<table class="table table-bordered table-striped table-sm">
+  <thead>
+    <tr>
+      <th>ランキング</th>
+      <th>ユーザ名</th>
+      <th>ポイント</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each_with_index do |user, index| %>
+      <tr>
+        <td><%= index + 1 %></td>
+        <td><%= user.twitter_user_name %></td>
+        <td><%= user.point %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

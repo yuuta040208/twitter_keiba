@@ -38,4 +38,55 @@ namespace :scoring do
       puts "#{Forecast.where(race_id: race.id).count}件のスコアリングを完了しました。"
     end
   end
+
+  desc "的中した予想を取得"
+  task :result, ['date'] => :environment do |task, args|
+    Race.where(date: "#{Date.today.year}#{args['date']}").each do |race|
+      puts "#{race.name} の的中ツイートを取得中..."
+
+      users = []
+      result = Result.find_by(race_id: race.id)
+      return if result.nil?
+
+      Forecast.where(race_id: race.id).each do |forecast|
+        point = 0
+
+        if forecast.honmei == result.first
+          point += 10
+        elsif forecast.taikou == result.first
+          point += 5
+        elsif forecast.tanana == result.first
+          point += 2
+        elsif forecast.renka == result.first
+          point += 1
+        end
+
+        if forecast.honmei == result.second
+          point += 3
+        elsif forecast.taikou == result.second
+          point += 5
+        elsif forecast.tanana == result.second
+          point += 1
+        end
+
+        if point > 0 && users.exclude?(forecast.tweet.user_id)
+          user = User.find_by(twitter_user_id: forecast.tweet.user_id)
+          if user.present?
+            user.point = user.point + point
+            user.save!
+          else
+            User.create(
+                tweet_id: forecast.tweet.id,
+                forecast_id: forecast.id,
+                twitter_user_id: forecast.tweet.user_id,
+                twitter_user_name: forecast.tweet.user_name,
+                point: point,
+            )
+          end
+
+          users.push(forecast.tweet.user_id)
+        end
+      end
+    end
+  end
 end

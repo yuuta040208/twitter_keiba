@@ -58,4 +58,29 @@ namespace :netkeiba do
       sleep 2
     end
   end
+
+
+  desc "レース結果をスクレイピング"
+  task :scrape_result, ['date'] => :environment do |task, args|
+    races = Race.where(date: "#{Date.today.year}#{args['date']}")
+    races.each do |race|
+      url = "#{NETKEIBA_URL}#{race.url.gsub('_old', '')}&mode=result"
+      html = open(url).read
+      doc = Nokogiri::HTML.parse(html.toutf8, nil, 'utf-8')
+
+      puts "#{url} からデータを取得します..."
+
+      Result.create(
+          race_id: race.id,
+          first: doc.css('table.race_table_01 tr:nth-child(2) > td:nth-child(4) > a').first.text,
+          second: doc.css('table.race_table_01 tr:nth-child(2) > td:nth-child(4) > a').first.text,
+          third: doc.css('table.race_table_01 tr:nth-child(2) > td:nth-child(4) > a').first.text,
+      )
+
+      puts "#{Result.where(race_id: race.id).attributes}をデータベースに追加しました。"
+
+      # BOT認識されないように2秒スリープさせる
+      sleep 2
+    end
+  end
 end

@@ -13,3 +13,9 @@ export VIMRUNTIME="$HOME/vim/runtime"
 export PATH="$HOME/vim:$PATH"
 cd -
 ```
+
+## rails c がうまくいかない時
+
+```
+export DISABLE_SPRING=true
+```

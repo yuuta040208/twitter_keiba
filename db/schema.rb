@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_04_070249) do
+ActiveRecord::Schema.define(version: 2020_01_05_075033) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,6 +51,14 @@ ActiveRecord::Schema.define(version: 2020_01_04_070249) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "results", force: :cascade do |t|
+    t.bigint "race_id"
+    t.string "first"
+    t.string "second"
+    t.string "third"
+    t.index ["race_id"], name: "index_results_on_race_id"
+  end
+
   create_table "tweets", force: :cascade do |t|
     t.bigint "race_id"
     t.string "unique_id"
@@ -62,6 +70,16 @@ ActiveRecord::Schema.define(version: 2020_01_04_070249) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["race_id"], name: "index_tweets_on_race_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.bigint "tweet_id"
+    t.bigint "forecast_id"
+    t.string "twitter_user_id"
+    t.string "twitter_user_name"
+    t.integer "point"
+    t.index ["forecast_id"], name: "index_users_on_forecast_id"
+    t.index ["tweet_id"], name: "index_users_on_tweet_id"
   end
 
 end
