@@ -1,0 +1,39 @@
+// Place all the styles related to the races controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+
+span {
+  &.vertical {
+    -webkit-writing-mode: vertical-rl;
+    -ms-writing-mode: tb-rl;
+    writing-mode: vertical-rl;
+  }
+
+  &.text-combine {
+    -webkit-text-combine: horizontal;
+    -ms-text-combine-horizontal: all;
+    text-combine-upright: all;
+  }
+}
+
+table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+}
+
+th {
+  &.horse {
+    text-align: center;
+    vertical-align: top !important;;
+  }
+}
+
+html {
+  margin: 2%;
+  font-size: 10px;
+}

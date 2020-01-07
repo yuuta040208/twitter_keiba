@@ -131,6 +131,9 @@ GEM
       rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
+    rack-user_agent (0.5.2)
+      rack (>= 1.5)
+      woothee (>= 1.0.0)
     rails (6.0.2.1)
       actioncable (= 6.0.2.1)
       actionmailbox (= 6.0.2.1)
@@ -229,6 +232,7 @@ GEM
     websocket-driver (0.7.1)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.4)
+    woothee (1.10.0)
     xpath (3.2.0)
       nokogiri (~> 1.8)
     zeitwerk (2.2.2)
@@ -246,6 +250,7 @@ DEPENDENCIES
   nokogiri
   pg (~> 1.2.0)
   puma (~> 4.1)
+  rack-user_agent
   rails (~> 6.0.2, >= 6.0.2.1)
   sass-rails (>= 6)
   selenium-webdriver

@@ -1,0 +1,44 @@
+<h3>Twitter競馬予想
+  <small style="font-size: 14px;">by <%= link_to '@Evitch', 'https://twitter.com/unkEVI' %></small>
+</h3>
+
+<p><%= link_to 'ユーザ一覧', users_path %></p>
+<br>
+
+<% @races.pluck(:date).uniq.each do |date| %>
+  <div class="border-bottom" style="margin-bottom: 1%;">
+    <div style="margin-top: 5%;">・<%= date_format(date) %></div>
+
+    <div class="row">
+      <% day_races = @races.where(date: date) %>
+      <% day_races.pluck(:hold).uniq.each do |hold| %>
+        <div class="col-sm-12" style="margin-bottom: 2%;">
+          <div class="card">
+            <div class="card-header bg-primary text-white">
+              <%= hold %>
+            </div>
+            <div class="card-body">
+              <table>
+                <% day_races.where(hold: hold).each do |hold_race| %>
+                  <tr>
+                    <td><%= hold_race.number %></td>
+                    <td>
+                      <% if hold_race.forecasts.empty? %>
+                        <%= hold_race.name %>
+                      <% else %>
+                        <%= link_to hold_race.name, race_path(hold_race) %>
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              </table>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <br>
+
+  </div>
+<% end %>
