@@ -19,3 +19,9 @@ cd -
 ```
 export DISABLE_SPRING=true
 ```
+
+## herokuに接続
+
+```
+heroku run bash
+```
