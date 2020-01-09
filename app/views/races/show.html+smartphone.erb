@@ -4,9 +4,9 @@
 
 <br>
 
-<table class="table table-bordered table-striped table-sm small-text">
+<table class="table table-bordered table-striped table-sm text-table">
   <thead>
-  <tr>
+  <tr style="height: 280px">
     <th class="sticky" style="background-color: darkgrey; width: 15%;"></th>
     <% @race.horses.each_with_index.reverse_each do |horse, i| %>
       <% index = Settings[:index][@race.horses.count][i] %>
