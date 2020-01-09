@@ -21,8 +21,14 @@ table {
   width: 100%;
 }
 
+$header_table_height: 280px;
+.fixed-header {
+  height: $header_table_height;
+}
+
 .sticky {
   position: sticky;
+  height: $header_table_height;
   top: 0;
 }
 

@@ -6,7 +6,7 @@
 
 <table class="table table-bordered table-striped table-sm text-table">
   <thead>
-  <tr style="height: 280px">
+  <tr class="fixed-header">
     <th class="sticky" style="background-color: darkgrey; width: 15%;"></th>
     <% @race.horses.each_with_index.reverse_each do |horse, i| %>
       <% index = Settings[:index][@race.horses.count][i] %>
