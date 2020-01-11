@@ -25,3 +25,8 @@ export DISABLE_SPRING=true
 ```
 heroku run bash
 ```
+
+## Twitter Search APIのクエリ
+
+https://developer.twitter.com/en/docs/tweets/search/guides/standard-operators
+

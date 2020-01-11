@@ -1,15 +1,21 @@
-<h2><%= @race.name %></h2>
+<h2>
+  <%= link_to @race.name, 'https://race.netkeiba.com' + @race.url, target: '_blank'%>
+  <small><%= @race.hold %> <%= @race.number %></small>
+</h2>
 
-<p><%= link_to 'netkeiba.comへ', 'https://race.netkeiba.com' + @race.url, target: '_blank' %></p>
+<p><%= link_to 'ホームに戻る', root_path %></p>
 
 <br>
+
+<p>全<%= @forecasts.count %>件</p>
 
 <table class="table table-bordered table-striped table-sm">
   <thead>
   <tr>
     <th class="sticky" style="background-color: darkgrey; width: 15%;"></th>
+    <% count = @race.horses.count %>
     <% @race.horses.each_with_index.reverse_each do |horse, i| %>
-      <% index = Settings[:index][@race.horses.count][i] %>
+      <% index = Settings[:index][count][i] %>
       <% background_color = Settings[:color][index] %>
       <% text_color = background_color == 'black' || background_color == 'red' || background_color == 'blue' ? 'white' : 'black' %>
 
@@ -71,7 +77,12 @@
 
   <% @forecasts.each do |forecast| %>
     <tr>
-      <th align="left"><%= link_to forecast.tweet.user_name, forecast.tweet.user_uri, target: '_blank' %></th>
+      <th align="left">
+        <%= link_to "#{forecast.user.name} (#{forecast.user.point})", user_path(forecast.user.id) %>
+        <%= link_to forecast.tweet.url, target: '_blank' do %>
+          <%= image_tag asset_path('twitter_icon.png') %>
+        <% end %>
+      </th>
       <% @race.horses.reverse_each do |horse| %>
         <% mark = '' %>
         <% if forecast.honmei == horse.name %>
@@ -89,3 +100,5 @@
   <% end %>
   </tbody>
 </table>
+
+<p><%= link_to 'レース一覧画面へ戻る', races_path %></p>

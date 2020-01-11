@@ -70,14 +70,14 @@ namespace :netkeiba do
 
       puts "#{url} からデータを取得します..."
 
-      Result.create(
+      Result.create!(
           race_id: race.id,
-          first: doc.css('table.race_table_01 tr:nth-child(2) > td:nth-child(4) > a').first.text,
-          second: doc.css('table.race_table_01 tr:nth-child(2) > td:nth-child(4) > a').first.text,
-          third: doc.css('table.race_table_01 tr:nth-child(2) > td:nth-child(4) > a').first.text,
+          first_horse: doc.css('table.race_table_01 tr:nth-child(2) > td:nth-child(4) > a').first.text,
+          second_horse: doc.css('table.race_table_01 tr:nth-child(3) > td:nth-child(4) > a').first.text,
+          third_horse: doc.css('table.race_table_01 tr:nth-child(4) > td:nth-child(4) > a').first.text,
       )
 
-      puts "#{Result.where(race_id: race.id).attributes}をデータベースに追加しました。"
+      puts "#{Result.find_by(race_id: race.id).attributes}をデータベースに追加しました。"
 
       # BOT認識されないように2秒スリープさせる
       sleep 2

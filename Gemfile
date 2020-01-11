@@ -57,5 +57,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'settingslogic'
 gem 'twitter'
 gem 'nokogiri'
+gem 'kaminari'
+gem 'kaminari-bootstrap'
 
 gem 'rack-user_agent'

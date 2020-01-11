@@ -4,7 +4,7 @@ class RacesController < ApplicationController
   end
 
   def show
-    @race = Race.includes(:horses).find_by(id: params[:id])
-    @forecasts = @race.forecasts.includes(:tweet)
+    @race = Race.includes(:horses).find(params[:id])
+    @forecasts = @race.forecasts.includes(:user, :tweet).order('users.point DESC')
   end
 end

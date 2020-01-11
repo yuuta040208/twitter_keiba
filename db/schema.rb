@@ -16,8 +16,9 @@ ActiveRecord::Schema.define(version: 2020_01_05_075033) do
   enable_extension "plpgsql"
 
   create_table "forecasts", force: :cascade do |t|
-    t.bigint "tweet_id"
     t.bigint "race_id"
+    t.string "user_id", null: false
+    t.string "tweet_id", null: false
     t.string "honmei"
     t.string "taikou"
     t.string "tanana"
@@ -26,18 +27,19 @@ ActiveRecord::Schema.define(version: 2020_01_05_075033) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["race_id"], name: "index_forecasts_on_race_id"
     t.index ["tweet_id"], name: "index_forecasts_on_tweet_id"
+    t.index ["user_id"], name: "index_forecasts_on_user_id"
   end
 
   create_table "horses", force: :cascade do |t|
     t.bigint "race_id"
     t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
     t.integer "wakuban"
     t.integer "umaban"
     t.string "jockey_name"
     t.float "odds"
     t.integer "popularity"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.index ["race_id"], name: "index_horses_on_race_id"
   end
 
@@ -53,33 +55,33 @@ ActiveRecord::Schema.define(version: 2020_01_05_075033) do
 
   create_table "results", force: :cascade do |t|
     t.bigint "race_id"
-    t.string "first"
-    t.string "second"
-    t.string "third"
+    t.string "first_horse"
+    t.string "second_horse"
+    t.string "third_horse"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.index ["race_id"], name: "index_results_on_race_id"
   end
 
-  create_table "tweets", force: :cascade do |t|
+  create_table "tweets", id: :string, force: :cascade do |t|
     t.bigint "race_id"
-    t.string "unique_id"
-    t.string "user_id"
-    t.string "user_name"
-    t.text "user_uri"
+    t.string "user_id", null: false
     t.text "content"
+    t.text "url"
     t.datetime "tweeted_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["race_id"], name: "index_tweets_on_race_id"
+    t.index ["user_id"], name: "index_tweets_on_user_id"
   end
 
-  create_table "users", force: :cascade do |t|
-    t.bigint "tweet_id"
-    t.bigint "forecast_id"
-    t.string "twitter_user_id"
-    t.string "twitter_user_name"
-    t.integer "point"
-    t.index ["forecast_id"], name: "index_users_on_forecast_id"
-    t.index ["tweet_id"], name: "index_users_on_tweet_id"
+  create_table "users", id: :string, force: :cascade do |t|
+    t.string "name"
+    t.text "url"
+    t.text "image_url"
+    t.integer "point", default: 0
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
 end

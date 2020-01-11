@@ -8,9 +8,14 @@ namespace :db do
     ActiveRecord::Base.connection.execute 'TRUNCATE TABLE users RESTART IDENTITY;'
   end
 
-  desc "usersベースの中身を空にする"
+  desc "usersテーブルの中身を空にする"
   task :truncate_users => :environment do |task, args|
     ActiveRecord::Base.connection.execute 'TRUNCATE TABLE users RESTART IDENTITY;'
+  end
+
+  desc "resultsテーブルの中身を空にする"
+  task :truncate_results => :environment do |task, args|
+    ActiveRecord::Base.connection.execute 'TRUNCATE TABLE results RESTART IDENTITY;'
   end
 
   desc "指定した日付のデータを削除する"

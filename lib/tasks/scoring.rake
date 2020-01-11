@@ -26,6 +26,7 @@ namespace :scoring do
         if forecast.present?
           Forecast.create!(
               race_id: race.id,
+              user_id: tweet.user.id,
               tweet_id: tweet.id,
               honmei: forecast[:honmei],
               taikou: forecast[:taikou],
@@ -44,47 +45,34 @@ namespace :scoring do
     Race.where(date: "#{Date.today.year}#{args['date']}").each do |race|
       puts "#{race.name} の的中ツイートを取得中..."
 
-      users = []
       result = Result.find_by(race_id: race.id)
       return if result.nil?
 
       Forecast.where(race_id: race.id).each do |forecast|
         point = 0
 
-        if forecast.honmei == result.first
+        if forecast.honmei == result.first_horse
           point += 10
-        elsif forecast.taikou == result.first
+        elsif forecast.taikou == result.first_horse
           point += 5
-        elsif forecast.tanana == result.first
+        elsif forecast.tanana == result.first_horse
           point += 2
-        elsif forecast.renka == result.first
+        elsif forecast.renka == result.first_horse
           point += 1
         end
 
-        if forecast.honmei == result.second
+        if forecast.honmei == result.second_horse
           point += 3
-        elsif forecast.taikou == result.second
+        elsif forecast.taikou == result.second_horse
           point += 5
-        elsif forecast.tanana == result.second
+        elsif forecast.tanana == result.second_horse
           point += 1
         end
 
-        if point > 0 && users.exclude?(forecast.tweet.user_id)
-          user = User.find_by(twitter_user_id: forecast.tweet.user_id)
-          if user.present?
-            user.point = user.point + point
-            user.save!
-          else
-            User.create(
-                tweet_id: forecast.tweet.id,
-                forecast_id: forecast.id,
-                twitter_user_id: forecast.tweet.user_id,
-                twitter_user_name: forecast.tweet.user_name,
-                point: point,
-            )
-          end
-
-          users.push(forecast.tweet.user_id)
+        if point > 0
+          user = forecast.user
+          user.point = user.point + point
+          user.save!
         end
       end
     end

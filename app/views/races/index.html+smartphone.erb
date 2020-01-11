@@ -26,7 +26,7 @@
                       <% if hold_race.forecasts.empty? %>
                         <%= hold_race.name %>
                       <% else %>
-                        <%= link_to hold_race.name, race_path(hold_race) %>
+                        <%= link_to "#{hold_race.name} (#{hold_race.forecasts.count})", race_path(hold_race) %>
                       <% end %>
                     </td>
                   </tr>
