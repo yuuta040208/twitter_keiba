@@ -35,7 +35,7 @@ namespace :netkeiba do
   task :scrape_horse, ['date'] => :environment do |task, args|
     races = Race.where(date: "#{Date.today.year}#{args['date']}")
     races.each do |race|
-      url = "#{NETKEIBA_URL}#{race.url.gsub('race', 'race_old')}"
+      url = "#{NETKEIBA_URL}#{race.url.gsub('race&', 'race_old&')}"
       html = open(url).read
       doc = Nokogiri::HTML.parse(html.toutf8, nil, 'utf-8')
 

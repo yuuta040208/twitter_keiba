@@ -12,6 +12,7 @@ namespace :scoring do
     Race.where(date: "#{Date.today.year}#{args['date']}").each do |race|
       puts "#{race.name} のスコアリング中..."
 
+      count = 0
       race.tweets.each do |tweet|
         forecast = {}
         marks.each do |mark|
@@ -23,7 +24,7 @@ namespace :scoring do
           end
         end
 
-        if forecast.present?
+        if forecast.present? && Forecast.where(race_id: race.id, user_id: tweet.user.id).empty?
           Forecast.create!(
               race_id: race.id,
               user_id: tweet.user.id,
@@ -33,10 +34,11 @@ namespace :scoring do
               tanana: forecast[:tanana],
               renka: forecast[:renka],
           )
+          count += 1
         end
       end
 
-      puts "#{Forecast.where(race_id: race.id).count}件のスコアリングを完了しました。"
+      puts "#{count}件のスコアリングを完了しました。"
     end
   end
 
