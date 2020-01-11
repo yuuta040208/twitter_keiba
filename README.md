@@ -1,5 +1,8 @@
 # README
 
+競馬予想ツイート可視化システム
+
+
 ## herokuでvimを使う方法
 ```
 mkdir ~/vim
