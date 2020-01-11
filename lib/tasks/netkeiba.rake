@@ -7,7 +7,7 @@ NETKEIBA_URL = 'https://race.netkeiba.com'
 namespace :netkeiba do
   desc "開催日のレース一覧をスクレイピング"
   task :scrape_race, ['date'] => :environment do |task, args|
-    url = "#{NETKEIBA_URL}/?pid=race_list&id=c#{args['date']}"
+    url = "#{NETKEIBA_URL}/?pid=race_old&id=c#{args['date']}"
     html = open(url).read
     doc = Nokogiri::HTML.parse(html.toutf8, nil, 'utf-8')
 
