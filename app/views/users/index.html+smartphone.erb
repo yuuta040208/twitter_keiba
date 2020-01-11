@@ -2,7 +2,9 @@
 
 <br>
 
-<%= paginate @users %>
+<p><%= link_to 'ホームに戻る', root_path %></p>
+
+<%= paginate @users, window: 1 %>
 
 <div class="row">
   <table class="table table-bordered table-striped table-sm col-sm-12">
@@ -29,4 +31,4 @@
   </table>
 </div>
 
-<%= paginate @users %>
+<%= paginate @users, window: 1 %>
