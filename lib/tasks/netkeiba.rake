@@ -7,7 +7,7 @@ NETKEIBA_URL = 'https://race.netkeiba.com'
 namespace :netkeiba do
   desc "開催日のレース一覧をスクレイピング"
   task :scrape_race, ['date'] => :environment do |task, args|
-    url = "#{NETKEIBA_URL}/?pid=race_old&id=c#{args['date']}"
+    url = "#{NETKEIBA_URL}/?pid=race_list&id=c#{args['date']}"
     html = open(url).read
     doc = Nokogiri::HTML.parse(html.toutf8, nil, 'utf-8')
 
@@ -35,7 +35,7 @@ namespace :netkeiba do
   task :scrape_horse, ['date'] => :environment do |task, args|
     races = Race.where(date: "#{Date.today.year}#{args['date']}")
     races.each do |race|
-      url = "#{NETKEIBA_URL}#{race.url}"
+      url = "#{NETKEIBA_URL}#{race.url.gsub('race', 'race_old')}"
       html = open(url).read
       doc = Nokogiri::HTML.parse(html.toutf8, nil, 'utf-8')
 
