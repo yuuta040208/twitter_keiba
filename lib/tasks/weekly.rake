@@ -24,4 +24,12 @@ namespace :weekly do
     Rake::Task['twitter:search'].invoke(date)
     Rake::Task['scoring:create'].invoke(date)
   end
+
+  desc "レース後処理のみ実行"
+  task :result, ['date'] => :environment do |task, args|
+    date = args['date']
+
+    Rake::Task['netkeiba:scrape_result'].invoke(date)
+    Rake::Task['scoring:result'].invoke(date)
+  end
 end

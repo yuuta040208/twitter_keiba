@@ -13,6 +13,7 @@ namespace :twitter do
 
       puts "#{query} をTwitterで検索します..."
 
+      count = 0
       begin
         client.search(query, count: 1000, result_type: 'recent', exclude: 'retweets').each do |tweet|
           if tweet.text.include?('◎')
@@ -34,6 +35,7 @@ namespace :twitter do
                   url: tweet.uri,
                   tweeted_at: tweet.created_at,
               )
+              count += 1
             end
           end
         end
@@ -41,7 +43,7 @@ namespace :twitter do
         puts e
       end
 
-      puts "#{Tweet.where(race_id: race.id).count}件をデータベースに追加しました。"
+      puts "#{count}件をデータベースに追加しました。"
 
       # APIリミットに到達しないように30秒スリープさせる
       sleep 30

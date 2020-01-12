@@ -50,6 +50,7 @@ namespace :scoring do
       result = Result.find_by(race_id: race.id)
       return if result.nil?
 
+      count = 0
       Forecast.where(race_id: race.id).each do |forecast|
         point = 0
 
@@ -77,6 +78,8 @@ namespace :scoring do
           user.save!
         end
       end
+
+      puts "#{count}件のスコアリングを完了しました。"
     end
   end
 end
