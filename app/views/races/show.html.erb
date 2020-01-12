@@ -20,8 +20,8 @@
   <thead>
   <tr>
     <th class="sticky" style="background-color: darkgrey; width: 15%;"></th>
-    <% count = @race.horses.count %>
-    <% @race.horses.order(:umaban).each_with_index.reverse_each do |horse, i| %>
+    <% count = @horses.count %>
+    <% @horses.order(:umaban).each_with_index.reverse_each do |horse, i| %>
       <% index = Settings[:index][count][i] %>
       <% background_color = Settings[:color][index] %>
       <% text_color = background_color == 'black' || background_color == 'red' || background_color == 'blue' ? 'white' : 'black' %>
@@ -39,7 +39,7 @@
 
   <tr>
     <th>予想オッズ</th>
-    <% @race.horses.reverse_each do |horse| %>
+    <% @horses.reverse_each do |horse| %>
       <td align="center"><u><%= horse.odds %></u></td>
     <% end %>
   </tr>
@@ -47,7 +47,7 @@
   <tr>
     <th>◎ の個数</th>
     <% honmeis = @race.forecasts.pluck(:honmei) %>
-    <% @race.horses.reverse_each do |horse| %>
+    <% @horses.reverse_each do |horse| %>
       <td align="center"><%= honmeis.count(horse.name) %></td>
     <% end %>
   </tr>
@@ -55,7 +55,7 @@
   <tr>
     <th>○ の個数</th>
     <% taikous = @race.forecasts.pluck(:taikou) %>
-    <% @race.horses.reverse_each do |horse| %>
+    <% @horses.reverse_each do |horse| %>
       <td align="center"><%= taikous.count(horse.name) %></td>
     <% end %>
   </tr>
@@ -63,7 +63,7 @@
   <tr>
     <th>▲ の個数</th>
     <% tananas = @race.forecasts.pluck(:tanana) %>
-    <% @race.horses.reverse_each do |horse| %>
+    <% @horses.reverse_each do |horse| %>
       <td align="center"><%= tananas.count(horse.name) %></td>
     <% end %>
   </tr>
@@ -71,7 +71,7 @@
   <tr>
     <th>△ の個数</th>
     <% renkas = @race.forecasts.pluck(:renka) %>
-    <% @race.horses.reverse_each do |horse| %>
+    <% @horses.reverse_each do |horse| %>
       <td align="center"><%= renkas.count(horse.name) %></td>
     <% end %>
   </tr>
@@ -90,7 +90,7 @@
           <%= image_tag asset_path('twitter_icon.png') %>
         <% end %>
       </th>
-      <% @race.horses.reverse_each do |horse| %>
+      <% @horses.reverse_each do |horse| %>
         <% mark = '' %>
         <% if forecast.honmei == horse.name %>
           <% mark = '◎' %>
