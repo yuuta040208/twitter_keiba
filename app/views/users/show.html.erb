@@ -1,6 +1,6 @@
 <h2>
   <%= link_to @user.url, target: '_blank' do %>
-    <%= image_tag @user.image_url %> <%= @user.name %>
+    <%= image_tag @user.image_url %> <%= @user.name %> (<%= @user.point %>)
   <% end %>
 </h2>
 
@@ -26,10 +26,10 @@
 
     <% if result.present? %>
       <% horses = [result.first_horse, result.second_horse, result.third_horse] %>
-      <% honmei_won = horses.include?(forecast.honmei) %>
-      <% taikou_won = horses.include?(forecast.taikou) %>
-      <% tanana_won = horses.include?(forecast.tanana) %>
-      <% renka_won = horses.include?(forecast.renka) %>
+      <% honmei_result = horses.index(forecast.honmei) || -1 %>
+      <% taikou_result = horses.index(forecast.taikou) || -1 %>
+      <% tanana_result = horses.index(forecast.tanana) || -1 %>
+      <% renka_result = horses.index(forecast.renka) || -1 %>
       <tr>
         <td class="align-middle" style="background-color: white">
           <b><%= link_to race.name, 'https://race.netkeiba.com' + race.url, target: '_blank' %></b>
@@ -38,22 +38,20 @@
           <% end %>
         </td>
 
-        <% honmei_background_color = honmei_won ? 'lightpink' : 'white' %>
-        <td class="align-middle" style="background-color: <%= honmei_background_color %>">
-            <%= forecast.honmei %> <b><%= "#{horses.index(forecast.honmei) + 1}着" if honmei_won %></b>
+        <td class="align-middle" style="background-color: <%= result_color_code(honmei_result) %>">
+            <%= forecast.honmei %> <b><%= "#{horses.index(forecast.honmei) + 1}着" if honmei_result >= 0 %></b>
         </td>
 
-        <% taikou_background_color = taikou_won ? 'lightpink' : 'white' %>
-        <td class="align-middle" style="background-color: <%= taikou_background_color %>">
-          <%= forecast.taikou %> <b><%= "#{horses.index(forecast.taikou) + 1}着" if taikou_won %></b>
+        <td class="align-middle" style="background-color: <%= result_color_code(taikou_result) %>">
+          <%= forecast.taikou %> <b><%= "#{horses.index(forecast.taikou) + 1}着" if taikou_result >= 0 %></b>
         </td>
 
-        <td class="align-middle" style="background-color: white">
-          <%= forecast.tanana %> <b><%= "#{horses.index(forecast.tanana) + 1}着" if tanana_won %></b>
+        <td class="align-middle" style="background-color: <%= result_color_code(tanana_result) %>">
+          <%= forecast.tanana %> <b><%= "#{horses.index(forecast.tanana) + 1}着" if tanana_result >= 0 %></b>
         </td>
 
-        <td class="align-middle" style="background-color: white">
-          <%= forecast.renka %> <b><%= "#{horses.index(forecast.renka) + 1}着" if renka_won %></b>
+        <td class="align-middle" style="background-color: <%= result_color_code(renka_result) %>">
+          <%= forecast.renka %> <b><%= "#{horses.index(forecast.renka) + 1}着" if renka_result >= 0 %></b>
         </td>
       </tr>
     <% end %>

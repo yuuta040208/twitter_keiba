@@ -10,12 +10,13 @@ namespace :twitter do
       queries = [race.name]
       queries.push(race.name.chop + 'ステークス') if race.name.end_with?('S') || race.name.end_with?('Ｓ')
       query = queries.join(' OR ')
+      last_tweeted_at = race.tweets.order(tweeted_at: 'desc').first&.id
 
       puts "#{query} をTwitterで検索します..."
 
       count = 0
       begin
-        client.search(query, count: 1000, result_type: 'recent', exclude: 'retweets').each do |tweet|
+        client.search(query, count: 1000, result_type: 'recent', exclude: 'retweets', since_id: last_tweeted_at).each do |tweet|
           if tweet.text.include?('◎')
             if User.where(id: tweet.user.id).empty?
               User.create!(
