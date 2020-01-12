@@ -1,6 +1,6 @@
 class RacesController < ApplicationController
   def index
-    @races = Race.includes(:forecasts).all.order(date: 'desc')
+    @races = Race.includes(:forecasts).all.order(date: 'desc').order(:name)
   end
 
   def show
