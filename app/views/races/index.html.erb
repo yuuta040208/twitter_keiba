@@ -19,7 +19,7 @@
             </div>
             <div class="card-body">
               <table>
-                <% day_races.where(hold: hold).each do |hold_race| %>
+                <% day_races.where(hold: hold).sort{|a, b| a.number.delete("^0-9").to_i <=> b.number.delete("^0-9").to_i}.each do |hold_race| %>
                   <tr>
                     <td><%= hold_race.number %></td>
                     <td>
