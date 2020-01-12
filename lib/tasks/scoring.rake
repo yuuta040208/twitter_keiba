@@ -76,6 +76,7 @@ namespace :scoring do
           user = forecast.user
           user.point = user.point + point
           user.save!
+          count += 1
         end
       end
 
