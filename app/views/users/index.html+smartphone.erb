@@ -4,6 +4,15 @@
 
 <p><%= link_to 'ホームに戻る', root_path %></p>
 
+<div class="form-inline">
+  <%= form_tag(users_path, method: 'get') do %>
+    <%= text_field_tag :search, params[:search], class: 'form-control sm-3' %>
+    <%= submit_tag '検索', name: nil, class: 'btn btn-primary sm-2' %>
+  <% end %>
+</div>
+
+<br>
+
 <%= paginate @users, window: 1 %>
 
 <div class="row">

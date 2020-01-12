@@ -5,9 +5,16 @@
 
 <p><%= link_to 'ホームに戻る', root_path %></p>
 
+<div class="form-inline">
+  <%= form_tag(race_path(params[:id]), method: 'get') do %>
+    <%= text_field_tag :search, params[:search], class: 'form-control sm-3' %>
+    <%= submit_tag '検索', name: nil, class: 'btn btn-primary sm-2' %>
+  <% end %>
+</div>
+
 <br>
 
-<p>全<%= @forecasts.count %>件</p>
+<%= paginate @forecasts %>
 
 <table class="table table-bordered table-striped table-sm">
   <thead>
@@ -101,4 +108,4 @@
   </tbody>
 </table>
 
-<p><%= link_to 'レース一覧画面へ戻る', races_path %></p>
+<%= paginate @forecasts %>

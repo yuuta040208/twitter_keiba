@@ -1,6 +1,10 @@
 class UsersController < ApplicationController
   def index
     @users = User.all.order(point: 'desc').page(params[:page])
+
+    if params[:search].present?
+      @users = @users.search(params[:search])
+    end
   end
 
   def show

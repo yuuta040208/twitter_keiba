@@ -5,6 +5,10 @@ class RacesController < ApplicationController
 
   def show
     @race = Race.includes(:horses).find(params[:id])
-    @forecasts = @race.forecasts.includes(:user, :tweet).order('users.point DESC')
+    @forecasts = @race.forecasts.includes(:user, :tweet).order('users.point DESC').page(params[:page])
+
+    if params[:search].present?
+      @forecasts = @forecasts.search(params[:search])
+    end
   end
 end
