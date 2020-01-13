@@ -8,6 +8,8 @@ namespace :twitter do
 
     Race.where(date: "#{Date.today.year}#{args['date']}").each do |race|
       queries = [race.name]
+      queries.push(race.name.chop + 'S') if race.name.end_with?('Ｓ')
+      queries.push(race.name.chop + 'Ｓ') if race.name.end_with?('S')
       queries.push(race.name.chop + 'ステークス') if race.name.end_with?('S') || race.name.end_with?('Ｓ')
       query = queries.join(' OR ')
       last_tweeted_at = race.tweets.order(tweeted_at: 'desc').first&.id
@@ -36,12 +38,6 @@ namespace :twitter do
                   url: tweet.uri,
                   tweeted_at: tweet.created_at,
               )
-            else
-              exist_tweet = Tweet.find(tweet.id)
-              exist_tweet.content = tweet.text
-              exist_tweet.tweeted_at = tweet.created_at
-              exist_tweet.url = tweet.uri
-              exist_tweet.save!
             end
 
             count += 1

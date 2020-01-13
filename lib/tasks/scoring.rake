@@ -12,8 +12,9 @@ namespace :scoring do
     Race.where(date: "#{Date.today.year}#{args['date']}").each do |race|
       puts "#{race.name} のスコアリング中..."
 
-      count = 0
-      race.tweets.each do |tweet|
+      create_count = 0
+      update_count = 0
+      race.tweets.where(tweets: {id: Tweet.group(:user_id).select('max(id)')}).each do |tweet|
         forecast = {}
         marks.each do |mark|
           race.horses.each do |horse|
@@ -24,21 +25,36 @@ namespace :scoring do
           end
         end
 
-        if forecast.present? && Forecast.where(race_id: race.id, user_id: tweet.user.id).empty?
-          Forecast.create!(
-              race_id: race.id,
-              user_id: tweet.user.id,
-              tweet_id: tweet.id,
-              honmei: forecast[:honmei],
-              taikou: forecast[:taikou],
-              tanana: forecast[:tanana],
-              renka: forecast[:renka],
-          )
-          count += 1
+        if forecast.present?
+          exist_forecast = Forecast.where(race_id: race.id, user_id: tweet.user.id).first
+          if exist_forecast.nil?
+            Forecast.create!(
+                race_id: race.id,
+                user_id: tweet.user.id,
+                tweet_id: tweet.id,
+                honmei: forecast[:honmei],
+                taikou: forecast[:taikou],
+                tanana: forecast[:tanana],
+                renka: forecast[:renka],
+            )
+
+            create_count += 1
+          else
+            if tweet.id != exist_forecast.tweet.id
+              exist_forecast.tweet_id = tweet.id
+              exist_forecast.honmei = forecast[:honmei]
+              exist_forecast.taikou = forecast[:taikou]
+              exist_forecast.tanana = forecast[:tanana]
+              exist_forecast.renka = forecast[:renka]
+              exist_forecast.save!
+
+              update_count += 1
+            end
+          end
         end
       end
 
-      puts "#{count}件のスコアリングを完了しました。"
+      puts "#{create_count + update_count}(新規: #{create_count}、更新: #{update_count})件のスコアリングを完了しました。"
     end
   end
 
