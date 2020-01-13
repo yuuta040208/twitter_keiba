@@ -36,8 +36,15 @@ namespace :twitter do
                   url: tweet.uri,
                   tweeted_at: tweet.created_at,
               )
-              count += 1
+            else
+              exist_tweet = Tweet.find(tweet.id)
+              exist_tweet.content = tweet.text
+              exist_tweet.tweeted_at = tweet.created_at
+              exist_tweet.url = tweet.uri
+              exist_tweet.save!
             end
+
+            count += 1
           end
         end
       rescue => e
