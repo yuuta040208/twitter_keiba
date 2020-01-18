@@ -2,32 +2,37 @@ require 'nokogiri'
 require 'open-uri'
 require 'kconv'
 
-NETKEIBA_URL = 'https://race.netkeiba.com'
+KEIBALAB_URL = 'https://www.keibalab.jp'
 
-namespace :netkeiba do
+namespace :keibalab do
   desc "開催日のレース一覧をスクレイピング"
   task :scrape_race, ['date'] => :environment do |task, args|
-    url = "#{NETKEIBA_URL}/?pid=race_list&id=c#{args['date']}"
+    url = "#{KEIBALAB_URL}/db/race/#{Date.today.year}#{args['date']}"
     html = open(url).read
     doc = Nokogiri::HTML.parse(html.toutf8, nil, 'utf-8')
 
     puts "#{url} からデータを取得します..."
 
-    doc.css('dl.race_top_hold_list').each do |race_top_hold_list|
-      race_top_hold_list.css('dl.race_top_data_info').each_with_index do |race_top_data_info, index|
-        if index.between?(8, 10)
+    count = 0
+    doc.css('table.table-bordered').each do |table|
+      hold = table.css('tr > th').text
+
+      table.css('tbody tr').each.with_index(1) do |tr, index|
+        if index.between?(9, 11)
           Race.create!(
               date: "#{Date.today.year}#{args['date']}",
-              number: race_top_data_info.css('img').first[:alt],
-              hold: race_top_hold_list.css('p.kaisaidata').text,
-              name: race_top_data_info.css('div.racename > a').first[:title].sub(/\(.*?\)/, ''),
-              url: race_top_data_info.css('div.racename > a').first[:href],
+              number: tr.css('td:nth-child(1) > div > a').text,
+              hold: hold,
+              name: tr.css('td:nth-child(2) > a').text.sub(/\(.*?\)/, ''),
+              url: tr.css('td:nth-child(2) > a').first[:href],
           )
+
+          count += 1
         end
       end
     end
 
-    puts "#{Race.where(date: "#{Date.today.year}#{args['date']}").count}件をデータベースに追加しました。"
+    puts "#{count}件をデータベースに追加しました。"
   end
 
 
@@ -35,24 +40,27 @@ namespace :netkeiba do
   task :scrape_horse, ['date'] => :environment do |task, args|
     races = Race.where(date: "#{Date.today.year}#{args['date']}")
     races.each do |race|
-      url = "#{NETKEIBA_URL}#{race.url.gsub('race&', 'race_old&')}"
+      url = "#{KEIBALAB_URL}#{race.url}odds.html"
       html = open(url).read
       doc = Nokogiri::HTML.parse(html.toutf8, nil, 'utf-8')
 
       puts "#{url} からデータを取得します..."
 
-      doc.css('tr.bml1').each do |tr|
+      count = 0
+
+      doc.css('table.tanTables tbody > tr').each do |tr|
         Horse.create!(
             race_id: race.id,
-            name: tr.css('td.horsename a').text,
-            wakuban: tr.css('td:nth-child(1) > span').text.to_i,
-            umaban: tr.css('td.umaban').text.to_i,
-            jockey_name: tr.css('td:nth-child(8)').text,
-            odds: tr.css('td.txt_r').text.to_f
+            name: tr.css('td:nth-child(3)').text,
+            wakuban: tr.css('td:nth-child(1)').text.to_i,
+            umaban: tr.css('td:nth-child(2)').text.to_i,
+            odds: tr.css('td:nth-child(4)').text.to_f
         )
+
+        count += 1
       end
 
-      puts "#{Horse.where(race_id: race.id).count}件をデータベースに追加しました。"
+      puts "#{count}件をデータベースに追加しました。"
 
       # BOT認識されないように2秒スリープさせる
       sleep 2
@@ -72,9 +80,9 @@ namespace :netkeiba do
 
       Result.create!(
           race_id: race.id,
-          first_horse: doc.css('table.race_table_01 tr:nth-child(2) > td:nth-child(4) > a').first.text,
-          second_horse: doc.css('table.race_table_01 tr:nth-child(3) > td:nth-child(4) > a').first.text,
-          third_horse: doc.css('table.race_table_01 tr:nth-child(4) > td:nth-child(4) > a').first.text,
+          first_horse: doc.css('table.RaceTable01 tr:nth-child(2) > td:nth-child(4) a').first.text,
+          second_horse: doc.css('table.RaceTable01 tr:nth-child(3) > td:nth-child(4) a').first.text,
+          third_horse: doc.css('table.RaceTable01 tr:nth-child(4) > td:nth-child(4) a').first.text,
       )
 
       puts "#{Result.find_by(race_id: race.id).attributes}をデータベースに追加しました。"

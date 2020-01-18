@@ -8,9 +8,17 @@ namespace :twitter do
 
     Race.where(date: "#{Date.today.year}#{args['date']}").each do |race|
       queries = [race.name]
-      queries.push(race.name.chop + 'S') if race.name.end_with?('Ｓ')
-      queries.push(race.name.chop + 'Ｓ') if race.name.end_with?('S')
-      queries.push(race.name.chop + 'ステークス') if race.name.end_with?('S') || race.name.end_with?('Ｓ')
+      if race.name.end_with?('ステークス')
+        queries.push(race.name.gsub('ステークス', '') + 'S')
+        queries.push(race.name.gsub('ステークス', '') + 'Ｓ')
+      end
+
+      if race.name.end_with?('S') || race.name.end_with?('Ｓ')
+        queries.push(race.name.chop + 'S') if race.name.end_with?('Ｓ')
+        queries.push(race.name.chop + 'Ｓ') if race.name.end_with?('S')
+        queries.push(race.name.chop + 'ステークス')
+      end
+
       query = queries.join(' OR ')
       last_tweeted_at = race.tweets.order(tweeted_at: 'desc').first&.id
 

@@ -33,3 +33,10 @@ heroku run bash
 
 https://developer.twitter.com/en/docs/tweets/search/guides/standard-operators
 
+## netkeibaのDOMが変わった時
+
+```
+File.open('test.txt', 'w') do |text|
+  text.puts(html.force_encoding("UTF-8"))
+end
+```
