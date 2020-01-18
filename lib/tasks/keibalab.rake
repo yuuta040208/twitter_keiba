@@ -72,7 +72,7 @@ namespace :keibalab do
   task :scrape_result, ['date'] => :environment do |task, args|
     races = Race.where(date: "#{Date.today.year}#{args['date']}")
     races.each do |race|
-      url = "#{NETKEIBA_URL}#{race.url.gsub('_old', '')}&mode=result"
+      url = "#{KEIBALAB_URL}#{race.url}raceresult.html"
       html = open(url).read
       doc = Nokogiri::HTML.parse(html.toutf8, nil, 'utf-8')
 
@@ -80,9 +80,9 @@ namespace :keibalab do
 
       Result.create!(
           race_id: race.id,
-          first_horse: doc.css('table.RaceTable01 tr:nth-child(2) > td:nth-child(4) a').first.text,
-          second_horse: doc.css('table.RaceTable01 tr:nth-child(3) > td:nth-child(4) a').first.text,
-          third_horse: doc.css('table.RaceTable01 tr:nth-child(4) > td:nth-child(4) a').first.text,
+          first_horse: doc.css('table.resulttable tbody > tr:nth-child(1) > td:nth-child(4)').text.sub(/\(.*?\)/, ''),
+          second_horse: doc.css('table.resulttable tbody > tr:nth-child(2) > td:nth-child(4)').text.sub(/\(.*?\)/, ''),
+          third_horse: doc.css('table.resulttable tbody > tr:nth-child(3) > td:nth-child(4)').text.sub(/\(.*?\)/, ''),
       )
 
       puts "#{Result.find_by(race_id: race.id).attributes}をデータベースに追加しました。"
