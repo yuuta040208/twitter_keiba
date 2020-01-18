@@ -2,7 +2,7 @@ require 'nokogiri'
 require 'open-uri'
 require 'kconv'
 
-KEIBALAB_URL = 'https://www.keibalab.jp'
+KEIBALAB_URL = Settings.keibalab[:url]
 
 namespace :keibalab do
   desc "開催日のレース一覧をスクレイピング"

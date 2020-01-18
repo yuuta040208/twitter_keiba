@@ -1,4 +1,6 @@
 defaults: &defaults
+  keibalab:
+    url: 'https://www.keibalab.jp'
   color: ['white', 'black', 'red', 'blue', 'yellow', 'green', 'orange', 'pink']
   index:
     5: [0, 1, 2, 3, 4]

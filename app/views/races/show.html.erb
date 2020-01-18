@@ -1,5 +1,5 @@
 <h2>
-  <%= link_to @race.name, 'https://race.netkeiba.com' + @race.url, target: '_blank'%>
+  <%= link_to @race.name, Settings.keibalab[:url] + @race.url, target: '_blank'%>
   <small><%= @race.hold %> <%= @race.number %></small>
 </h2>
 

@@ -32,7 +32,7 @@
       <% renka_result = horses.index(forecast.renka) || -1 %>
       <tr>
         <td class="align-middle" style="background-color: white">
-          <b><%= link_to race.name, 'https://race.netkeiba.com' + race.url, target: '_blank' %></b>
+          <b><%= link_to race.name, Settings.keibalab[:url] + race.url, target: '_blank' %></b>
           <%= link_to forecast.tweet.url, target: '_blank' do %>
             <%= image_tag asset_path('twitter_icon.png') %>
           <% end %>
