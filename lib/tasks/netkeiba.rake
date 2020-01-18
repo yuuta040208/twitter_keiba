@@ -15,7 +15,7 @@ namespace :keibalab do
 
     count = 0
     doc.css('table.table-bordered').each do |table|
-      hold = table.css('tr > th').text
+      hold = table.css('tr > th').text.split('天候').first
 
       table.css('tbody tr').each.with_index(1) do |tr, index|
         if index.between?(9, 11)
