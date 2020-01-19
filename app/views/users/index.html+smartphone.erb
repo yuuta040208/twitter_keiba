@@ -21,6 +21,7 @@
       <tr align="center">
         <th>ユーザ名</th>
         <th>ポイント</th>
+        <th>単勝回収率</th>
       </tr>
     </thead>
 
@@ -34,6 +35,7 @@
             <% end %>
           </td>
           <td class="align-middle"><%= user.point %></td>
+          <td class="align-middle"><%= user.sum %>%</td>
         </tr>
       <% end %>
     </tbody>
