@@ -4,9 +4,9 @@ require 'kconv'
 
 KEIBALAB_URL = 'https://www.keibalab.jp'
 
-namespace :keibalab do
+namespace :scrape do
   desc "開催日のレース一覧をスクレイピング"
-  task :scrape_race, ['date'] => :environment do |task, args|
+  task :race, ['date'] => :environment do |task, args|
     url = "#{KEIBALAB_URL}/db/race/#{Date.today.year}#{args['date']}"
     html = open(url).read
     doc = Nokogiri::HTML.parse(html.toutf8, nil, 'utf-8')
@@ -37,7 +37,7 @@ namespace :keibalab do
 
 
   desc "競走馬名をスクレイピング"
-  task :scrape_horse, ['date'] => :environment do |task, args|
+  task :horse, ['date'] => :environment do |task, args|
     races = Race.where(date: "#{Date.today.year}#{args['date']}")
     races.each do |race|
       url = "#{KEIBALAB_URL}#{race.url}odds.html"
@@ -69,7 +69,7 @@ namespace :keibalab do
 
 
   desc "レース結果をスクレイピング"
-  task :scrape_result, ['date'] => :environment do |task, args|
+  task :result, ['date'] => :environment do |task, args|
     races = Race.where(date: "#{Date.today.year}#{args['date']}")
     races.each do |race|
       url = "#{KEIBALAB_URL}#{race.url}raceresult.html"
@@ -78,14 +78,16 @@ namespace :keibalab do
 
       puts "#{url} からデータを取得します..."
 
-      Result.create!(
-          race_id: race.id,
-          first_horse: doc.css('table.resulttable tbody > tr:nth-child(1) > td:nth-child(4)').text.sub(/\(.*?\)/, ''),
-          second_horse: doc.css('table.resulttable tbody > tr:nth-child(2) > td:nth-child(4)').text.sub(/\(.*?\)/, ''),
-          third_horse: doc.css('table.resulttable tbody > tr:nth-child(3) > td:nth-child(4)').text.sub(/\(.*?\)/, ''),
-      )
+      if Result.find_by(race_id: race.id).nil?
+        Result.create!(
+            race_id: race.id,
+            first_horse: doc.css('table.resulttable tbody > tr:nth-child(1) > td:nth-child(4)').text.sub(/\(.*?\)/, ''),
+            second_horse: doc.css('table.resulttable tbody > tr:nth-child(2) > td:nth-child(4)').text.sub(/\(.*?\)/, ''),
+            third_horse: doc.css('table.resulttable tbody > tr:nth-child(3) > td:nth-child(4)').text.sub(/\(.*?\)/, ''),
+        )
 
-      puts "#{Result.find_by(race_id: race.id).attributes}をデータベースに追加しました。"
+        puts "#{race.name}の結果をデータベースに追加しました。"
+      end
 
       # BOT認識されないように2秒スリープさせる
       sleep 2

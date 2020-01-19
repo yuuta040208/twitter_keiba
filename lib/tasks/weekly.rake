@@ -3,8 +3,8 @@ namespace :weekly do
   task :all, ['date'] => :environment do |task, args|
     date = args['date']
 
-    Rake::Task['keibalab:scrape_race'].invoke(date)
-    Rake::Task['keibalab:scrape_horse'].invoke(date)
+    Rake::Task['scrape:race'].invoke(date)
+    Rake::Task['scrape:horse'].invoke(date)
     Rake::Task['twitter:search'].invoke(date)
     Rake::Task['scoring:create'].invoke(date)
   end
@@ -13,8 +13,8 @@ namespace :weekly do
   task :scrape, ['date'] => :environment do |task, args|
     date = args['date']
 
-    Rake::Task['keibalab:scrape_race'].invoke(date)
-    Rake::Task['keibalab:scrape_horse'].invoke(date)
+    Rake::Task['scrape:race'].invoke(date)
+    Rake::Task['scrape:horse'].invoke(date)
   end
 
   desc "ツイート検索のみ実行"
@@ -29,7 +29,7 @@ namespace :weekly do
   task :result, ['date'] => :environment do |task, args|
     date = args['date']
 
-    Rake::Task['keibalab:scrape_result'].invoke(date)
+    Rake::Task['scrape:result'].invoke(date)
     Rake::Task['scoring:result'].invoke(date)
   end
 end
