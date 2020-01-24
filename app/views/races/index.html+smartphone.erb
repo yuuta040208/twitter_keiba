@@ -21,8 +21,9 @@
               <table>
                 <% day_races.where(hold: hold).sort{|a, b| a.number.delete("^0-9").to_i <=> b.number.delete("^0-9").to_i}.each do |hold_race| %>
                   <tr>
-                    <td><%= hold_race.number %></td>
-                    <td>
+                    <td style="width: 20%"><%= hold_race.time %></td>
+                    <td style="width: 20%"><%= hold_race.number %></td>
+                    <td style="width: 60%">
                       <% if hold_race.forecasts.empty? %>
                         <%= hold_race.name %>
                       <% else %>
