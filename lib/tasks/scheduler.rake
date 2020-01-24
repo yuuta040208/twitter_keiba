@@ -4,12 +4,12 @@ task :scheduler => :environment do
 
   if races.blank?
     puts 'レース情報を取得'
-    Rake::Task['scrape:race'].invoke(date)
+    Rake::Task['scrape:race'].invoke(Date.today.strftime("%m%d"))
 
   else
     if races.first.horses.blank?
       puts '競走馬情報を取得'
-      Rake::Task['scrape:horse'].invoke(date)
+      Rake::Task['scrape:horse'].invoke(Date.today.strftime("%m%d"))
 
     else
 
