@@ -19,16 +19,17 @@ namespace :scrape do
 
       table.css('tbody tr').each.with_index(1) do |tr, index|
         if index.between?(9, 11)
-          Race.create!(
-              date: "#{Date.today.year}#{args['date']}",
-              number: tr.css('td:nth-child(1) > div > a').text,
-              time: tr.css('td:nth-child(1) > span').text,
-              hold: hold,
-              name: tr.css('td:nth-child(2) > a').text.sub(/\(.*?\)/, ''),
-              url: tr.css('td:nth-child(2) > a').first[:href],
-          )
-
-          count += 1
+          if Race.where(date: "#{Date.today.year}#{args['date']}", number: tr.css('td:nth-child(1) > div > a').text).empty?
+            Race.create!(
+                date: "#{Date.today.year}#{args['date']}",
+                number: tr.css('td:nth-child(1) > div > a').text,
+                time: tr.css('td:nth-child(1) > span').text,
+                hold: hold,
+                name: tr.css('td:nth-child(2) > a').text.sub(/\(.*?\)/, ''),
+                url: tr.css('td:nth-child(2) > a').first[:href],
+            )
+            count += 1
+          end
         end
       end
     end
