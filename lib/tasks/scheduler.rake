@@ -1,5 +1,5 @@
 desc "This task is called by the Heroku scheduler add-on"
-task :scheduler do
+task :scheduler => :environment do
   races = Race.where(date: Date.today.strftime("%Y%m%d"))
 
   if races.blank?

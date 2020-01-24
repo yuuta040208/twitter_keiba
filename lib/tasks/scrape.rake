@@ -51,15 +51,16 @@ namespace :scrape do
       count = 0
 
       doc.css('table.tanTables tbody > tr').each do |tr|
-        Horse.create!(
-            race_id: race.id,
-            name: tr.css('td:nth-child(3)').text,
-            wakuban: tr.css('td:nth-child(1)').text.to_i,
-            umaban: tr.css('td:nth-child(2)').text.to_i,
-            odds: tr.css('td:nth-child(4)').text.to_f
-        )
-
-        count += 1
+        if Horse.where(race_id: race.id, name: tr.css('td:nth-child(3)').text).empty?
+          Horse.create!(
+              race_id: race.id,
+              name: tr.css('td:nth-child(3)').text,
+              wakuban: tr.css('td:nth-child(1)').text.to_i,
+              umaban: tr.css('td:nth-child(2)').text.to_i,
+              odds: tr.css('td:nth-child(4)').text.to_f
+          )
+          count += 1
+        end
       end
 
       puts "#{count}件をデータベースに追加しました。"
