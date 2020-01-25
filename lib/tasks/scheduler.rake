@@ -4,20 +4,29 @@ task :scheduler => :environment do
 
   if races.blank?
     puts 'レース情報を取得'
-    Rake::Task['scrape:race'].invoke(Date.today.strftime("%m%d"))
+    Rake::Task['weekly:scrape'].invoke(Date.today.strftime("%m%d"))
 
   else
-    if races.first.horses.blank?
-      puts '競走馬情報を取得'
-      Rake::Task['scrape:horse'].invoke(Date.today.strftime("%m%d"))
+    now = Time.now.strftime("%H%M")
+    now = now.end_with?('0') ? now.slice(1..-1) : now
+    last_race_time = races.last.time.gsub(':', '')
+
+    if  now.to_i < last_race_time.to_i && 1400 < now.to_i
+      puts 'ツイートを検索'
+      Rake::Task['weekly:tweet'].invoke(Date.today.strftime("%m%d"))
+
+    elsif last_race_time.to_i <= now.to_i
+
+      results = Result.where(race_id: races.first.id)
+      if results.empty?
+        puts '結果情報を取得'
+        puts now
+        puts last_race_time
+        Rake::Task['weekly:result'].invoke(Date.today.strftime("%m%d"))
+      end
 
     else
-
-      now = Time.now.strftime("%H%M")
-      now = now.end_with?('0') ? now.slice(1..-1) : now
-      if races.last.time.to_i < now.to_i
-        puts 'ツイートを検索'
-      end
+      puts '実行するスクリプトはありません'
     end
   end
 end
