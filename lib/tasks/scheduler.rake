@@ -22,6 +22,8 @@ task :scheduler => :environment do
       if results.empty?
         puts '結果情報を取得'
         Rake::Task['weekly:result'].invoke(Date.today.strftime("%m%d"))
+      else
+        puts '実行するスクリプトはありません'
       end
 
     else
