@@ -1,6 +1,7 @@
 desc "This task is called by the Heroku scheduler add-on"
 task :scheduler => :environment do
   races = Race.where(date: Date.today.strftime("%Y%m%d"))
+  last_race = races.max{|a, b| a.time.gsub(':', '').to_i <=> b.time.gsub(':', '').to_i}
 
   if races.blank?
     puts 'レース情報を取得'
@@ -9,7 +10,7 @@ task :scheduler => :environment do
   else
     now = (Time.now + 9 * 60 * 60).strftime("%H%M")
     now = now.end_with?('0') ? now.slice(1..-1) : now
-    last_race_time = races.last.time.gsub(':', '')
+    last_race_time = last_race.time.gsub(':', '')
 
     if  now.to_i < last_race_time.to_i && 1400 < now.to_i
       puts 'ツイートを検索'
@@ -20,8 +21,6 @@ task :scheduler => :environment do
       results = Result.where(race_id: races.first.id)
       if results.empty?
         puts '結果情報を取得'
-        puts now
-        puts last_race_time
         Rake::Task['weekly:result'].invoke(Date.today.strftime("%m%d"))
       end
 
