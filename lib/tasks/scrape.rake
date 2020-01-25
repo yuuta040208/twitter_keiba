@@ -19,7 +19,7 @@ namespace :scrape do
 
       table.css('tbody tr').each.with_index(1) do |tr, index|
         if index.between?(9, 11)
-          if Race.where(date: "#{Date.today.year}#{args['date']}", hold: hold).empty?
+          if Race.where(date: "#{Date.today.year}#{args['date']}", hold: hold, number: tr.css('td:nth-child(1) > div > a').text).empty?
             Race.create!(
                 date: "#{Date.today.year}#{args['date']}",
                 number: tr.css('td:nth-child(1) > div > a').text,
