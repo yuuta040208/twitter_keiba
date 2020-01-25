@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_24_151147) do
+ActiveRecord::Schema.define(version: 2020_01_25_151627) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,6 +61,10 @@ ActiveRecord::Schema.define(version: 2020_01_24_151147) do
     t.string "third_horse"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "tanshou"
+    t.integer "fukushou_first"
+    t.integer "fukushou_second"
+    t.integer "fukushou_third"
     t.index ["race_id"], name: "index_results_on_race_id"
   end
 
@@ -83,6 +87,8 @@ ActiveRecord::Schema.define(version: 2020_01_24_151147) do
     t.integer "point", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "tanshou"
+    t.integer "fukushou"
   end
 
 end

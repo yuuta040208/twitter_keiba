@@ -99,4 +99,29 @@ namespace :scoring do
       puts "#{count}件のスコアリングを完了しました。"
     end
   end
+
+  desc "ユーザごとの回収金額を計算"
+  task :sum, ['date'] => :environment do |task, args|
+    Race.joins(forecasts: :user).joins(:result).distinct.where(date: "#{Date.today.year}#{args['date']}").each do |race|
+      race.forecasts.each do |forecast|
+        case forecast.honmei
+        when race.result.first_horse then
+          forecast.user.tanshou = race.result.tanshou + (forecast.user.tanshou || 0)
+          forecast.user.fukushou = race.result.fukushou_first + (forecast.user.fukushou || 0)
+
+        when race.result.second_horse then
+          forecast.user.fukushou = race.result.fukushou_second + (forecast.user.fukushou || 0)
+
+        when race.result.third_horse then
+          forecast.user.fukushou = race.result.fukushou_third + (forecast.user.fukushou || 0)
+
+        else
+          next
+        end
+
+        forecast.user.save!
+        puts "#{forecast.user.name}: #{forecast.user.tanshou}円, #{forecast.user.fukushou}円"
+      end
+    end
+  end
 end

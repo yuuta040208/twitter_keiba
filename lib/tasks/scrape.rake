@@ -82,11 +82,17 @@ namespace :scrape do
       puts "#{url} からデータを取得します..."
 
       if Result.find_by(race_id: race.id).nil?
+        fukus = doc.css('div.haraimodoshi > table  tr:nth-child(2) > td:nth-child(3)').text.split('円')
+
         Result.create!(
             race_id: race.id,
             first_horse: doc.css('table.resulttable tbody > tr:nth-child(1) > td:nth-child(4)').text.sub(/\(.*?\)/, ''),
             second_horse: doc.css('table.resulttable tbody > tr:nth-child(2) > td:nth-child(4)').text.sub(/\(.*?\)/, ''),
             third_horse: doc.css('table.resulttable tbody > tr:nth-child(3) > td:nth-child(4)').text.sub(/\(.*?\)/, ''),
+            tanshou: doc.css('div.haraimodoshi > table  tr:nth-child(1) > td:nth-child(3)').text.split('円').first.gsub(',', '').to_i,
+            fukushou_first: fukus.first&.gsub(',', '').to_i,
+            fukushou_second: fukus.second&.gsub(',', '').to_i,
+            fukushou_third: fukus.third&.gsub(',', '').to_i,
         )
 
         puts "#{race.name}の結果をデータベースに追加しました。"
