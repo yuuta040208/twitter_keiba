@@ -7,7 +7,7 @@ task :scheduler => :environment do
     Rake::Task['weekly:scrape'].invoke(Date.today.strftime("%m%d"))
 
   else
-    now = Time.now.strftime("%H%M")
+    now = (Time.now + 9 * 60 * 60).strftime("%H%M")
     now = now.end_with?('0') ? now.slice(1..-1) : now
     last_race_time = races.last.time.gsub(':', '')
 
