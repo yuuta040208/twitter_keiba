@@ -21,9 +21,9 @@
               <table>
                 <% day_races.where(hold: hold).sort {|a, b| race_number(a.number) <=> race_number(b.number)}.each do |hold_race| %>
                   <tr>
-                    <td class="w-20"><%= hold_race.time %></td>
-                    <td class="w-20"><%= hold_race.number %></td>
-                    <td class="w-60">
+                    <td class="w-25"><%= hold_race.time %></td>
+                    <td class="w-25"><%= hold_race.number %></td>
+                    <td class="w-50">
                       <% if hold_race.forecasts.empty? %>
                         <%= hold_race.name %>
                       <% else %>
