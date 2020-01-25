@@ -26,6 +26,11 @@ table {
   top: 0;
 }
 
+.blank-cell {
+  background-color: #f8f9fa;
+  width: 15%;
+}
+
 th {
   &.horse {
     text-align: center;

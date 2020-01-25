@@ -1,29 +1,29 @@
-<h1>Twitter競馬予想
+<h1>
+  Twitter競馬予想
   <span class="small-text">by <%= link_to '@Evitch', 'https://twitter.com/unkEVI', target: '_blank' %></span>
 </h1>
 
-<p><%= link_to 'ユーザ一覧', users_path %></p>
-<br>
+<p class="mb-5"><%= link_to 'ユーザ一覧', users_path %></p>
 
 <% @races.pluck(:date).uniq.each do |date| %>
-  <div class="border-bottom" style="margin-bottom: 1%;">
-    <div style="margin-bottom: 0.5%;">・<%= date_format(date) %></div>
+  <div class="border-bottom mb-3 pb-3">
+    <div class="mb-1">・<%= date_format(date) %></div>
 
     <div class="row">
       <% day_races = @races.where(date: date) %>
       <% day_races.pluck(:hold).uniq.each do |hold| %>
+
         <div class="col-sm-4">
           <div class="card">
-            <div class="card-header bg-primary text-white">
-              <%= hold %>
-            </div>
+            <div class="card-header bg-primary text-white"><%= hold %></div>
+
             <div class="card-body">
               <table>
-                <% day_races.where(hold: hold).sort{|a, b| a.number.delete("^0-9").to_i <=> b.number.delete("^0-9").to_i}.each do |hold_race| %>
+                <% day_races.where(hold: hold).sort {|a, b| race_number(a.number) <=> race_number(b.number)}.each do |hold_race| %>
                   <tr>
-                    <td style="width: 20%"><%= hold_race.time %></td>
-                    <td style="width: 20%"><%= hold_race.number %></td>
-                    <td style="width: 60%">
+                    <td class="w-20"><%= hold_race.time %></td>
+                    <td class="w-20"><%= hold_race.number %></td>
+                    <td class="w-60">
                       <% if hold_race.forecasts.empty? %>
                         <%= hold_race.name %>
                       <% else %>
@@ -33,13 +33,10 @@
                   </tr>
                 <% end %>
               </table>
-            </div>
-          </div>
-        </div>
+            </div> <!-- card-header -->
+          </div> <!-- card -->
+        </div> <!-- col-sm-4 -->
       <% end %>
-    </div>
-
-    <br>
-
-  </div>
+    </div> <!-- row -->
+  </div> <!-- border-bottom -->
 <% end %>
