@@ -102,4 +102,33 @@ namespace :scrape do
       sleep 2
     end
   end
+
+  desc "レース結果の単勝、複勝情報を更新"
+  task :update_result, ['date'] => :environment do |task, args|
+    races = Race.where(date: "#{Date.today.year}#{args['date']}")
+    races.each do |race|
+      url = "#{KEIBALAB_URL}#{race.url}raceresult.html"
+      html = open(url).read
+      doc = Nokogiri::HTML.parse(html.toutf8, nil, 'utf-8')
+
+      puts "#{url} からデータを取得します..."
+
+      race = Result.find_by(race_id: race.id)
+      if race.present?
+        fukus = doc.css('div.haraimodoshi > table  tr:nth-child(2) > td:nth-child(3)').text.split('円')
+
+        race.tanshou = doc.css('div.haraimodoshi > table  tr:nth-child(1) > td:nth-child(3)').text.split('円').first.gsub(',', '').to_i
+        race.fukushou_first = fukus.first&.gsub(',', '').to_i
+        race.fukushou_second = fukus.second&.gsub(',', '').to_i
+        race.fukushou_third = fukus.third&.gsub(',', '').to_i
+
+        race.save!
+
+        puts "#{race.name}の結果を更新しました。"
+      end
+
+      # BOT認識されないように2秒スリープさせる
+      sleep 2
+    end
+  end
 end

@@ -18,7 +18,7 @@ task :scheduler => :environment do
 
     elsif last_race_time.to_i <= now.to_i
 
-      results = Result.where(race_id: races.first.id)
+      results = Result.where(race_id: last_race.id)
       if results.empty?
         puts '結果情報を取得'
         Rake::Task['weekly:result'].invoke(Date.today.strftime("%m%d"))
