@@ -4,13 +4,11 @@
   <% end %>
 </h2>
 
-<p class="small-text"><%= link_to 'ホームに戻る', root_path %></p>
-
-<br>
+<p class="small-text mb-3"><%= link_to 'ホームに戻る', root_path %></p>
 
 <table class="table table-bordered table-striped table-sm text-table">
   <thead>
-  <tr align="center">
+  <tr class="text-center">
     <th>レース名</th>
     <th>◎</th>
     <th>○</th>
@@ -31,26 +29,26 @@
       <% tanana_result = horses.index(forecast.tanana) || -1 %>
       <% renka_result = horses.index(forecast.renka) || -1 %>
       <tr>
-        <td class="align-middle" style="background-color: white">
+        <td class="align-middle bg-white">
           <b><%= link_to race.name, Settings.keibalab[:url] + race.url, target: '_blank' %></b>
           <%= link_to forecast.tweet.url, target: '_blank' do %>
             <%= image_tag asset_path('twitter_icon.png') %>
           <% end %>
         </td>
 
-        <td class="align-middle" style="background-color: <%= result_color_code(honmei_result) %>">
+        <td class="align-middle" style="<%= result_color(honmei_result) %>">
           <%= forecast.honmei %> <b><%= "#{horses.index(forecast.honmei) + 1}着" if honmei_result >= 0 %></b>
         </td>
 
-        <td class="align-middle" style="background-color: <%= result_color_code(taikou_result) %>">
+        <td class="align-middle" style="<%= result_color(taikou_result) %>">
           <%= forecast.taikou %> <b><%= "#{horses.index(forecast.taikou) + 1}着" if taikou_result >= 0 %></b>
         </td>
 
-        <td class="align-middle" style="background-color: <%= result_color_code(tanana_result) %>">
+        <td class="align-middle" style="<%= result_color(tanana_result) %>">
           <%= forecast.tanana %> <b><%= "#{horses.index(forecast.tanana) + 1}着" if tanana_result >= 0 %></b>
         </td>
 
-        <td class="align-middle" style="background-color: <%= result_color_code(renka_result) %>">
+        <td class="align-middle" style="<%= result_color(renka_result) %>">
           <%= forecast.renka %> <b><%= "#{horses.index(forecast.renka) + 1}着" if renka_result >= 0 %></b>
         </td>
       </tr>

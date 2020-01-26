@@ -18,8 +18,8 @@
 <div class="row">
   <table class="table table-bordered table-striped table-sm col-sm-12">
     <thead>
-      <tr align="center">
-        <th>ユーザ名</th>
+      <tr class="text-center">
+        <th class="w-50">ユーザ名</th>
         <th>ポイント</th>
         <th>単勝回収率</th>
         <th>複勝回収率</th>
@@ -29,15 +29,15 @@
     <tbody>
       <% @users.each do |user| %>
         <tr>
-          <td class="align-middle">
+          <td>
             <%= link_to user_path(user.id) do %>
               <%= image_tag user.image_url %>
               <span><%= user.name %></span>
             <% end %>
           </td>
-          <td class="align-middle"><%= user.point %></td>
-          <td class="align-middle"><%= (user.tanshou || 0) / user.forecasts.size %>%</td>
-          <td class="align-middle"><%= (user.fukushou || 0) / user.forecasts.size %>%</td>
+          <td class="align-middle text-right pr-2"><%= user.point %></td>
+          <td class="align-middle text-right pr-2"><%= (user.tanshou || 0) / user.forecasts.size %>%</td>
+          <td class="align-middle text-right pr-2"><%= (user.fukushou || 0) / user.forecasts.size %>%</td>
         </tr>
       <% end %>
     </tbody>
