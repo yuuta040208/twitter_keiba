@@ -105,7 +105,7 @@ namespace :scrape do
 
   desc "レース結果の単勝、複勝情報を更新"
   task :update_result, ['date'] => :environment do |task, args|
-    races = Race.all
+    races = Race.where('id <= 36').order(:id)
     races.each do |race|
       url = "#{KEIBALAB_URL}#{race.url}raceresult.html"
       html = open(url).read
