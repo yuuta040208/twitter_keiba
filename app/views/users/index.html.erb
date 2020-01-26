@@ -22,6 +22,7 @@
         <th>ユーザ名</th>
         <th>ポイント</th>
         <th>単勝回収率</th>
+        <th>複勝回収率</th>
       </tr>
     </thead>
 
@@ -35,7 +36,8 @@
             <% end %>
           </td>
           <td class="align-middle"><%= user.point %></td>
-          <td class="align-middle"><%= user.sum %>%</td>
+          <td class="align-middle"><%= (user.tanshou || 0) / user.forecasts.size %>%</td>
+          <td class="align-middle"><%= (user.fukushou || 0) / user.forecasts.size %>%</td>
         </tr>
       <% end %>
     </tbody>
