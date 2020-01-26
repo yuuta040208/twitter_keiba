@@ -102,7 +102,12 @@ namespace :scoring do
 
   desc "ユーザごとの回収金額を計算"
   task :sum, ['date'] => :environment do |task, args|
-    Race.joins(forecasts: :user).joins(:result).distinct.where(date: "#{Date.today.year}#{args['date']}").each do |race|
+    races = if args['date'].present?
+              Race.joins(forecasts: :user).joins(:result).distinct.where(date: "#{Date.today.year}#{args['date']}")
+            else
+              Race.joins(forecasts: :user).joins(:result).distinct.all
+            end
+    races.each do |race|
       race.forecasts.each do |forecast|
         case forecast.honmei
         when race.result.first_horse then
