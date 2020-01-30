@@ -1,6 +1,5 @@
 class User < ApplicationRecord
   MASTER_COUNT = 5 # 何レース以上予想したか
-  MASTER_LIMIT = 100 # 上位何人以内に入っているか
   MASTER_RATE = 80 # 回収率は何パーセント以上か
 
   has_many :tweets
@@ -17,7 +16,6 @@ class User < ApplicationRecord
     ids = self.joins(:forecasts).
         group(:id).
         having('count(users.id) > ?', MASTER_COUNT).
-        limit(MASTER_LIMIT).
         pluck(:id)
 
     self.where(id: ids).select do |tanshou_master|
@@ -30,7 +28,6 @@ class User < ApplicationRecord
     ids = self.joins(:forecasts).
         group(:id).
         having('count(users.id) > ?', MASTER_COUNT).
-        limit(MASTER_LIMIT).
         pluck(:id)
 
     self.where(id: ids).select do |fukushou_master|

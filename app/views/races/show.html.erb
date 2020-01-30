@@ -5,9 +5,9 @@
 
 <p><%= link_to 'ホームに戻る', root_path %></p>
 
-<div class="mb-3">
-  <p>単勝購入推奨馬: <%= @tanshou_horse %></p>
-  <p>複勝購入推奨馬: <%= @fukushou_horse %></p>
+<div class="card w-25 mb-3 pt-3 pl-3 text-white bg-success">
+  <p>単勝購入推奨馬:<b> <%= @tanshou_horse || 'なし' %></b></p>
+  <p>複勝購入推奨馬: <b><%= @fukushou_horse || 'なし' %></b></p>
 </div>
 
 <%= paginate @forecasts %>
