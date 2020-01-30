@@ -5,11 +5,9 @@
 
 <p class="small-text"><%= link_to 'ホームに戻る', root_path %></p>
 
-<div class="form-inline mb-3">
-  <%= form_tag(race_path(params[:id]), method: 'get') do %>
-    <%= text_field_tag :search, params[:search], class: 'form-control sm-3' %>
-    <%= submit_tag '検索', name: nil, class: 'btn btn-primary sm-2' %>
-  <% end %>
+<div class="mb-3">
+  <p>単勝購入推奨馬: <%= @tanshou_horse %></p>
+  <p>複勝購入推奨馬: <%= @fukushou_horse %></p>
 </div>
 
 <%= paginate @forecasts, window: 1 %>

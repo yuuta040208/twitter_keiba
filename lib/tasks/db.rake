@@ -6,6 +6,7 @@ namespace :db do
     ActiveRecord::Base.connection.execute 'TRUNCATE TABLE tweets RESTART IDENTITY;'
     ActiveRecord::Base.connection.execute 'TRUNCATE TABLE forecasts RESTART IDENTITY;'
     ActiveRecord::Base.connection.execute 'TRUNCATE TABLE users RESTART IDENTITY;'
+    ActiveRecord::Base.connection.execute 'TRUNCATE TABLE results RESTART IDENTITY;'
   end
 
   desc "usersテーブルの中身を空にする"
