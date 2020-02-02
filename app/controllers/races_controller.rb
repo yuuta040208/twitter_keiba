@@ -38,7 +38,7 @@ class RacesController < ApplicationController
     end
 
     tanshou_counts = tanshou_honmeis.uniq.map {|tanshou_honmei| tanshou_honmeis.count(tanshou_honmei)}
-    if tanshou_counts.count(tanshou_counts.max) != 1
+    if tanshou_counts.count(tanshou_counts.max) != 1 || tanshou_counts.max <= 1
       return nil
     end
 
@@ -57,7 +57,7 @@ class RacesController < ApplicationController
     end
 
     fukushou_counts = fukushou_honmeis.uniq.map {|fukushou_honmei| fukushou_honmeis.count(fukushou_honmei)}
-    if fukushou_counts.count(fukushou_counts.max) != 1
+    if fukushou_counts.count(fukushou_counts.max) != 1 || fukushou_counts.max <= 1
       return nil
     end
 
