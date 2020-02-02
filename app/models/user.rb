@@ -18,7 +18,7 @@ class User < ApplicationRecord
         having('count(users.id) > ?', MASTER_COUNT).
         pluck(:id)
 
-    self.where(id: ids).select do |tanshou_master|
+    self.includes(:forecasts).where(id: ids).select do |tanshou_master|
       tanshou = tanshou_master.tanshou || 0
       tanshou / tanshou_master.forecasts.size > MASTER_RATE
     end
@@ -30,7 +30,7 @@ class User < ApplicationRecord
         having('count(users.id) > ?', MASTER_COUNT).
         pluck(:id)
 
-    self.where(id: ids).select do |fukushou_master|
+    self.includes(:forecasts).where(id: ids).select do |fukushou_master|
       fukushou = fukushou_master.fukushou || 0
       fukushou / fukushou_master.forecasts.size > MASTER_RATE
     end
