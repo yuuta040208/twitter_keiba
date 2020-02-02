@@ -1,6 +1,11 @@
 class RacesController < ApplicationController
   def index
-    @races = Race.includes(:forecasts).
+    @date_races = DateRace.
+        all.
+        page(params[:page]).
+        per(2)
+
+    @races = Race.where(date: @date_races.pluck(:date)).
         order(date: 'desc').
         order(:hold)
   end

@@ -5,6 +5,8 @@
 
 <p class="mb-5"><%= link_to 'ユーザ一覧', users_path %></p>
 
+<%= paginate @date_races %>
+
 <% @races.pluck(:date).uniq.each do |date| %>
   <div class="border-bottom mb-3 pb-3">
     <div class="mb-1">・<%= date_format(date) %></div>
