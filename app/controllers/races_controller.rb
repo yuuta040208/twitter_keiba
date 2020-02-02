@@ -37,7 +37,7 @@ class RacesController < ApplicationController
       return nil
     end
 
-    tanshou_honmeis.uniq[tanshou_counts.max]
+    tanshou_honmeis.uniq[tanshou_counts.index(tanshou_counts.max)]
   end
 
   def fukushou_horse
@@ -56,6 +56,6 @@ class RacesController < ApplicationController
       return nil
     end
 
-    fukushou_honmeis.uniq[fukushou_counts.max]
+    fukushou_honmeis.uniq[fukushou_counts.index(fukushou_counts.max)]
   end
 end
