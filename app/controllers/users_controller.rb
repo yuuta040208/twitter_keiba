@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   def index
-    @users = User.order(point: 'desc').
+    @users = User.where.not(tanshou: nil).
+        order(tanshou: 'desc').
         includes(:forecasts).
         page(params[:page])
 
