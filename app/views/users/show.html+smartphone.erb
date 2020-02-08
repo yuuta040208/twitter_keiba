@@ -6,6 +6,22 @@
 
 <p class="small-text mb-3"><%= link_to 'ホームに戻る', root_path %></p>
 
+<table class="table table-bordered table-striped table-sm">
+  <thead>
+  <tr class="text-center small-text">
+    <th>単勝回収率</th>
+    <th>複勝回収率</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <tr class="text-center small-text">
+    <td><b><%= (@user.tanshou || 0) / (@user.forecasts.size || 1) %>%</b></td>
+    <td><b><%= (@user.fukushou || 0) / (@user.forecasts.size || 1) %>%</b></td>
+  </tr>
+  </tbody>
+</table>
+
 <table class="table table-bordered table-striped table-sm text-table">
   <thead>
   <tr class="text-center">
