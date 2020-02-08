@@ -20,13 +20,13 @@ namespace :twitter do
       end
 
       query = queries.join(' OR ')
-      last_tweeted_at = race.tweets.order(tweeted_at: 'desc').first&.id
+      last_tweet_id = race.tweets.order(tweeted_at: 'desc').first&.id
 
       puts "#{query} をTwitterで検索します..."
 
       count = 0
       begin
-        client.search(query, count: 1000, result_type: 'recent', exclude: 'retweets', since_id: last_tweeted_at).each do |tweet|
+        client.search(query, count: 50, result_type: 'recent', exclude: 'retweets', since_id: last_tweet_id).each do |tweet|
           race_time = race.time.gsub(':', '').to_i
           tweet_time = tweet.created_at.in_time_zone('Tokyo').strftime('%H%M').to_i
 
