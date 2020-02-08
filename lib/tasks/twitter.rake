@@ -27,7 +27,10 @@ namespace :twitter do
       count = 0
       begin
         client.search(query, count: 1000, result_type: 'recent', exclude: 'retweets', since_id: last_tweeted_at).each do |tweet|
-          if tweet.text.include?('◎')
+          race_time = race.time.gsub(':', '').to_i
+          tweet_time = tweet.created_at.in_time_zone('Tokyo').strftime('%H%M').to_i
+
+          if race_time > tweet_time && tweet.text.include?('◎')
             if User.where(id: tweet.user.id).empty?
               User.create!(
                   id: tweet.user.id,
