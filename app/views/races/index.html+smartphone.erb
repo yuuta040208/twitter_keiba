@@ -1,4 +1,7 @@
-<h1 class="mb-3 mt-3">レース一覧</h1>
+<h1 class="mb-3 mt-3">
+  レース一覧
+  <span class="small-text">（最終更新: <%= @last_updated_at %>）</span>
+</h1>
 
 <% @races.pluck(:date).uniq.each do |date| %>
   <div class="border-bottom mb-3 pb-3">

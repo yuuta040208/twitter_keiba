@@ -8,6 +8,8 @@ class RacesController < ApplicationController
     @races = Race.where(date: @date_races.pluck(:date)).
         order(date: 'desc').
         order(:hold)
+
+    @last_updated_at = Forecast.last.updated_at.in_time_zone('Tokyo').strftime('%H:%M')
   end
 
   def show
