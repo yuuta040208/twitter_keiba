@@ -3,9 +3,24 @@
   <small><%= @race.hold %> <%= @race.number %></small>
 </h1>
 
-<div class="card mb-3 pt-3 pl-3 text-white bg-success">
-  <p>単勝購入推奨馬:<b> <%= @tanshou_horse || 'なし' %></b></p>
-  <p>複勝購入推奨馬: <b><%= @fukushou_horse || 'なし' %></b></p>
+<div class="mb-3">
+  <table class="table-success table-bordered table-sm">
+    <thead>
+    <tr class="bg-success">
+      <th class="text-center text-white">推し馬名</th>
+      <th class="text-center text-white">推しポイント</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% @my_forecasts.each do |my_forecast| %>
+      <tr>
+        <td><b><%= my_forecast[:name] %></b></td>
+        <td class="text-right"><%= my_forecast[:count] %>　</td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
 </div>
 
 <%= paginate @forecasts, window: 1 %>
