@@ -18,8 +18,7 @@ class RacesController < ApplicationController
         order(:umaban)
     @forecasts = @race.forecasts.
         includes(:user, :tweet).
-        where.not('users.tanshou': nil).
-        order('users.tanshou': 'desc').
+        order('users.tanshou DESC').
         page(params[:page])
 
     @tanshou_horse = tanshou_horse
