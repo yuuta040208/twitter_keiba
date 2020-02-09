@@ -8,6 +8,12 @@ namespace :twitter do
 
     Race.where(date: "#{Date.today.year}#{args['date']}").each do |race|
       queries = [race.name]
+
+      if race.hold.include?('回') && race.hold.to_i != 0
+        place = Race.last.hold.split('回').last.split(/\d/).first
+        queries.push("#{place}#{race.number}")
+      end
+
       if race.name.end_with?('ステークス')
         queries.push(race.name.gsub('ステークス', '') + 'S')
         queries.push(race.name.gsub('ステークス', '') + 'Ｓ')
