@@ -23,6 +23,9 @@
   </head>
 
   <body>
-    <%= yield %>
+    <%= render partial: 'layouts/header' %>
+    <div class="main">
+      <%= yield %>
+    </div>
   </body>
 </html>

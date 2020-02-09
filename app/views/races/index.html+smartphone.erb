@@ -1,11 +1,4 @@
-<h3>
-  Twitter競馬予想
-  <span class="small-text">by <%= link_to '@Evitch', 'https://twitter.com/unkEVI', target: '_blank' %></span>
-</h3>
-
-<p class="mb-5"><%= link_to 'ユーザ一覧', users_path %></p>
-
-<%= paginate @date_races, window: 1 %>
+<h1 class="mb-3 mt-3">レース一覧</h1>
 
 <% @races.pluck(:date).uniq.each do |date| %>
   <div class="border-bottom mb-3 pb-3">
@@ -42,3 +35,5 @@
     </div> <!-- row -->
   </div> <!-- border-bottom -->
 <% end %>
+
+<%= paginate @date_races, window: 1 %>

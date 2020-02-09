@@ -38,8 +38,10 @@ th {
   }
 }
 
-html {
-  margin: 2%;
+div {
+  &.main {
+    margin: 2%;
+  }
 }
 
 .small-text {

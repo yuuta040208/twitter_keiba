@@ -22,6 +22,10 @@ table {
   width: 100%;
 }
 
+h1 {
+  font-size: 64px;
+}
+
 $header_table_height: 280px;
 .fixed-header {
   height: $header_table_height;
@@ -41,13 +45,15 @@ $header_table_height: 280px;
 th {
   &.horse {
     text-align: center;
-    vertical-align: top !important;;
+    vertical-align: top !important;
   }
 }
 
-html {
-  margin: 2%;
-  font-size: 40px;
+div {
+  &.main {
+    margin: 2%;
+    font-size: 40px;
+  }
 }
 
 .small-text {
@@ -56,4 +62,10 @@ html {
 
 .text-table {
   font-size: 24px;
+}
+
+.navbar-collapse {
+  flex-basis: 0;
+  flex-grow: 1;
+  align-items: center;
 }

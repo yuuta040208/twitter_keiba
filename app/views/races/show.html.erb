@@ -1,9 +1,7 @@
-<h2>
+<h1 class="mb-3 mt-3">
   <%= link_to @race.name, Settings.keibalab[:url] + @race.url, target: '_blank'%>
   <small><%= @race.hold %> <%= @race.number %></small>
-</h2>
-
-<p><%= link_to 'ホームに戻る', root_path %></p>
+</h1>
 
 <div class="card w-25 mb-3 pt-3 pl-3 text-white bg-success">
   <p>単勝購入推奨馬:<b> <%= @tanshou_horse || 'なし' %></b></p>

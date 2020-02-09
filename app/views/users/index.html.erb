@@ -1,17 +1,11 @@
-<h2>ユーザ一覧</h2>
+<h1 class="mb-3 mt-3">予想家一覧</h1>
 
-<br>
-
-<p><%= link_to 'ホームに戻る', root_path %></p>
-
-<div class="form-inline">
+<div class="form-inline mb-3">
   <%= form_tag(users_path, method: 'get') do %>
     <%= text_field_tag :search, params[:search], class: 'form-control sm-3' %>
     <%= submit_tag '検索', name: nil, class: 'btn btn-primary sm-2' %>
   <% end %>
 </div>
-
-<br>
 
 <%= paginate @users %>
 
