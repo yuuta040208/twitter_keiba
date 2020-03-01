@@ -14,8 +14,8 @@
 
   <tbody>
   <tr class="text-center">
-    <td><b><%= (@user.tanshou || 0) / (@user.forecasts.size || 1) %>%</b></td>
-    <td><b><%= (@user.fukushou || 0) / (@user.forecasts.size || 1) %>%</b></td>
+    <td><b><%= @user.tanshou ? ((@user.tanshou.to_f) / (@user.forecasts.size * 100) * 100).to_i : 0 %>%</b></td>
+    <td><b><%= @user.fukushou ? ((@user.fukushou.to_f) / (@user.forecasts.size * 100) * 100).to_i : 0 %>%</b></td>
   </tr>
   </tbody>
 </table>

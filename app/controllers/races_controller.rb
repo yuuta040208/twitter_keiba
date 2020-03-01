@@ -16,45 +16,17 @@ class RacesController < ApplicationController
     @race = Race.find(params[:id])
     @horses = @race.horses.
         order(:umaban)
-    @forecasts = @race.forecasts.
-        includes(:user, :tweet).
-        where('users.tanshou IS NOT NULL').
+
+    user_ids = []
+    User.includes(:forecasts).where(id: @race.forecasts.pluck(:user_id)).each do |user|
+      next if user.tanshou.nil? || user.fukushou.nil?
+      tanshou_rate = user.tanshou.to_f / user.forecasts.size
+      fukushou_rate = user.fukushou.to_f / user.forecasts.size
+      user_ids << user.id if tanshou_rate >= 100.0 || fukushou_rate >= 100.0
+    end
+
+    @forecasts = Forecast.includes(:user, :tweet).where(race_id: @race.id, user_id: user_ids.uniq.compact).
         order('users.tanshou DESC').
         page(params[:page])
-
-    @my_forecasts = my_forecasts
-  end
-
-
-  private
-
-  def tanshou_horse
-    tanshou_forecasts = @race.forecasts.
-        includes(:user, :tweet).
-        where(user_id: User.tanshou_masters.pluck(:id)).
-        where('forecasts.honmei IS NOT NULL').
-        order('users.tanshou DESC')
-    tanshou_honmeis = tanshou_forecasts.pluck(:honmei)
-
-    tanshou_honmeis.present? ? tanshou_honmeis : []
-  end
-
-  def fukushou_horse
-    fukushou_forecasts = @race.forecasts.
-        includes(:user, :tweet).
-        where(user_id: User.fukushou_masters.pluck(:id)).
-        where('forecasts.honmei IS NOT NULL').
-        order('users.fukushou DESC')
-    fukushou_honmeis = fukushou_forecasts.pluck(:honmei)
-
-    fukushou_honmeis.present? ? fukushou_honmeis : []
-  end
-
-  def my_forecasts
-    horses = tanshou_horse + fukushou_horse
-    forecasts = horses.uniq.map {|horse| {name: horse, count: horses.count(horse)}}
-
-    # 一人しか予想していないものは確度が低いため除外する
-    forecasts.reject {|forecast| forecast[:count] == 1}.sort {|a, b| a[:count] <=> b[:count]}.reverse
   end
 end

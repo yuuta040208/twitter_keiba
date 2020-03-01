@@ -3,26 +3,6 @@
   <small><%= @race.hold %> <%= @race.number %></small>
 </h1>
 
-<div class="mb-3">
-  <table class="table-success table-bordered table-sm">
-    <thead>
-    <tr class="bg-success">
-      <th class="text-center text-white">推し馬名</th>
-      <th class="text-center text-white">推しポイント</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    <% @my_forecasts.each do |my_forecast| %>
-      <tr>
-        <td><b><%= my_forecast[:name] %></b></td>
-        <td class="text-right"><%= my_forecast[:count] %>　</td>
-      </tr>
-    <% end %>
-    </tbody>
-  </table>
-</div>
-
 <%= paginate @forecasts, window: 1 %>
 
 <table class="table table-bordered table-striped table-sm text-table">
@@ -50,7 +30,7 @@
 
   <tr>
     <th>◎ の個数</th>
-    <% honmeis = @race.forecasts.pluck(:honmei) %>
+    <% honmeis = @forecasts.pluck(:honmei) %>
     <% @horses.reverse_each do |horse| %>
       <td class="text-center"><b><%= honmeis.count(horse.name) %></b></td>
     <% end %>
@@ -58,7 +38,7 @@
 
   <tr>
     <th>○ の個数</th>
-    <% taikous = @race.forecasts.pluck(:taikou) %>
+    <% taikous = @forecasts.pluck(:taikou) %>
     <% @horses.reverse_each do |horse| %>
       <td class="text-center"><b><%= taikous.count(horse.name) %></b></td>
     <% end %>
@@ -66,7 +46,7 @@
 
   <tr>
     <th>▲ の個数</th>
-    <% tananas = @race.forecasts.pluck(:tanana) %>
+    <% tananas = @forecasts.pluck(:tanana) %>
     <% @horses.reverse_each do |horse| %>
       <td class="text-center"><b><%= tananas.count(horse.name) %></b></td>
     <% end %>
@@ -74,7 +54,7 @@
 
   <tr>
     <th>△ の個数</th>
-    <% renkas = @race.forecasts.pluck(:renka) %>
+    <% renkas = @forecasts.pluck(:renka) %>
     <% @horses.reverse_each do |horse| %>
       <td class="text-center"><b><%= renkas.count(horse.name) %></b></td>
     <% end %>

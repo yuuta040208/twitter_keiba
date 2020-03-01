@@ -31,5 +31,6 @@ namespace :weekly do
 
     Rake::Task['scrape:result'].invoke(date)
     Rake::Task['scoring:result'].invoke(date)
+    Rake::Task['scoring:sum'].invoke(date)
   end
 end

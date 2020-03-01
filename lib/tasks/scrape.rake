@@ -18,7 +18,7 @@ namespace :scrape do
       hold = table.css('tr > th').text.split('天候').first
 
       table.css('tbody tr').each.with_index(1) do |tr, index|
-        if index.between?(9, 11)
+        if index == 11
           if Race.where(date: "#{Date.today.year}#{args['date']}", hold: hold, number: tr.css('td:nth-child(1) > div > a').text).empty?
             Race.create!(
                 date: "#{Date.today.year}#{args['date']}",
