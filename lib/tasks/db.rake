@@ -23,4 +23,10 @@ namespace :db do
   task :destroy, ['date'] => :environment do |task, args|
     Race.where(date: "#{Date.today.year}#{args['date']}").each(&:destroy)
   end
+
+  desc "ユーザの単勝、複勝を全て更新する"
+  task :user_money, ['date'] => :environment do |task, args|
+    User.where('tanshou IS NOT NULL OR fukushou IS NOT NULL').update_all(tanshou: nil, fukushou:nil)
+    Rake::Task['scoring:sum'].invoke
+  end
 end
