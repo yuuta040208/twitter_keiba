@@ -1,4 +1,6 @@
 class Forecast < ApplicationRecord
+  default_scope { joins(:race).where('races.id >= ?', 55) }
+
   belongs_to :tweet
   belongs_to :race
   belongs_to :user
