@@ -9,7 +9,7 @@ class RacesController < ApplicationController
         order(date: 'desc').
         order(:hold)
 
-    @last_updated_at = Forecast.last.updated_at.in_time_zone('Tokyo').strftime('%H:%M')
+    @last_updated_at = Forecast.last.updated_at.in_time_zone('Tokyo').strftime('%Y/%m/%d %H:%M')
   end
 
   def show
