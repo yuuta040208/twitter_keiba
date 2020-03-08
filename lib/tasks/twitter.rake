@@ -25,8 +25,8 @@ namespace :twitter do
         queries.push(race.name.chop + 'ステークス')
       end
 
-      if race.name == '報知弥生ディープ記念'
-        queries.push('弥生賞')
+      if race.alt_name.present?
+        queries.push(race.alt_name)
       end
 
       query = queries.join(' OR ')
