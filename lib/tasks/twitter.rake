@@ -25,6 +25,10 @@ namespace :twitter do
         queries.push(race.name.chop + 'ステークス')
       end
 
+      if race.name == '報知弥生ディープ記念'
+        queries.push('弥生賞')
+      end
+
       query = queries.join(' OR ')
       last_tweet_id = race.tweets.order(tweeted_at: 'desc').first&.id
 
