@@ -17,12 +17,25 @@ class RacesController < ApplicationController
     @horses = @race.horses.
         order(:umaban)
 
+    @return_rate = if params[:return_rate].nil?
+                     User::RETURN_RATE_PROFESSIONAL
+                   else
+                     params[:return_rate].to_i
+                   end
+
     user_ids = []
     User.includes(:forecasts).where(id: @race.forecasts.pluck(:user_id)).each do |user|
       next if user.tanshou.nil? || user.fukushou.nil?
       tanshou_rate = user.tanshou.to_f / user.forecasts.size
       fukushou_rate = user.fukushou.to_f / user.forecasts.size
-      user_ids << user.id if tanshou_rate >= 100.0 || fukushou_rate >= 100.0
+
+      if @return_rate == User::RETURN_RATE_PROFESSIONAL
+        user_ids << user.id if 100.0 <= tanshou_rate || 100.0 <= fukushou_rate
+      elsif @return_rate == User::RETURN_RATE_MASTER
+        user_ids << user.id if 200.0 <= tanshou_rate || 200.0 <= fukushou_rate
+      else
+        user_ids << user.id
+      end
     end
 
     @forecasts = Forecast.includes(:user, :tweet).where(race_id: @race.id, user_id: user_ids.uniq.compact).

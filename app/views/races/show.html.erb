@@ -5,6 +5,25 @@
 
 <%= paginate @forecasts %>
 
+<div class="form-inline mb-3">
+  <%= form_tag(race_path(params[:id]), method: 'get') do %>
+    <span class="border-success border rounded p-1 mr-2">
+      <span class="text-success ml-1"> 回収率</span>
+    </span>
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+      <label class="btn btn-success <%= @return_rate == User::RETURN_RATE_ALL ? 'active' : '' %>">
+        <%= radio_button_tag :return_rate, User::RETURN_RATE_ALL, @return_rate == User::RETURN_RATE_ALL, onChange: 'submit()' %>~ 100%
+      </label>
+      <label class="btn btn-success <%= @return_rate == User::RETURN_RATE_PROFESSIONAL ? 'active' : '' %>">
+        <%= radio_button_tag :return_rate, User::RETURN_RATE_PROFESSIONAL, @return_rate == User::RETURN_RATE_PROFESSIONAL, onChange: 'submit()' %>100% ~ 200%
+      </label>
+      <label class="btn btn-success <%= @return_rate == User::RETURN_RATE_MASTER ? 'active' : '' %>">
+        <%= radio_button_tag :return_rate, User::RETURN_RATE_MASTER, @return_rate == User::RETURN_RATE_MASTER, onChange: 'submit()' %>200% ~
+      </label>
+    </div>
+  <% end %>
+</div>
+
 <table class="table table-bordered table-striped table-sm">
   <thead>
   <tr>
