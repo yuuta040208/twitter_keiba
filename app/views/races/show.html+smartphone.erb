@@ -1,6 +1,6 @@
 <h1 class="mb-3 mt-3">
   <%= link_to @race.name, Settings.keibalab[:url] + @race.url, target: '_blank'%>
-  <small><%= @race.hold %> <%= @race.number %></small>
+  <p><small><%= @race.hold %><%= @race.number %></small></p>
 </h1>
 
 <%= paginate @forecasts, window: 1 %>
