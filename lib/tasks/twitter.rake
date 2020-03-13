@@ -29,7 +29,7 @@ namespace :twitter do
         queries.push(race.alt_name)
       end
 
-      query = queries.join(' OR ')
+      query = "(#{queries.join(' OR ')}) ◎"
       last_tweet_id = race.tweets.order(tweeted_at: 'desc').first&.id
 
       puts "#{query} をTwitterで検索します..."
@@ -40,7 +40,7 @@ namespace :twitter do
           race_time = race.time.gsub(':', '').to_i
           tweet_time = tweet.created_at.in_time_zone('Tokyo').strftime('%H%M').to_i
 
-          if race_time > tweet_time && tweet.text.include?('◎')
+          if race_time > tweet_time
             if User.where(id: tweet.user.id).empty?
               User.create!(
                   id: tweet.user.id,
