@@ -12,7 +12,7 @@ task :scheduler => :environment do
     now = now.end_with?('0') ? now.slice(1..-1) : now
     last_race_time = last_race.time.gsub(':', '')
 
-    if  now.to_i < last_race_time.to_i && 1400 < now.to_i
+    if  now.to_i < last_race_time.to_i && 1200 < now.to_i
       puts 'ツイートを検索'
       Rake::Task['weekly:tweet'].invoke(Date.today.strftime("%m%d"))
 
