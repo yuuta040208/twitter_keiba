@@ -29,4 +29,9 @@ namespace :db do
     User.where('tanshou IS NOT NULL OR fukushou IS NOT NULL').update_all(tanshou: nil, fukushou:nil)
     Rake::Task['scoring:sum'].invoke
   end
+
+  desc "hitテーブルの中身を全て空にする"
+  task :truncate_hits => :environment do |task, args|
+    ActiveRecord::Base.connection.execute 'TRUNCATE TABLE hits RESTART IDENTITY;'
+  end
 end

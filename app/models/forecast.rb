@@ -4,6 +4,7 @@ class Forecast < ApplicationRecord
   belongs_to :tweet
   belongs_to :race
   belongs_to :user
+  has_one :hit
 
   def self.search(search)
     return self.all unless search

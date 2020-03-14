@@ -23,23 +23,19 @@ class RacesController < ApplicationController
                      params[:return_rate].to_i
                    end
 
-    user_ids = []
-    User.includes(:forecasts).where(id: @race.forecasts.pluck(:user_id)).each do |user|
-      if @return_rate == User::RETURN_RATE_PROFESSIONAL
-        tanshou_rate = user.tanshou.to_f / user.forecasts.size
-        fukushou_rate = user.fukushou.to_f / user.forecasts.size
-        user_ids << user.id if 100.0 <= tanshou_rate || 100.0 <= fukushou_rate
-      elsif @return_rate == User::RETURN_RATE_MASTER
-        tanshou_rate = user.tanshou.to_f / user.forecasts.size
-        fukushou_rate = user.fukushou.to_f / user.forecasts.size
-        user_ids << user.id if 200.0 <= tanshou_rate || 200.0 <= fukushou_rate
-      else
-        user_ids << user.id
-      end
-    end
+    @forecasts = if @race.result.present?
+                   cache_forecasts.order('users.tanshou DESC').page(params[:page])
+                 else
+                   @race.today_forecasts(@return_rate).order('users.tanshou DESC').page(params[:page])
+                 end
+  end
 
-    @forecasts = Forecast.includes(:user, :tweet).where(race_id: @race.id, user_id: user_ids.uniq.compact).
-        order('users.tanshou DESC').
-        page(params[:page])
+
+  private
+
+  def cache_forecasts
+    Rails.cache.fetch("cache_forecasts_#{@race.id}_#{@return_rate}", expired_in: 60.minutes) do
+      @race.past_forecasts(@return_rate)
+    end
   end
 end

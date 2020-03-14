@@ -113,19 +113,53 @@ namespace :scoring do
         when race.result.first_horse then
           forecast.user.tanshou = race.result.tanshou + (forecast.user.tanshou || 0)
           forecast.user.fukushou = race.result.fukushou_first + (forecast.user.fukushou || 0)
-
+          race.hit.tanshou = race.result.tanshou
+          race.hit.fukushou = race.result.fukushou
         when race.result.second_horse then
           forecast.user.fukushou = race.result.fukushou_second + (forecast.user.fukushou || 0)
-
+          race.hit.fukushou = race.result.fukushou
         when race.result.third_horse then
           forecast.user.fukushou = race.result.fukushou_third + (forecast.user.fukushou || 0)
-
+          race.hit.fukushou = race.result.fukushou
         else
           next
         end
 
         forecast.user.save!
+        race.hit.save!
         puts "#{forecast.user.name}: #{forecast.user.tanshou}円, #{forecast.user.fukushou}円"
+      end
+    end
+  end
+
+  desc "的中計算"
+  task :hit, ['date'] => :environment do |task, args|
+    races = if args['date'].present?
+              Race.joins(forecasts: :user).joins(:result).distinct.where(date: "#{Date.today.year}#{args['date']}")
+            else
+              Race.joins(forecasts: :user).joins(:result).distinct.all
+            end
+    races.each do |race|
+      race.forecasts.each do |forecast|
+        hit = Hit.new(race_id: race.id, forecast_id: forecast.id)
+
+        case forecast.honmei
+        when race.result.first_horse then
+          hit.honmei_tanshou = race.result.tanshou
+          hit.honmei_fukushou = race.result.fukushou_first
+
+        when race.result.second_horse then
+          hit.honmei_fukushou = race.result.fukushou_second
+
+        when race.result.third_horse then
+          hit.honmei_fukushou = race.result.fukushou_third
+
+        else
+          next
+        end
+
+        hit.save!
+        puts "#{forecast.user.name}: #{hit.honmei_tanshou}円, #{hit.honmei_fukushou}円"
       end
     end
   end
