@@ -25,13 +25,13 @@ class RacesController < ApplicationController
 
     user_ids = []
     User.includes(:forecasts).where(id: @race.forecasts.pluck(:user_id)).each do |user|
-      next if user.tanshou.nil? || user.fukushou.nil?
-      tanshou_rate = user.tanshou.to_f / user.forecasts.size
-      fukushou_rate = user.fukushou.to_f / user.forecasts.size
-
       if @return_rate == User::RETURN_RATE_PROFESSIONAL
+        tanshou_rate = user.tanshou.to_f / user.forecasts.size
+        fukushou_rate = user.fukushou.to_f / user.forecasts.size
         user_ids << user.id if 100.0 <= tanshou_rate || 100.0 <= fukushou_rate
       elsif @return_rate == User::RETURN_RATE_MASTER
+        tanshou_rate = user.tanshou.to_f / user.forecasts.size
+        fukushou_rate = user.fukushou.to_f / user.forecasts.size
         user_ids << user.id if 200.0 <= tanshou_rate || 200.0 <= fukushou_rate
       else
         user_ids << user.id
