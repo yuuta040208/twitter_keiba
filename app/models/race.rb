@@ -23,12 +23,12 @@ class Race < ApplicationRecord
       end
     end
 
-    Forecast.includes(:user, :tweet).where(race_id: id, user_id: user_ids.uniq.compact)
+    forecasts.includes(:user, :tweet).where(user_id: user_ids.uniq.compact)
   end
 
   def past_forecasts(return_rate)
     if return_rate == User::RETURN_RATE_ALL
-      return Forecast.includes(:user, :tweet).where(race_id: id)
+      return forecasts.includes(:user, :tweet)
     end
 
     users = {}
@@ -59,6 +59,6 @@ class Race < ApplicationRecord
       end
     end
 
-    Forecast.includes(:user, :tweet).where(race_id: id, user_id: user_ids.uniq.compact)
+    forecasts.includes(:user, :tweet).where(user_id: user_ids.uniq.compact)
   end
 end
