@@ -23,11 +23,18 @@ class RacesController < ApplicationController
                      params[:return_rate].to_i
                    end
 
-    @forecasts = if @race.result.present?
-                   cache_forecasts.order('users.tanshou DESC').page(params[:page])
-                 else
-                   @race.today_forecasts(@return_rate).order('users.tanshou DESC').page(params[:page])
-                 end
+    forecasts = if @race.result.present?
+                   cache_forecasts
+                else
+                   @race.today_forecasts(@return_rate)
+                end
+
+    @honmeis = forecasts.pluck(:honmei)
+    @taikous = forecasts.pluck(:taikou)
+    @tananas = forecasts.pluck(:tanana)
+    @renkas = forecasts.pluck(:renka)
+
+    @forecasts = forecasts.order('users.tanshou DESC').page(params[:page])
   end
 
 

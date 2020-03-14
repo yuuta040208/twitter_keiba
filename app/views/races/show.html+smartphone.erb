@@ -49,33 +49,29 @@
 
   <tr>
     <th>◎ の個数</th>
-    <% honmeis = @forecasts.pluck(:honmei) %>
     <% @horses.reverse_each do |horse| %>
-      <td class="text-center"><b><%= honmeis.count(horse.name) %></b></td>
+      <td class="text-center"><b><%= @honmeis.count(horse.name) %></b></td>
     <% end %>
   </tr>
 
   <tr>
     <th>○ の個数</th>
-    <% taikous = @forecasts.pluck(:taikou) %>
     <% @horses.reverse_each do |horse| %>
-      <td class="text-center"><b><%= taikous.count(horse.name) %></b></td>
+      <td class="text-center"><b><%= @taikous.count(horse.name) %></b></td>
     <% end %>
   </tr>
 
   <tr>
     <th>▲ の個数</th>
-    <% tananas = @forecasts.pluck(:tanana) %>
     <% @horses.reverse_each do |horse| %>
-      <td class="text-center"><b><%= tananas.count(horse.name) %></b></td>
+      <td class="text-center"><b><%= @tananas.count(horse.name) %></b></td>
     <% end %>
   </tr>
 
   <tr>
     <th>△ の個数</th>
-    <% renkas = @forecasts.pluck(:renka) %>
     <% @horses.reverse_each do |horse| %>
-      <td class="text-center"><b><%= renkas.count(horse.name) %></b></td>
+      <td class="text-center"><b><%= @renkas.count(horse.name) %></b></td>
     <% end %>
   </tr>
 
