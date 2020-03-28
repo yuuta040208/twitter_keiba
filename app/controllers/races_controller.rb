@@ -49,7 +49,7 @@ class RacesController < ApplicationController
     end
 
     twitter_odds = scores.map {|a| a.zero? ? 0 : (scores.sum.to_f / a * 0.8).round(2)}
-    horses.pluck(:odds).map.with_index {|a, i| (twitter_odds[i] / a).round(2)}
+    horses.pluck(:odds).map.with_index {|a, i| twitter_odds[i].zero? ? 0 : (a / twitter_odds[i]).round(2)}
   end
 
   def cache_forecasts
