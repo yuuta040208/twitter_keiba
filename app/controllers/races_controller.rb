@@ -24,9 +24,9 @@ class RacesController < ApplicationController
                    end
 
     forecasts = if @race.result.present?
-                   cache_forecasts
+                  cache_forecasts
                 else
-                   @race.today_forecasts(@return_rate)
+                  @race.today_forecasts(@return_rate)
                 end
 
     @honmeis = forecasts.pluck(:honmei)
@@ -34,11 +34,23 @@ class RacesController < ApplicationController
     @tananas = forecasts.pluck(:tanana)
     @renkas = forecasts.pluck(:renka)
 
+    @twitter_rates = calculate_twitter_rates(@horses, @honmeis, @taikous, @tananas, @renkas)
+
     @forecasts = forecasts.order('users.tanshou DESC').page(params[:page])
   end
 
 
   private
+
+  def calculate_twitter_rates(horses, honmeis, taikous, tananas, renkas)
+    scores = []
+    horses.each do |horse|
+      scores << (honmeis.count(horse.name) * 5) + (taikous.count(horse.name) * 3) + (tananas.count(horse.name) * 2) + (renkas.count(horse.name) * 1)
+    end
+
+    twitter_odds = scores.map {|a| a.zero? ? 0 : (scores.sum.to_f / a * 0.8).round(2)}
+    horses.pluck(:odds).map.with_index {|a, i| (twitter_odds[i] / a).round(2)}
+  end
 
   def cache_forecasts
     Rails.cache.fetch("cache_forecasts_#{@race.id}_#{@return_rate}", expired_in: 60.minutes) do

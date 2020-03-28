@@ -41,6 +41,13 @@
   </thead>
 
   <tr>
+    <th>期待率</th>
+    <% @twitter_rates.reverse_each do |twitter_rate| %>
+      <td class="text-center text-danger"><span class="vertical"><%= twitter_rate %></span></td>
+    <% end %>
+  </tr>
+
+  <tr>
     <th>オッズ</th>
     <% @horses.reverse_each do |horse| %>
       <td class="text-center"><span class="vertical"><%= horse.odds %></span></td>
