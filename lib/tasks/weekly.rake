@@ -25,6 +25,13 @@ namespace :weekly do
     Rake::Task['scoring:create'].invoke(date)
   end
 
+  desc "オッズ更新のみ実行"
+  task :odds, ['date'] => :environment do |task, args|
+    date = args['date']
+
+    Rake::Task['scrape:odds'].invoke(date)
+  end
+
   desc "レース後処理のみ実行"
   task :result, ['date'] => :environment do |task, args|
     date = args['date']

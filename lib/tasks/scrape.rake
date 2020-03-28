@@ -65,8 +65,36 @@ namespace :scrape do
 
       puts "#{count}件をデータベースに追加しました。"
 
-      # BOT認識されないように2秒スリープさせる
-      sleep 2
+      # BOT認識されないように5秒スリープさせる
+      sleep 5
+    end
+  end
+
+
+  desc "オッズをスクレイピング"
+  task :odds, ['date'] => :environment do |task, args|
+    races = Race.where(date: "#{Date.today.year}#{args['date']}")
+    races.each do |race|
+      url = "#{KEIBALAB_URL}#{race.url}odds.html"
+      html = open(url).read
+      doc = Nokogiri::HTML.parse(html.toutf8, nil, 'utf-8')
+
+      puts "#{url} からデータを取得します..."
+
+      count = 0
+
+      doc.css('table.tanTables tbody > tr').each do |tr|
+        horse = race.horses.find_by(umaban: tr.css('td:nth-child(2)').text.to_i)
+        horse.odds = tr.css('td:nth-child(4)').text.to_f
+        horse.save!
+        count += 1
+        p horse.odds
+      end
+
+      puts "#{count}件のデータを更新しました。"
+
+      # BOT認識されないように5秒スリープさせる
+      sleep 5
     end
   end
 

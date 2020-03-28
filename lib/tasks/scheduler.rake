@@ -16,6 +16,9 @@ task :scheduler => :environment do
       puts 'ツイートを検索'
       Rake::Task['weekly:tweet'].invoke(Date.today.strftime("%m%d"))
 
+      puts 'オッズを更新'
+      Rake::Task['weekly:odds'].invoke(Date.today.strftime("%m%d"))
+
     elsif last_race_time.to_i <= now.to_i
 
       results = Result.where(race_id: last_race.id)
