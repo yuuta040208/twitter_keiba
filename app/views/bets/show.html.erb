@@ -1,0 +1,35 @@
+<h1 class="mb-3 mt-3">
+  <%= link_to @race.name, Settings.keibalab[:url] + @race.url, target: '_blank'%>
+  <small><%= @race.hold %> <%= @race.number %></small>
+</h1>
+<h2 class="mb-3 mt-3">AI予想</h2>
+
+<div class="row">
+  <table class="table table-bordered table-striped table-sm col-sm-6">
+    <thead>
+    <tr class="text-center">
+      <th>印</th>
+      <th>馬番</th>
+      <th>馬名</th>
+      <th>オッズ</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% @my_forecasts.take(6).each_with_index do |my_forecast, index| %>
+      <% mark = case(index) %>
+          <% when 0 then '◎' %>
+          <% when 1 then '○' %>
+          <% when 2 then '▲' %>
+          <% else '△' %>
+      <% end %>
+      <tr>
+        <td><%= mark %></td>
+        <td><%= my_forecast[:number] %></td>
+        <td><%= my_forecast[:name] %></td>
+        <td><%= my_forecast[:odds] %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>

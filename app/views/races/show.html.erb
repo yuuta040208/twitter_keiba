@@ -3,6 +3,10 @@
   <small><%= @race.hold %> <%= @race.number %></small>
 </h1>
 
+<div class="forecast-ai mb-3">
+  <%= link_to 'AI予想を見る', bet_path(@race.id) %>
+</div>
+
 <%= paginate @forecasts %>
 
 <div class="form-inline mb-3">
