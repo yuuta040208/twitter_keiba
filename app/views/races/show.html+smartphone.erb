@@ -91,7 +91,7 @@
   <% @forecasts.each do |forecast| %>
     <tr>
       <th align="left">
-        <%= link_to "#{forecast.user.name} (#{forecast.user.forecasts.size})", user_path(forecast.user.id) %>
+        <%= link_to "#{forecast.user.name}", user_path(forecast.user.id) %>
         <%= link_to forecast.tweet.url, target: '_blank' do %>
           <%= image_tag asset_path('twitter_icon.png') %>
         <% end %>
