@@ -76,8 +76,7 @@ class Race < ApplicationRecord
 
     twitter_odds = scores.map {|a| a.zero? ? 0 : (scores.sum.to_f / a * 0.8).round(2)}
     horses.order(:umaban).map.with_index do |horse, i|
-      rate = twitter_odds[i].zero? ? 0 : (horse.odds / twitter_odds[i]).round(2)
-      {rate: rate, number: horse.umaban, name: horse.name}
+      twitter_odds[i].zero? ? 0 : (horse.odds / twitter_odds[i]).round(2)
     end
   end
 end
