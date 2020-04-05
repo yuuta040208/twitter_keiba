@@ -1,5 +1,6 @@
 class BetsController < ApplicationController
-  def index; end
+  def index
+  end
 
   def show
     @race = Race.find(params[:id])
@@ -43,10 +44,11 @@ class BetsController < ApplicationController
                  1 - (horse.odds / 10) * 0.05
                end
 
-      { number: i,
-        name: horse.name,
-        odds: horse.odds,
-        rate: rate * weight
+      {
+          number: i,
+          name: horse.name,
+          odds: horse.odds,
+          rate: rate * weight
       }
     end
 
