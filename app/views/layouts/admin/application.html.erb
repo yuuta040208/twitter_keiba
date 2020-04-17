@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Twitter競馬新聞 管理画面</title>
+
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <%= render partial: 'layouts/admin/header' %>
+
+    <% if flash[:notice] %>
+    <div class="alert alert-success" role="alert">
+      <%= flash[:notice] %>
+    </div>
+    <% end %>
+
+    <% if flash[:error] %>
+    <div class="alert alert-danger" role="alert">
+      <%= flash[:error] %>
+    </div>
+    <% end %>
+
+    <% if flash[:errors].present? %>
+      <div class="alert alert-danger" role="alert">
+        <% flash[:errors].each do |e| %>
+          <div><%= e %> </div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <div class="main">
+      <%= yield %>
+    </div>
+  </body>
+</html>

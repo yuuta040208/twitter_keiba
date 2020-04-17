@@ -1,0 +1,15 @@
+<table class="table table-bordered table-striped table-sm col-sm-6">
+  <% @races.each do |race| %>
+    <tr>
+      <td class="align-middle">
+        <%= race.name %>
+      </td>
+      <td class="text-center">
+        <%= form_with model: race, url: admin_race_path(race.id), local: true, method: :patch do |form| %>
+          <%= form.text_field :alt_name %>
+          <%= form.submit '更新', class: 'btn btn-sm btn-primary' %>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+</table>
