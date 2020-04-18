@@ -16,5 +16,6 @@ class UsersController < ApplicationController
         includes(race: :result).
         includes(:tweet).
         order(created_at: 'desc')
+    @forecast_size = @forecasts.map { |forecast| forecast.race.result }.compact.size
   end
 end

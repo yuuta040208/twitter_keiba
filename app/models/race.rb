@@ -10,13 +10,14 @@ class Race < ApplicationRecord
   def today_forecasts(return_rate)
     user_ids = []
     User.includes(:forecasts).where(id: forecasts.pluck(:user_id)).each do |user|
+      forecast_size = user.forecasts.map { |forecast| forecast.race.result }.compact.size
       if return_rate == User::RETURN_RATE_PROFESSIONAL
-        tanshou_rate = user.tanshou.to_f / user.forecasts.size
-        fukushou_rate = user.fukushou.to_f / user.forecasts.size
+        tanshou_rate = user.tanshou.to_f / forecast_size
+        fukushou_rate = user.fukushou.to_f / forecast_size
         user_ids << user.id if 100.0 <= tanshou_rate || 100.0 <= fukushou_rate
       elsif return_rate == User::RETURN_RATE_MASTER
-        tanshou_rate = user.tanshou.to_f / user.forecasts.size
-        fukushou_rate = user.fukushou.to_f / user.forecasts.size
+        tanshou_rate = user.tanshou.to_f / forecast_size
+        fukushou_rate = user.fukushou.to_f / forecast_size
         user_ids << user.id if 200.0 <= tanshou_rate || 200.0 <= fukushou_rate
       else
         user_ids << user.id

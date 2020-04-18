@@ -147,18 +147,23 @@ namespace :scoring do
         when race.result.first_horse then
           hit.honmei_tanshou = race.result.tanshou
           hit.honmei_fukushou = race.result.fukushou_first
+          forecast.user.tanshou = race.result.tanshou + (forecast.user.tanshou || 0)
+          forecast.user.fukushou = race.result.fukushou_first + (forecast.user.fukushou || 0)
 
         when race.result.second_horse then
           hit.honmei_fukushou = race.result.fukushou_second
+          forecast.user.fukushou = race.result.fukushou_second + (forecast.user.fukushou || 0)
 
         when race.result.third_horse then
           hit.honmei_fukushou = race.result.fukushou_third
+          forecast.user.fukushou = race.result.fukushou_second + (forecast.user.fukushou || 0)
 
         else
           next
         end
 
         hit.save!
+        forecast.user.save!
         puts "#{forecast.user.name}: #{hit.honmei_tanshou}円, #{hit.honmei_fukushou}円"
       end
     end
