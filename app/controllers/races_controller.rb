@@ -38,4 +38,13 @@ class RacesController < ApplicationController
 
     @forecasts = forecasts.order('users.tanshou DESC').page(params[:page])
   end
+
+  def tweets
+    @race = Race.find(params[:race_id])
+    @forecasts = if @race.result.present?
+                  @race.cache_forecasts(User::RETURN_RATE_MASTER).order('users.tanshou DESC').page(params[:page]).per(30)
+                else
+                  @race.today_forecasts(User::RETURN_RATE_MASTER).order('users.tanshou DESC').page(params[:page]).per(30)
+                end
+  end
 end

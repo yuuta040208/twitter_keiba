@@ -1,0 +1,22 @@
+<h1 class="mb-3 mt-3">
+  <%= link_to @race.name, Settings.keibalab[:url] + @race.url, target: '_blank' %>
+  <small><%= @race.hold %> <%= @race.number %></small>
+</h1>
+
+<%= paginate @forecasts %>
+
+<div class="row">
+  <% @forecasts.each_slice(3) do |first, second, third| %>
+    <div class="col-sm-4">
+      <%= render partial: 'tweet', locals: { tweet: first.tweet } %>
+    </div>
+    <div class="col-sm-4">
+      <%= render partial: 'tweet', locals: { tweet: second.tweet } %>
+    </div>
+    <div class="col-sm-4">
+      <%= render partial: 'tweet', locals: { tweet: third.tweet } %>
+    </div>
+  <% end %>
+</div>
+
+<%= paginate @forecasts %>
