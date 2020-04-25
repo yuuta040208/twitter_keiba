@@ -6,15 +6,15 @@
 <%= paginate @forecasts %>
 
 <div class="row">
-  <% @forecasts.each_slice(3) do |first, second, third| %>
+  <% @forecasts.includes(tweet: :user).each_slice(3) do |first, second, third| %>
     <div class="col-sm-4">
-      <%= render partial: 'tweet', locals: { tweet: first.tweet } %>
+      <%= render partial: 'tweet', locals: { tweet: first.tweet } if first.present? %>
     </div>
     <div class="col-sm-4">
-      <%= render partial: 'tweet', locals: { tweet: second.tweet } %>
+      <%= render partial: 'tweet', locals: { tweet: second.tweet } if second.present? %>
     </div>
     <div class="col-sm-4">
-      <%= render partial: 'tweet', locals: { tweet: third.tweet } %>
+      <%= render partial: 'tweet', locals: { tweet: third.tweet } if third.present? %>
     </div>
   <% end %>
 </div>
