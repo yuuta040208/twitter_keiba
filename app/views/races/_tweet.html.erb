@@ -1,2 +1,11 @@
-<blockquote class="twitter-tweet"><a href="https://twitter.com/imascg_stage/status/<%= tweet.id %>"></a></blockquote>
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<div class="card mt-2">
+  <div class="card-header bg-primary text-white">
+    <%= tweet.user.name %>
+    <%= link_to tweet.url, target: '_blank' do %>
+      <%= image_tag asset_path('twitter_icon.png') %>
+    <% end %>
+  </div>
+  <div class="card-body">
+    <%= tweet.content %>
+  </div>
+</div>

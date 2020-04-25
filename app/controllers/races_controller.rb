@@ -40,11 +40,12 @@ class RacesController < ApplicationController
   end
 
   def tweets
+    per = request.from_smartphone? ? 9 : 30
     @race = Race.find(params[:race_id])
     @forecasts = if @race.result.present?
-                  @race.cache_forecasts(User::RETURN_RATE_MASTER).order('users.tanshou DESC').page(params[:page]).per(30)
+                  @race.cache_forecasts(User::RETURN_RATE_MASTER).order('users.tanshou DESC').page(params[:page]).per(per)
                 else
-                  @race.today_forecasts(User::RETURN_RATE_MASTER).order('users.tanshou DESC').page(params[:page]).per(30)
+                  @race.today_forecasts(User::RETURN_RATE_MASTER).order('users.tanshou DESC').page(params[:page]).per(per)
                 end
   end
 end

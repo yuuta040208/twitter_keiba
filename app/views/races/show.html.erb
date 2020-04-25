@@ -4,7 +4,7 @@
 </h1>
 
 <div class="forecast-ai mb-3">
-  <%= link_to 'AI予想を見る', bet_path(@race.id) %>
+  <%= link_to 'AI予想を見る', bet_path(@race.id) %>　<%= link_to 'ツイート一覧を見る', race_tweets_path(@race.id) %>
 </div>
 
 <%= paginate @forecasts %>
