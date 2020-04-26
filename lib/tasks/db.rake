@@ -27,7 +27,7 @@ namespace :db do
   desc "ユーザの単勝、複勝を全て更新する"
   task :user_money, ['date'] => :environment do |task, args|
     User.where('tanshou IS NOT NULL OR fukushou IS NOT NULL').update_all(tanshou: nil, fukushou:nil)
-    Rake::Task['scoring:sum'].invoke
+    Rake::Task['scoring:hit'].invoke
   end
 
   desc "hitテーブルの中身を全て空にする"
