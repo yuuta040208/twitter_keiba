@@ -76,14 +76,16 @@ class Race < ApplicationRecord
   end
 
   def calculate_twitter_rates(honmeis, taikous, tananas, renkas)
-    scores = []
-    horses.order(:umaban).each do |horse|
-      scores << (honmeis.count(horse.name) * 10) + (taikous.count(horse.name) * 3) + (tananas.count(horse.name) * 2) + (renkas.count(horse.name) * 1)
-    end
+    Rails.cache.fetch("cache_twitter_rates_#{id}", expired_in: 10.minute) do
+      scores = []
+      horses.order(:umaban).each do |horse|
+        scores << (honmeis.count(horse.name) * 10) + (taikous.count(horse.name) * 3) + (tananas.count(horse.name) * 2) + (renkas.count(horse.name) * 1)
+      end
 
-    twitter_odds = scores.map {|a| a.zero? ? 0 : (scores.sum.to_f / a * 0.8).round(2)}
-    horses.order(:umaban).map.with_index do |horse, i|
-      twitter_odds[i].zero? ? 0 : (horse.odds / twitter_odds[i]).round(2)
+      twitter_odds = scores.map {|a| a.zero? ? 0 : (scores.sum.to_f / a * 0.8).round(2)}
+      horses.order(:umaban).map.with_index do |horse, i|
+        twitter_odds[i].zero? ? 0 : (horse.odds / twitter_odds[i]).round(2)
+      end
     end
   end
 end

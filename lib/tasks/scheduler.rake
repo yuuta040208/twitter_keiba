@@ -22,6 +22,7 @@ task :scheduler => :environment do
       puts 'キャッシュをクリア'
       races.each do |race|
         Rails.cache.delete_matched("cache_forecasts_#{race.id}_*")
+        Rails.cache.delete("cache_twitter_rates_#{race.id}")
       end
 
     elsif last_race_time.to_i <= now.to_i
