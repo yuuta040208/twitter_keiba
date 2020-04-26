@@ -32,12 +32,12 @@ class RacesController < ApplicationController
 
     @twitter_rates = @race.calculate_twitter_rates(@honmeis, @taikous, @tananas, @renkas)
 
-    @forecasts = forecasts.order('users.tanshou DESC').page(params[:page])
+    @forecasts = forecasts.order('users.tanshou DESC NULLS LAST').page(params[:page])
   end
 
   def tweets
     per = request.from_smartphone? ? 9 : 30
     @race = Race.find(params[:race_id])
-    @forecasts = @race.cache_forecasts(User::RETURN_RATE_MASTER).order('users.tanshou IS NULL DESC').page(params[:page]).per(per)
+    @forecasts = @race.cache_forecasts(User::RETURN_RATE_MASTER).order('users.tanshou DESC NULLS LAST').page(params[:page]).per(per)
   end
 end

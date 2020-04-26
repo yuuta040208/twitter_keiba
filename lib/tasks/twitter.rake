@@ -48,6 +48,15 @@ namespace :twitter do
                   url: tweet.user.url,
                   image_url: tweet.user.profile_image_url,
               )
+            else
+              user = User.find_by(id: tweet.user.id)
+              if user.present? && user.name != tweet.user.name
+                user.update!(
+                    name: tweet.user.name,
+                    url: tweet.user.url,
+                    image_url: tweet.user.profile_image_url,
+                )
+              end
             end
 
             if Tweet.where(id: tweet.id).empty?
