@@ -19,6 +19,11 @@ task :scheduler => :environment do
       puts 'オッズを更新'
       Rake::Task['weekly:odds'].invoke(Date.today.strftime("%m%d"))
 
+      puts 'キャッシュをクリア'
+      races.each do |race|
+        Rails.cache.delete_matched("cache_forecasts_#{race.id}_*")
+      end
+
     elsif last_race_time.to_i <= now.to_i
 
       results = Result.where(race_id: last_race.id)

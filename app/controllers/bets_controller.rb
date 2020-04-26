@@ -4,11 +4,7 @@ class BetsController < ApplicationController
 
   def show
     @race = Race.find(params[:id])
-    forecasts = if @race.result.present?
-                  @race.cache_forecasts(User::RETURN_RATE_PROFESSIONAL)
-                else
-                  @race.today_forecasts(User::RETURN_RATE_PROFESSIONAL)
-                end
+    forecasts = @race.cache_forecasts(User::RETURN_RATE_PROFESSIONAL)
 
     honmeis = forecasts.pluck(:honmei)
     taikous = forecasts.pluck(:taikou)

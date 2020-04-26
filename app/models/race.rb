@@ -64,8 +64,14 @@ class Race < ApplicationRecord
   end
 
   def cache_forecasts(return_rate)
-    Rails.cache.fetch("cache_forecasts_#{id}_#{return_rate}", expired_in: 60.minutes) do
-      past_forecasts(return_rate)
+    if self.result.present?
+      Rails.cache.fetch("cache_forecasts_#{id}_#{return_rate}", expired_in: 24.hour) do
+        past_forecasts(return_rate)
+      end
+    else
+      Rails.cache.fetch("cache_forecasts_#{id}_#{return_rate}", expired_in: 10.minute) do
+        today_forecasts(return_rate)
+      end
     end
   end
 

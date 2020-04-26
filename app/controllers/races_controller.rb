@@ -23,11 +23,7 @@ class RacesController < ApplicationController
                      params[:return_rate].to_i
                    end
 
-    forecasts = if @race.result.present?
-                  @race.cache_forecasts(@return_rate)
-                else
-                  @race.today_forecasts(@return_rate)
-                end
+    forecasts = @race.cache_forecasts(@return_rate)
 
     @honmeis = forecasts.pluck(:honmei)
     @taikous = forecasts.pluck(:taikou)
@@ -42,10 +38,6 @@ class RacesController < ApplicationController
   def tweets
     per = request.from_smartphone? ? 9 : 30
     @race = Race.find(params[:race_id])
-    @forecasts = if @race.result.present?
-                   @race.cache_forecasts(User::RETURN_RATE_MASTER).order('users.tanshou IS NULL DESC').page(params[:page]).per(per)
-                 else
-                   @race.today_forecasts(User::RETURN_RATE_MASTER).order('users.tanshou IS NULL DESC').page(params[:page]).per(per)
-                 end
+    @forecasts = @race.cache_forecasts(User::RETURN_RATE_MASTER).order('users.tanshou IS NULL DESC').page(params[:page]).per(per)
   end
 end
