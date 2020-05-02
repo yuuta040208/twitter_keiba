@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_14_030010) do
+ActiveRecord::Schema.define(version: 2020_05_02_063112) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,11 +47,23 @@ ActiveRecord::Schema.define(version: 2020_03_14_030010) do
     t.integer "wakuban"
     t.integer "umaban"
     t.string "jockey_name"
-    t.float "odds"
+    t.float "win"
     t.integer "popularity"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["race_id"], name: "index_horses_on_race_id"
+  end
+
+  create_table "odds", force: :cascade do |t|
+    t.bigint "race_id"
+    t.bigint "horse_id"
+    t.integer "time"
+    t.float "win"
+    t.float "place"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["horse_id"], name: "index_odds_on_horse_id"
+    t.index ["race_id"], name: "index_odds_on_race_id"
   end
 
   create_table "races", force: :cascade do |t|
@@ -103,4 +115,6 @@ ActiveRecord::Schema.define(version: 2020_03_14_030010) do
     t.integer "fukushou"
   end
 
+  add_foreign_key "odds", "horses"
+  add_foreign_key "odds", "races"
 end

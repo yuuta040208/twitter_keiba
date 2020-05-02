@@ -6,6 +6,7 @@ class Race < ApplicationRecord
   has_many :forecasts, dependent: :destroy
   has_many :hits, dependent: :destroy
   has_one :result, dependent: :destroy
+  has_many :odds, dependent: :destroy
 
   def today_forecasts(return_rate)
     user_ids = []
@@ -83,8 +84,9 @@ class Race < ApplicationRecord
       end
 
       twitter_odds = scores.map {|a| a.zero? ? 0 : (scores.sum.to_f / a * 0.8).round(2)}
-      horses.order(:umaban).map.with_index do |horse, i|
-        twitter_odds[i].zero? ? 0 : (horse.odds / twitter_odds[i]).round(2)
+      horses.includes(:odds).order(:umaban).map.with_index do |horse, i|
+        odds = horse.odds.present? ? horse.odds.last.win : horse.win
+        twitter_odds[i].zero? ? 0 : (odds / twitter_odds[i]).round(2)
       end
     end
   end

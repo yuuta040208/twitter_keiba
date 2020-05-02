@@ -14,8 +14,7 @@ class RacesController < ApplicationController
 
   def show
     @race = Race.find(params[:id])
-    @horses = @race.horses.
-        order(:umaban)
+    @horses = @race.horses.includes(:odds).order(:umaban)
 
     @return_rate = if params[:return_rate].nil?
                      User::RETURN_RATE_PROFESSIONAL

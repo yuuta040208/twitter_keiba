@@ -54,7 +54,8 @@
   <tr>
     <th>オッズ</th>
     <% @horses.reverse_each do |horse| %>
-      <td class="text-center"><u><%= horse.odds %></u></td>
+      <% odds = horse.odds.present? ? horse.odds.last.win : horse.win %>
+      <td class="text-center"><u><%= odds %></u></td>
     <% end %>
   </tr>
 

@@ -56,8 +56,7 @@ namespace :scrape do
               race_id: race.id,
               name: tr.css('td:nth-child(3)').text,
               wakuban: tr.css('td:nth-child(1)').text.to_i,
-              umaban: tr.css('td:nth-child(2)').text.to_i,
-              odds: tr.css('td:nth-child(4)').text.to_f
+              umaban: tr.css('td:nth-child(2)').text.to_i
           )
           count += 1
         end
@@ -85,10 +84,14 @@ namespace :scrape do
 
       doc.css('table.tanTables tbody > tr').each do |tr|
         horse = race.horses.find_by(umaban: tr.css('td:nth-child(2)').text.to_i)
-        horse.odds = tr.css('td:nth-child(4)').text.to_f
-        horse.save!
         count += 1
-        p horse.odds
+        Odds.create!(
+            race_id: race.id,
+            horse_id: horse.id,
+            time: Odds.where(horse_id: horse.id).count + 1,
+            win: tr.css('td:nth-child(4)').text.to_f,
+            place: ((tr.css('td:nth-child(5)').text.to_f + tr.css('td:nth-child(7)').text.to_f) / 2).round(1)
+        )
       end
 
       puts "#{count}件のデータを更新しました。"
