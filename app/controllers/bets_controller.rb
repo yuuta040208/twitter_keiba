@@ -34,16 +34,17 @@ class BetsController < ApplicationController
     horses = race.horses
     horse_info = rates.map.with_index(1) do |rate, i|
       horse = horses.find_by(umaban: i)
-      weight = if horse.odds <= 10
-                 1 + (10 - horse.odds) * 0.025
+      odds = horse.odds.present? ? horse.odds.last.win : horse.win
+      weight = if odds <= 10
+                 1 + (10 - odds) * 0.025
                else
-                 1 - (horse.odds / 10) * 0.05
+                 1 - (odds / 10) * 0.05
                end
 
       {
           number: i,
           name: horse.name,
-          odds: horse.odds,
+          odds: odds,
           rate: rate * weight
       }
     end
