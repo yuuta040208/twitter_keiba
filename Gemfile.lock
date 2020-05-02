@@ -78,6 +78,7 @@ GEM
     childprocess (3.0.0)
     concurrent-ruby (1.1.5)
     crass (1.0.5)
+    dalli (2.7.10)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     equalizer (0.0.11)
@@ -260,6 +261,7 @@ DEPENDENCIES
   bullet
   byebug
   capybara (>= 2.15)
+  dalli
   jbuilder (~> 2.7)
   kaminari
   kaminari-bootstrap
