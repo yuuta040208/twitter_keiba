@@ -1,0 +1,54 @@
+<canvas class="mt-3 mb-3" id="myLineChart<%= y_max %>"></canvas>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+<script>
+    window.setTimeout(drawGraph, 500);
+    function drawGraph() {
+        var config = {
+            type: 'line',
+            data: {
+                labels: <%= labels.to_json.html_safe %>,
+                datasets: <%= datasets.to_json.html_safe %>,
+            },
+            options: {
+                animation: {
+                    duration: 0
+                },
+                legend: {
+                    display: true,
+                    labels: {
+                        padding: 20
+                    }
+                },
+                title: {
+                    display: true,
+                    text: "<%= title %>"
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            max: <%= y_max %>
+                        }
+                    }]
+                },
+            },
+            plugins: [{
+                beforeDraw: drawBackground
+            }]
+        };
+
+        var ctx = document.getElementById("myLineChart<%= y_max %>").getContext("2d");
+        var lineChart = new Chart(ctx, config);
+
+        function drawBackground(target) {
+            var xscale = target.scales['x-axis-0'];
+            var yscale = target.scales['y-axis-0'];
+            var left = xscale.left;
+            var top = yscale.getPixelForValue(100);
+            var bottom = yscale.getPixelForValue(0) - top;
+
+            ctx.fillStyle = 'rgba(128, 128, 128, 0.2)';
+            ctx.fillRect(left, top, xscale.width, bottom);
+        }
+    }
+</script>

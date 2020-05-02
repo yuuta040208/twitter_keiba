@@ -39,4 +39,9 @@ class RacesController < ApplicationController
     @race = Race.find(params[:race_id])
     @forecasts = @race.cache_forecasts(User::RETURN_RATE_MASTER).order('users.tanshou DESC NULLS LAST').page(params[:page]).per(per)
   end
+
+  def odds
+    @race = Race.find(params[:race_id])
+    @labels = @race.horses.first.odds.order(:created_at).pluck(:created_at).map {|a| a.in_time_zone('Tokyo').strftime('%H:%M')}
+  end
 end

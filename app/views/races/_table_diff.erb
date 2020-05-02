@@ -1,0 +1,39 @@
+<div class="p-3">
+  <table class="table table-bordered table-striped table-sm table-responsive text-nowrap sticky-table" style="border-width: 2px;">
+    <thead>
+    <tr>
+      <th class="text-center">馬名</th>
+      <% labels.reverse.each do |label| %>
+        <th class="text-center" colspan="2" style="border-left-width: 2px; border-right-width: 2px;"><%= label %></th>
+      <% end %>
+    </tr>
+    <tr>
+      <th></th>
+      <% labels.size.times do %>
+        <th class="text-center" style="border-left-width: 2px;">単勝</th>
+        <th class="text-center" style="border-right-width: 2px;">複勝</th>
+      <% end %>
+    </tr>
+    </thead>
+    <tbody>
+    <% horses.each do |horse| %>
+      <tr>
+        <td class="pl-3"><%= "#{horse.umaban} #{horse.name}" %></td>
+        <% labels.size.times do |i| %>
+          <% win_rank = win_odds.reverse[i].select {|a| a.first == horse.umaban}.flatten.second %>
+          <% place_rank = place_odds.reverse[i].select {|a| a.first == horse.umaban}.flatten.second %>
+          <% if win_rank.present? && place_rank.present? %>
+            <% color_index = (12 - (win_rank - place_rank).abs * 2) < 0 ? 0 : 12 - (win_rank - place_rank).abs * 2 %>
+            <% color = Settings.rank_colors[color_index] %>
+          <% else %>
+            <% color = 'white' %>
+          <% end %>
+
+          <td class="text-center" style="background-color: <%= color %>; border-left-width: 2px;"><%= win_rank %></td>
+          <td class="text-center" style="background-color: <%= color %>; border-right-width: 2px;"><%= place_rank %></td>
+        <% end %>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>

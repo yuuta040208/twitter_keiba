@@ -1,0 +1,27 @@
+<h2 class="m-3"><%= @race.name %></h2>
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="tanshou-tab" data-toggle="tab" href="#tanshou" role="tab" aria-controls="tanshou" aria-selected="true">単勝</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="fukushou-tab" data-toggle="tab" href="#fukushou" role="tab" aria-controls="fukushou" aria-selected="false">複勝</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="diff-tab" data-toggle="tab" href="#diff" role="tab" aria-controls="diff" aria-selected="false">券種間差</a>
+  </li>
+</ul>
+
+<div class="tab-content">
+  <div class="tab-pane active" id="tanshou" role="tabpanel" aria-labelledby="tanshou-tab">
+    <%= render partial: 'graph', locals: { labels: @labels, datasets: @race.graph_odds(:win), title: '単勝オッズ', y_max: 50 } %>
+    <%= render partial: 'table', locals: { labels: @labels, horses: @race.horses, odds: @race.table_odds(:win) } %>
+  </div>
+  <div class="tab-pane" id="fukushou" role="tabpanel" aria-labelledby="fukushou-tab">
+    <%= render partial: 'graph', locals: { labels: @labels, datasets: @race.graph_odds(:place), title: '複勝オッズ', y_max: 20 } %>
+    <%= render partial: 'table', locals: { labels: @labels, horses: @race.horses, odds: @race.table_odds(:place) } %>
+  </div>
+  <div class="tab-pane" id="diff" role="tabpanel" aria-labelledby="diff-tab">
+    <%= render partial: 'table_diff', locals: { labels: @labels, horses: @race.horses, win_odds: @race.table_odds(:win), place_odds: @race.table_odds(:place) } %>
+  </div>
+</div>

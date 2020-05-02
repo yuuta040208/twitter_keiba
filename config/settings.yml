@@ -17,6 +17,7 @@ defaults: &defaults
     16: [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7]
     17: [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 7]
     18: [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 6, 7, 7, 7]
+  rank_colors: ['#ff8080', '#ff8c8c', '#ff9898', '#ffa4a4', '#ffb0b0', '#ffbcbc', '#ffc8c8', '#ffd4d4', '#ffe0e0', '#ffecec', '#fff8f8', '#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff']
 
 development:
   <<: *defaults

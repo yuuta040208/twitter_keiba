@@ -1,0 +1,25 @@
+<div class="p-3">
+  <table class="table table-bordered table-striped table-sm table-responsive text-nowrap sticky-table">
+    <thead>
+    <tr>
+      <th class="text-center">馬名</th>
+      <% labels.reverse.each do |label| %>
+        <th class="text-center"><%= label %></th>
+      <% end %>
+    </tr>
+    </thead>
+    <tbody>
+    <% horses.each do |horse| %>
+      <tr>
+        <% text_color = horse.odds.last.win == 0 ? 'red' : 'black' %>
+        <td class="pl-3" style="color: <%= text_color %>;"><%= "#{horse.umaban} #{horse.name}" %></td>
+        <% labels.size.times do |i| %>
+          <% rank = odds.reverse[i].select {|a| a.first == horse.umaban}.flatten.second %>
+          <% color = rank.present? ? Settings.rank_colors[rank - 1] : 'white' %>
+          <td class="text-center" style="background-color: <%= color %>"><%= rank %></td>
+        <% end %>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>

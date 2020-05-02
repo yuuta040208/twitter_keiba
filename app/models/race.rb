@@ -90,4 +90,22 @@ class Race < ApplicationRecord
       end
     end
   end
+
+  def table_odds(bet_type)
+    return [] unless [:win, :place].include?(bet_type)
+
+    o = odds.joins(:horse).where(time: odds.pluck(:time).uniq).pluck('horses.umaban', bet_type)
+    horses.pluck(:umaban).map {|i| o.select {|a| a.first == i}}.transpose.map {|a| a.select { |b| b.second > 0 }.sort_by {|b| b.second}.map.with_index(1) {|b, j| [b.first, j]}}
+  end
+
+  def graph_odds(bet_type)
+    horses.includes(:odds).order(:umaban).map do |horse|
+      {
+          label: horse.name,
+          data: horse.odds.pluck(bet_type),
+          borderColor: Settings.color[horse.wakuban - 1],
+          backgroundColor: 'rgba(0, 0, 0, 0)'
+      }
+    end
+  end
 end
