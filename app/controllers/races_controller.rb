@@ -15,13 +15,15 @@ class RacesController < ApplicationController
                      params[:return_rate].to_i
                    end
 
-    @forecasts = @race.cache_forecasts(@return_rate).order('users.tanshou DESC NULLS LAST').page(params[:page])
-    @honmeis = @forecasts.pluck(:honmei)
-    @taikous = @forecasts.pluck(:taikou)
-    @tananas = @forecasts.pluck(:tanana)
-    @renkas = @forecasts.pluck(:renka)
+    forecasts = @race.cache_forecasts(@return_rate)
+
+    @honmeis = forecasts.pluck(:honmei)
+    @taikous = forecasts.pluck(:taikou)
+    @tananas = forecasts.pluck(:tanana)
+    @renkas = forecasts.pluck(:renka)
 
     @twitter_rates = @race.calculate_twitter_rates(@honmeis, @taikous, @tananas, @renkas)
+    @forecasts = forecasts.order('users.tanshou DESC NULLS LAST').page(params[:page])
   end
 
   def tweets

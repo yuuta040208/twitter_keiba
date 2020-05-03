@@ -23,8 +23,8 @@ task :scheduler => :environment do
       races.each do |race|
         (1..3).each do |return_rate|
           Rails.cache.delete("cache_forecasts_#{race.id}_#{return_rate}")
-          Rails.cache.delete("cache_twitter_rates_#{race.id}")
         end
+        Rails.cache.delete("cache_twitter_rates_#{race.id}")
       end
 
     elsif last_race_time.to_i <= now.to_i
