@@ -11,7 +11,7 @@ class BetsController < ApplicationController
     tananas = forecasts.pluck(:tanana)
     renkas = forecasts.pluck(:renka)
 
-    twitter_rates = @race.calculate_twitter_rates(honmeis, taikous, tananas, renkas)
+    twitter_rates = @race.calculate_twitter_rates(honmeis, taikous, tananas, renkas, User::RETURN_RATE_PROFESSIONAL)
     @my_forecasts = my_forecast(twitter_rates, @race)
   end
 
