@@ -10,7 +10,7 @@ class Race < ApplicationRecord
 
   def today_forecasts(return_rate)
     user_ids = []
-    User.includes(:forecasts).where(id: forecasts.pluck(:user_id)).each do |user|
+    User.includes(forecasts: [race: [:result]]).where(id: forecasts.pluck(:user_id)).each do |user|
       forecast_size = user.forecasts.map { |forecast| forecast.race.result }.compact.size
       if return_rate == User::RETURN_RATE_PROFESSIONAL
         tanshou_rate = user.tanshou.to_f / forecast_size
