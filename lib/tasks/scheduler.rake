@@ -21,7 +21,9 @@ task :scheduler => :environment do
 
       puts 'キャッシュをクリア'
       races.each do |race|
-        Rails.cache.delete_matched("cache_forecasts_#{race.id}_*")
+        (1..3).each do |return_rate|
+          Rails.cache.delete("cache_forecasts_#{race.id}_#{return_rate}")
+        end
         Rails.cache.delete("cache_twitter_rates_#{race.id}")
       end
 
