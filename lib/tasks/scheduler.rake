@@ -16,8 +16,8 @@ task :scheduler => :environment do
       puts 'ツイートを検索'
       Rake::Task['weekly:tweet'].invoke(Date.today.strftime("%m%d"))
 
-      puts 'オッズを更新'
-      Rake::Task['weekly:odds'].invoke(Date.today.strftime("%m%d"))
+      # puts 'オッズを更新'
+      # Rake::Task['weekly:odds'].invoke(Date.today.strftime("%m%d"))
 
       puts 'キャッシュをクリア'
       races.each do |race|
