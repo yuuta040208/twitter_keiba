@@ -76,8 +76,8 @@ class Race < ApplicationRecord
     end
   end
 
-  def calculate_twitter_rates(honmeis, taikous, tananas, renkas)
-    Rails.cache.fetch("cache_twitter_rates_#{id}", expired_in: 10.minute) do
+  def calculate_twitter_rates(honmeis, taikous, tananas, renkas, return_rate)
+    Rails.cache.fetch("cache_twitter_rates_#{id}_#{return_rate}", expired_in: 10.minute) do
       scores = []
       horses.order(:umaban).each do |horse|
         scores << (honmeis.count(horse.name) * 10) + (taikous.count(horse.name) * 3) + (tananas.count(horse.name) * 2) + (renkas.count(horse.name) * 1)

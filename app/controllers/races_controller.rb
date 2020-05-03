@@ -22,7 +22,7 @@ class RacesController < ApplicationController
     @tananas = forecasts.pluck(:tanana)
     @renkas = forecasts.pluck(:renka)
 
-    @twitter_rates = @race.calculate_twitter_rates(@honmeis, @taikous, @tananas, @renkas)
+    @twitter_rates = @race.calculate_twitter_rates(@honmeis, @taikous, @tananas, @renkas, @return_rate)
     @forecasts = forecasts.order('users.tanshou DESC NULLS LAST').page(params[:page])
   end
 
