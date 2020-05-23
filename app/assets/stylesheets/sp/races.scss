@@ -70,3 +70,7 @@ div {
   flex-grow: 1;
   align-items: center;
 }
+
+input[type=checkbox] {
+  transform: scale(3);
+}

@@ -33,7 +33,7 @@
   <tr>
     <th class="sticky blank-cell"></th>
     <% count = @horses.count %>
-    <% @horses.order(:umaban).each_with_index.reverse_each do |horse, i| %>
+    <% @horses.each_with_index.reverse_each do |horse, i| %>
       <th class="horse sticky" style="<%= horse_color(count, i) %>">
         <span class="vertical">
           <span class="text-combine"><%= horse.umaban %></span>

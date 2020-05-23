@@ -17,11 +17,7 @@ class RacesController < ApplicationController
 
     forecasts = @race.cache_forecasts(@return_rate)
 
-    @honmeis = forecasts.pluck(:honmei)
-    @taikous = forecasts.pluck(:taikou)
-    @tananas = forecasts.pluck(:tanana)
-    @renkas = forecasts.pluck(:renka)
-
+    @honmeis, @taikous, @tananas, @renkas = forecasts.pluck(:honmei, :taikou, :tanana, :renka).transpose
     @twitter_rates = @race.calculate_twitter_rates(@honmeis, @taikous, @tananas, @renkas, @return_rate)
     @forecasts = forecasts.order('users.tanshou DESC NULLS LAST').page(params[:page])
   end
@@ -29,7 +25,12 @@ class RacesController < ApplicationController
   def tweets
     per = request.from_smartphone? ? 9 : 30
     @race = Race.find(params[:race_id])
-    @forecasts = @race.cache_forecasts(User::RETURN_RATE_MASTER).order('users.tanshou DESC NULLS LAST').page(params[:page]).per(per)
+    @forecasts = @race.cache_forecasts(User::RETURN_RATE_MASTER)
+    if params[:horse_number]
+      horse_names = @race.horses.where(horses: { umaban: params[:horse_number] }).pluck(:name)
+      @forecasts = @forecasts.where(honmei: horse_names) if horse_names.present?
+    end
+    @forecasts = @forecasts.order('users.tanshou DESC NULLS LAST').page(params[:page]).per(per)
   end
 
   def odds

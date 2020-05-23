@@ -3,6 +3,34 @@
   <small><%= @race.hold %> <%= @race.number %></small>
 </h1>
 
+<div class="mb-3">
+  <%= form_tag(race_tweets_path(race_id: @race.id), method: 'get') do %>
+    <div class="row">
+      <% @race.horses.order(:umaban).each_slice(3) do |first, second, third| %>
+        <% if first.present? %>
+          <div class="col-sm-4">
+            <%= check_box_tag 'horse_number[]', first.umaban, params[:horse_number]&.include?(first.umaban.to_s) %>
+            <%= label_tag "#{first.umaban}#{first.name}" %>
+          </div>
+        <% end %>
+        <% if second.present? %>
+          <div class="col-sm-4">
+            <%= check_box_tag 'horse_number[]', second.umaban, params[:horse_number]&.include?(second.umaban.to_s) %>
+            <%= label_tag "#{second.umaban}#{second.name}" %>
+          </div>
+        <% end %>
+        <% if third.present? %>
+          <div class="col-sm-4">
+            <%= check_box_tag 'horse_number[]' , third.umaban, params[:horse_number]&.include?(third.umaban.to_s) %>
+            <%= label_tag "#{third.umaban}#{third.name}" %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+    <%= submit_tag '検索', name: nil, class: 'btn btn-primary sm-2' %>
+  <% end %>
+</div>
+
 <%= paginate @forecasts %>
 
 <div class="row">
