@@ -1,6 +1,6 @@
 <div class="card mt-2">
   <div class="card-header bg-primary text-white">
-    <%= tweet.user.name %>
+    <%= link_to tweet.user.name, user_path(tweet.user.id), class: 'text-white' %>
     <%= link_to tweet.url, target: '_blank' do %>
       <%= image_tag asset_path('twitter_icon.png') %>
     <% end %>
