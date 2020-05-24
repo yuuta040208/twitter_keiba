@@ -26,6 +26,7 @@ class RacesController < ApplicationController
     per = request.from_smartphone? ? 9 : 30
     @race = Race.find(params[:race_id])
     @forecasts = @race.cache_forecasts(User::RETURN_RATE_MASTER)
+    @honmeis = @forecasts.pluck(:honmei)
     if params[:horse_number]
       horse_names = @race.horses.where(horses: { umaban: params[:horse_number] }).pluck(:name)
       @forecasts = @forecasts.where(honmei: horse_names) if horse_names.present?

@@ -10,19 +10,19 @@
         <% if first.present? %>
           <div class="col-sm-4">
             <%= check_box_tag 'horse_number[]', first.umaban, params[:horse_number]&.include?(first.umaban.to_s) %>
-            <%= label_tag "#{first.umaban}#{first.name}" %>
+            <%= label_tag "#{first.umaban}#{first.name}(#{@honmeis.count{ |honmei| honmei == first.name }})" %>
           </div>
         <% end %>
         <% if second.present? %>
           <div class="col-sm-4">
             <%= check_box_tag 'horse_number[]', second.umaban, params[:horse_number]&.include?(second.umaban.to_s) %>
-            <%= label_tag "#{second.umaban}#{second.name}" %>
+            <%= label_tag "#{second.umaban}#{second.name}(#{@honmeis.count{ |honmei| honmei == second.name }})" %>
           </div>
         <% end %>
         <% if third.present? %>
           <div class="col-sm-4">
             <%= check_box_tag 'horse_number[]' , third.umaban, params[:horse_number]&.include?(third.umaban.to_s) %>
-            <%= label_tag "#{third.umaban}#{third.name}" %>
+            <%= label_tag "#{third.umaban}#{third.name}(#{@honmeis.count{ |honmei| honmei == second.name }})" %>
           </div>
         <% end %>
       <% end %>

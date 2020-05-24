@@ -10,13 +10,13 @@
         <% if first.present? %>
           <div class="col-sm-6">
             <%= check_box_tag 'horse_number[]', first.umaban, params[:horse_number]&.include?(first.umaban.to_s), id: first.umaban %>
-            <%= label_tag first.umaban, "　#{first.umaban}#{first.name}" %>
+            <%= label_tag first.umaban, "　#{first.umaban}#{first.name}(#{@honmeis.count{ |honmei| honmei == first.name }})" %>
           </div>
         <% end %>
         <% if second.present? %>
           <div class="col-sm-6">
             <%= check_box_tag 'horse_number[]', second.umaban, params[:horse_number]&.include?(second.umaban.to_s), id: second.umaban %>
-            <%= label_tag second.umaban, "　#{second.umaban}#{second.name}" %>
+            <%= label_tag second.umaban, "　#{second.umaban}#{second.name}(#{@honmeis.count{ |honmei| honmei == second.name }})" %>
           </div>
         <% end %>
       <% end %>
