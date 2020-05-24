@@ -22,7 +22,7 @@
         <% if third.present? %>
           <div class="col-sm-4">
             <%= check_box_tag 'horse_number[]' , third.umaban, params[:horse_number]&.include?(third.umaban.to_s) %>
-            <%= label_tag "#{third.umaban}#{third.name}(#{@honmeis.count{ |honmei| honmei == second.name }})" %>
+            <%= label_tag "#{third.umaban}#{third.name}(#{@honmeis.count{ |honmei| honmei == third.name }})" %>
           </div>
         <% end %>
       <% end %>
