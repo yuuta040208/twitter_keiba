@@ -62,28 +62,28 @@
   <tr>
     <th>◎ の個数</th>
     <% @horses.reverse_each do |horse| %>
-      <td class="text-center"><b><%= @honmeis.count(horse.name) %></b></td>
+      <td class="text-center"><b><%= @honmeis&.count(horse.name) || 0 %></b></td>
     <% end %>
   </tr>
 
   <tr>
     <th>○ の個数</th>
     <% @horses.reverse_each do |horse| %>
-      <td class="text-center"><b><%= @taikous.count(horse.name) %></b></td>
+      <td class="text-center"><b><%= @taikous&.count(horse.name) || 0 %></b></td>
     <% end %>
   </tr>
 
   <tr>
     <th>▲ の個数</th>
     <% @horses.reverse_each do |horse| %>
-      <td class="text-center"><b><%= @tananas.count(horse.name) %></b></td>
+      <td class="text-center"><b><%= @tananas&.count(horse.name) || 0 %></b></td>
     <% end %>
   </tr>
 
   <tr>
     <th>△ の個数</th>
     <% @horses.reverse_each do |horse| %>
-      <td class="text-center"><b><%= @renkas.count(horse.name) %></b></td>
+      <td class="text-center"><b><%= @renkas&.count(horse.name) || 0 %></b></td>
     <% end %>
   </tr>
 
