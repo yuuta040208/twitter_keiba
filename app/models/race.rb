@@ -80,7 +80,7 @@ class Race < ApplicationRecord
     Rails.cache.fetch("cache_twitter_rates_#{id}_#{return_rate}", expired_in: 10.minute) do
       scores = []
       horses.order(:umaban).each do |horse|
-        scores << (honmeis.count(horse.name) * 10) + (taikous.count(horse.name) * 3) + (tananas.count(horse.name) * 2) + (renkas.count(horse.name) * 1)
+        scores << (honmeis&.count(horse.name) || 0 * 10) + (taikous&.count(horse.name) || 0 * 3) + (tananas&.count(horse.name) || 0 * 2) + (renkas&.count(horse.name) || 0 * 1)
       end
 
       twitter_odds = scores.map {|a| a.zero? ? 0 : (scores.sum.to_f / a * 0.8).round(2)}
