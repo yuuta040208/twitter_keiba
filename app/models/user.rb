@@ -53,7 +53,7 @@ class User < ApplicationRecord
   def betted_average_odds
     odds = forecasts.includes(race: :horses).map do |forecast|
       horses = forecast.race.horses
-      [horses.find_by(name: forecast.honmei)&.win, horses.find_by(name: forecast.taikou)&.win]
+      horses.where(name: [forecast.honmei, forecast.taikou]).pluck(:win)
     end
 
     odds.flatten.compact.sum / odds.size

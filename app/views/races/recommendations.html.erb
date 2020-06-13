@@ -18,6 +18,6 @@
 
   <div class="col-sm-6">
     <% place_ippatsu_tweet = @user_collection.kenjitsu(:place).tweets.find_by(race_id: @race.id) %>
-    <%= render partial: 'tweet', locals: {tweet: place_ippatsu_tweet, user_name_text: '（一髪型・複勝）'} %>
+    <%= render partial: 'tweet', locals: {tweet: place_ippatsu_tweet, user_name_text: '（一発型・複勝）'} %>
   </div>
 </div>
