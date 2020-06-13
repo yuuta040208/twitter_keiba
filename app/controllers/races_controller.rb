@@ -34,8 +34,46 @@ class RacesController < ApplicationController
     @forecasts = @forecasts.order('users.tanshou DESC NULLS LAST').page(params[:page]).per(per)
   end
 
+  def bets
+    @race = Race.find(params[:race_id])
+    forecasts = @race.cache_forecasts(User::RETURN_RATE_PROFESSIONAL)
+
+    honmeis = forecasts.pluck(:honmei)
+    taikous = forecasts.pluck(:taikou)
+    tananas = forecasts.pluck(:tanana)
+    renkas = forecasts.pluck(:renka)
+
+    twitter_rates = @race.calculate_twitter_rates(honmeis, taikous, tananas, renkas, User::RETURN_RATE_PROFESSIONAL)
+    @my_forecasts = my_forecast(twitter_rates, @race)
+  end
+
   def odds
     @race = Race.find(params[:race_id])
     @labels = @race.horses.first.odds.order(:created_at).pluck(:created_at).map {|a| a.in_time_zone('Tokyo').strftime('%H:%M')}
+  end
+
+
+  private
+
+  def my_forecast(rates, race)
+    horses = race.horses
+    horse_info = rates.map.with_index(1) do |rate, i|
+      horse = horses.find_by(umaban: i)
+      odds = horse.odds.present? ? horse.odds.last.win : horse.win
+      weight = if odds <= 10
+                 1 + (10 - odds) * 0.020
+               else
+                 1 - (odds / 10) * 0.04
+               end
+
+      {
+          number: i,
+          name: horse.name,
+          odds: odds,
+          rate: rate * weight
+      }
+    end
+
+    horse_info.sort_by {|a| a[:rate]}.reverse
   end
 end

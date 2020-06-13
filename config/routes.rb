@@ -3,10 +3,11 @@ Rails.application.routes.draw do
 
   resources :races, only: [:index, :show] do
     get :tweets
+    get :bets
     get :odds
   end
+
   resources :users, only: [:index, :show]
-  resources :bets, only: [:index, :show]
 
   namespace :admin do
     resources :races, only: [:index, :update]
