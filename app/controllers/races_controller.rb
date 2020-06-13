@@ -47,6 +47,12 @@ class RacesController < ApplicationController
     @my_forecasts = my_forecast(twitter_rates, @race)
   end
 
+  def recommendations
+    @race = Race.find(params[:race_id])
+    @users = @race.cache_forecasts(User::RETURN_RATE_MASTER).map(&:user)
+    @user_collection = UserCollection.new(@users)
+  end
+
   def odds
     @race = Race.find(params[:race_id])
     @labels = @race.horses.first.odds.order(:created_at).pluck(:created_at).map {|a| a.in_time_zone('Tokyo').strftime('%H:%M')}

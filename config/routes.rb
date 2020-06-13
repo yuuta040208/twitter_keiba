@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :races, only: [:index, :show] do
     get :tweets
     get :bets
+    get :recommendations
     get :odds
   end
 

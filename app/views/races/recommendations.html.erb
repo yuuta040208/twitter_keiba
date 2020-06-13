@@ -1,0 +1,23 @@
+<div class="row">
+  <div class="col-sm-6">
+    <% win_kenjitsu_tweet = @user_collection.kenjitsu(:win).tweets.find_by(race_id: @race.id) %>
+    <%= render partial: 'tweet', locals: {tweet: win_kenjitsu_tweet, user_name_text: '（堅実型・単勝）'} %>
+  </div>
+
+  <div class="col-sm-6">
+    <% place_kenjitsu_tweet = @user_collection.kenjitsu(:place).tweets.find_by(race_id: @race.id) %>
+    <%= render partial: 'tweet', locals: {tweet: place_kenjitsu_tweet, user_name_text: '（堅実型・複勝）'} %>
+  </div>
+</div>
+
+<div class="row mt-3">
+  <div class="col-sm-6">
+    <% win_ippatsu_tweet = @user_collection.ippatsu(:win).tweets.find_by(race_id: @race.id) %>
+    <%= render partial: 'tweet', locals: {tweet: win_ippatsu_tweet, user_name_text: '（一発型・単勝）'} %>
+  </div>
+
+  <div class="col-sm-6">
+    <% place_ippatsu_tweet = @user_collection.kenjitsu(:place).tweets.find_by(race_id: @race.id) %>
+    <%= render partial: 'tweet', locals: {tweet: place_ippatsu_tweet, user_name_text: '（一髪型・複勝）'} %>
+  </div>
+</div>
