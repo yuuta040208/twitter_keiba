@@ -1,23 +1,43 @@
 <div class="row">
   <div class="col-sm-6">
-    <% win_kenjitsu_tweet = @user_collection.win_kenjitsu_user.tweets.find_by(race_id: @race.id) %>
-    <%= render partial: 'tweet', locals: {tweet: win_kenjitsu_tweet, user_name_text: '（堅実型・単勝）'} %>
+    <% win_kenjitsu_user = @user_collection.win_kenjitsu_user %>
+    <% if win_kenjitsu_user.present? %>
+      <% win_kenjitsu_tweet = win_kenjitsu_user.tweets.find_by(race_id: @race.id) %>
+      <%= render partial: 'tweet', locals: {tweet: win_kenjitsu_tweet, user_name_text: '（堅実型・単勝）'} %>
+    <% else %>
+      堅実型・単勝 のおすすめツイートはありません。
+    <% end %>
   </div>
 
   <div class="col-sm-6">
-    <% place_kenjitsu_tweet = @user_collection.place_kenjitsu_user.tweets.find_by(race_id: @race.id) %>
-    <%= render partial: 'tweet', locals: {tweet: place_kenjitsu_tweet, user_name_text: '（堅実型・複勝）'} %>
+    <% place_kenjitsu_user = @user_collection.place_kenjitsu_user %>
+    <% if place_kenjitsu_user.present? %>
+      <% place_kenjitsu_tweet = place_kenjitsu_user.tweets.find_by(race_id: @race.id) %>
+      <%= render partial: 'tweet', locals: {tweet: place_kenjitsu_tweet, user_name_text: '（堅実型・複勝）'} %>
+    <% else %>
+      堅実型・複勝 のおすすめツイートはありません。
+    <% end %>
   </div>
 </div>
 
 <div class="row mt-3">
   <div class="col-sm-6">
-    <% win_ippatsu_tweet = @user_collection.win_ippatsu_user.tweets.find_by(race_id: @race.id) %>
-    <%= render partial: 'tweet', locals: {tweet: win_ippatsu_tweet, user_name_text: '（一発型・単勝）'} %>
+    <% win_ippatsu_user = @user_collection.win_ippatsu_user %>
+    <% if win_ippatsu_user.present? %>
+      <% win_ippatsu_tweet = win_ippatsu_user.tweets.find_by(race_id: @race.id) %>
+      <%= render partial: 'tweet', locals: {tweet: win_ippatsu_tweet, user_name_text: '（一発型・単勝）'} %>
+    <% else %>
+      一発型・単勝 のおすすめツイートはありません。
+    <% end %>
   </div>
 
   <div class="col-sm-6">
-    <% place_ippatsu_tweet = @user_collection.place_ippatsu_user.tweets.find_by(race_id: @race.id) %>
-    <%= render partial: 'tweet', locals: {tweet: place_ippatsu_tweet, user_name_text: '（一発型・複勝）'} %>
+    <% place_ippatsu_user = @user_collection.place_ippatsu_user %>
+    <% if place_ippatsu_user.present? %>
+      <% place_ippatsu_tweet = place_ippatsu_user.tweets.find_by(race_id: @race.id) %>
+      <%= render partial: 'tweet', locals: {tweet: place_ippatsu_tweet, user_name_text: '（一発型・複勝）'} %>
+    <% else %>
+      一発型・単勝 のおすすめツイートはありません。
+    <% end %>
   </div>
 </div>
