@@ -29,7 +29,7 @@
 
 <div>
   <% @forecasts.each do |forecast| %>
-    <%= render partial: 'tweet', locals: {tweet: forecast.tweet} %>
+    <%= render partial: 'tweet', locals: { tweet: forecast.tweet, user_name_text: nil } %>
   <% end %>
 </div>
 
