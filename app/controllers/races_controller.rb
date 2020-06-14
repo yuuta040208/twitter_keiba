@@ -51,8 +51,8 @@ class RacesController < ApplicationController
     @race = Race.find(params[:race_id])
     @users = @race.cache_forecasts(User::RETURN_RATE_MASTER).map(&:user)
 
-    Rails.cache.fetch("cache_recommendations_#{@race.id}", expired_in: 10.minute) do
-      @user_collection = UserCollection.new(@users)
+    @user_collection = Rails.cache.fetch("cache_recommendations_#{@race.id}", expired_in: 10.minute) do
+      UserCollection.new(@users)
     end
   end
 
