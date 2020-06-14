@@ -31,31 +31,11 @@ class User < ApplicationRecord
     return unless [:win, :place].include?(bet_type)
 
     if bet_type == :win
-      hits = forecasts.includes(race: :result).map do |forecast|
-        next if forecast.race.result.nil?
-
-        forecast.honmei == forecast.race.result.first_horse
-      end
-
+      hits = forecasts.includes(:hit).map { |forecast| forecast.hit.present? && forecast.hit.honmei_tanshou.present? }
       hits.count(true) * 100 / forecasts.size
     else
-      hits = forecasts.includes(race: :result).map do |forecast|
-        result = forecast.race.result
-        next if result.nil?
-
-        [result.first_horse, result.second_horse, result.third_horse].include?(forecast.honmei)
-      end
-
+      hits = forecasts.includes(:hit).map { |forecast| forecast.hit.present? && forecast.hit.honmei_fukushou.present? }
       hits.count(true) * 100 / forecasts.size
     end
-  end
-
-  def betted_average_odds
-    odds = forecasts.includes(race: :horses).map do |forecast|
-      horses = forecast.race.horses
-      horses.where(name: [forecast.honmei, forecast.taikou]).pluck(:win)
-    end
-
-    odds.flatten.compact.sum / odds.size
   end
 end
