@@ -38,5 +38,6 @@ namespace :weekly do
 
     Rake::Task['scrape:result'].invoke(date)
     Rake::Task['scoring:hit'].invoke(date)
+    Rake::Task['scoring:user_odds'].invoke(date)
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_02_063112) do
+ActiveRecord::Schema.define(version: 2020_06_13_151125) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -92,6 +92,41 @@ ActiveRecord::Schema.define(version: 2020_05_02_063112) do
     t.index ["race_id"], name: "index_results_on_race_id"
   end
 
+  create_table "thorses", force: :cascade do |t|
+    t.bigint "trace_id"
+    t.string "name"
+    t.integer "wakuban"
+    t.integer "umaban"
+    t.string "jockey_name"
+    t.float "win"
+    t.float "place"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["trace_id"], name: "index_thorses_on_trace_id"
+  end
+
+  create_table "traces", force: :cascade do |t|
+    t.string "date"
+    t.string "time"
+    t.string "number"
+    t.string "hold"
+    t.string "name"
+    t.text "url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "ttweets", force: :cascade do |t|
+    t.bigint "trace_id"
+    t.string "name"
+    t.text "content"
+    t.text "url"
+    t.datetime "tweeted_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["trace_id"], name: "index_ttweets_on_trace_id"
+  end
+
   create_table "tweets", id: :string, force: :cascade do |t|
     t.bigint "race_id"
     t.string "user_id", null: false
@@ -113,8 +148,12 @@ ActiveRecord::Schema.define(version: 2020_05_02_063112) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "tanshou"
     t.integer "fukushou"
+    t.float "average_win"
+    t.float "average_place"
   end
 
   add_foreign_key "odds", "horses"
   add_foreign_key "odds", "races"
+  add_foreign_key "thorses", "traces"
+  add_foreign_key "ttweets", "traces"
 end

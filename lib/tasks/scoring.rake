@@ -169,4 +169,33 @@ namespace :scoring do
       end
     end
   end
+
+
+  desc "ユーザーの平均予想オッズを計算"
+  task :user_odds, ['date'] => :environment do |task, args|
+    races = if args['date'].present?
+              Race.joins(forecasts: :user).joins(:result).distinct.where(date: "#{Date.today.year}#{args['date']}")
+            else
+              Race.joins(forecasts: :user).joins(:result).distinct.all
+            end
+
+    races.each do |race|
+      User.transaction do
+        race.forecasts.each do |forecast|
+          user = forecast.user
+          user_forecast_count = user.forecasts.count
+          odds = race.horses.find_by(name: forecast.honmei)&.win || 0
+
+          if user.average_win.present?
+            total_average_odds = (user.average_win * (user_forecast_count - 1) + odds) / user_forecast_count
+          else
+            total_average_odds = odds
+          end
+
+          user.update!(average_win: total_average_odds.round(2))
+          puts "#{user.name} before: #{user.average_win}, now: #{odds}, count: #{user_forecast_count}, after: #{total_average_odds.round(2)}"
+        end
+      end
+    end
+  end
 end
