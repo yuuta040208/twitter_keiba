@@ -1,7 +1,7 @@
 desc "This task is called by the Heroku scheduler add-on"
 task :scheduler => :environment do
   races = Race.where(date: Date.today.strftime("%Y%m%d"))
-  last_race = races.max{|a, b| a.time.gsub(':', '').to_i <=> b.time.gsub(':', '').to_i}
+  last_race = races.max {|a, b| a.time.gsub(':', '').to_i <=> b.time.gsub(':', '').to_i}
 
   if races.blank?
     puts 'レース情報を取得'
@@ -12,7 +12,7 @@ task :scheduler => :environment do
     now = now.end_with?('0') ? now.slice(1..-1) : now
     last_race_time = last_race.time.gsub(':', '')
 
-    if  now.to_i < last_race_time.to_i && 1200 < now.to_i
+    if now.to_i < last_race_time.to_i && 1200 < now.to_i
       puts 'ツイートを検索'
       Rake::Task['weekly:tweet'].invoke(Date.today.strftime("%m%d"))
 
@@ -25,6 +25,8 @@ task :scheduler => :environment do
           Rails.cache.delete("cache_forecasts_#{race.id}_#{return_rate}")
           Rails.cache.delete("cache_twitter_rates_#{race.id}_#{return_rate}")
         end
+
+        Rails.cache.delete("cache_recommendations_#{race.id}")
       end
 
     elsif last_race_time.to_i <= now.to_i

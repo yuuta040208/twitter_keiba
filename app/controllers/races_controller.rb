@@ -28,7 +28,7 @@ class RacesController < ApplicationController
     @forecasts = @race.cache_forecasts(User::RETURN_RATE_MASTER)
     @honmeis = @forecasts.pluck(:honmei)
     if params[:horse_number]
-      horse_names = @race.horses.where(horses: { umaban: params[:horse_number] }).pluck(:name)
+      horse_names = @race.horses.where(horses: {umaban: params[:horse_number]}).pluck(:name)
       @forecasts = @forecasts.where(honmei: horse_names) if horse_names.present?
     end
     @forecasts = @forecasts.order('users.tanshou DESC NULLS LAST').page(params[:page]).per(per)
@@ -50,7 +50,10 @@ class RacesController < ApplicationController
   def recommendations
     @race = Race.find(params[:race_id])
     @users = @race.cache_forecasts(User::RETURN_RATE_MASTER).map(&:user)
-    @user_collection = UserCollection.new(@users)
+
+    Rails.cache.fetch("cache_recommendations_#{@race.id}", expired_in: 10.minute) do
+      @user_collection = UserCollection.new(@users)
+    end
   end
 
   def odds
