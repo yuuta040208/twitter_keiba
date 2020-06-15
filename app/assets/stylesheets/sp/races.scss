@@ -74,3 +74,13 @@ div {
 input[type=checkbox] {
   transform: scale(3);
 }
+
+body {
+  background-image: url("/images/horserace.jpg");
+  background-color: rgba(255, 255, 255, 0.85);
+  background-blend-mode: lighten;
+}
+
+.bg-card {
+  background-color: rgb(245, 245, 214);
+}
