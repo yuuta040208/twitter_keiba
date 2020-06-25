@@ -6,11 +6,9 @@ class User < ApplicationRecord
   has_many :tweets
   has_many :forecasts
 
-  attr_accessor :sum
-
   def self.search(search)
     return self.all unless search
-    self.where('name LIKE ?', "%#{search}%")
+    self.where('users.name LIKE ?', "%#{search}%")
   end
 
   def veteran?
@@ -21,9 +19,9 @@ class User < ApplicationRecord
     return unless [:win, :place].include?(bet_type)
 
     if bet_type == :win
-      tanshou || 0 / forecasts.size
+      (tanshou || 0) / forecasts.size
     else
-      fukushou || 0 / forecasts.size
+      (fukushou || 0) / forecasts.size
     end
   end
 

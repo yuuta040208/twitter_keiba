@@ -9,14 +9,16 @@
 
 <%= paginate @users, window: 1 %>
 
-<div class="row">
+<div class="row small-text">
   <table class="table table-bordered table-striped table-sm col-sm-12 bg-white">
     <thead>
     <tr class="text-center">
-      <th class="w-50">ユーザ名</th>
-      <th>ポイント</th>
-      <th>単勝回収率</th>
-      <th>複勝回収率</th>
+      <th>ユーザ名</th>
+      <th><%= link_to '予想数', users_path(order: :forecasts_count) %></th>
+      <th><%= link_to '単回収率', users_path(order: :return_rate_win) %></th>
+      <th><%= link_to '複回収率', users_path(order: :return_rate_place) %></th>
+      <th><%= link_to '単的中率', users_path(order: :hit_rate_win) %></th>
+      <th><%= link_to '複的中率', users_path(order: :hit_rate_place) %></th>
     </tr>
     </thead>
 
@@ -28,10 +30,11 @@
             <span><%= user.name %></span>
           <% end %>
         </td>
-        <% size = user.forecasts.size %>
-        <td class="align-middle text-right pr-2"><%= size %></td>
-        <td class="align-middle text-right pr-2"><%= (user.tanshou || 0) / (size.zero? ? 1 : size) %>%</td>
-        <td class="align-middle text-right pr-2"><%= (user.fukushou || 0) / (size.zero? ? 1 : size) %>%</td>
+        <td class="align-middle text-right pr-2"><%= user.forecasts_count %></td>
+        <td class="align-middle text-right pr-2"><%= user.return_rate_win %>%</td>
+        <td class="align-middle text-right pr-2"><%= user.return_rate_place %>%</td>
+        <td class="align-middle text-right pr-2"><%= user.hit_rate_win %>%</td>
+        <td class="align-middle text-right pr-2"><%= user.hit_rate_place %>%</td>
       </tr>
     <% end %>
     </tbody>
