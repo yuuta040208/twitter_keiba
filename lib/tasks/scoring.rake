@@ -141,21 +141,23 @@ namespace :scoring do
             end
     races.each do |race|
       race.forecasts.each do |forecast|
-        hit = Hit.new(race_id: race.id, forecast_id: forecast.id)
         user = forecast.user
 
         case forecast.honmei
         when race.result.first_horse then
+          hit = Hit.new(race_id: race.id, forecast_id: forecast.id)
           hit.honmei_tanshou = race.result.tanshou
           hit.honmei_fukushou = race.result.fukushou_first
           user.tanshou = race.result.tanshou + (forecast.user.tanshou || 0)
           user.fukushou = race.result.fukushou_first + (forecast.user.fukushou || 0)
 
         when race.result.second_horse then
+          hit = Hit.new(race_id: race.id, forecast_id: forecast.id)
           hit.honmei_fukushou = race.result.fukushou_second
           user.fukushou = race.result.fukushou_second + (forecast.user.fukushou || 0)
 
         when race.result.third_horse then
+          hit = Hit.new(race_id: race.id, forecast_id: forecast.id)
           hit.honmei_fukushou = race.result.fukushou_third
           user.fukushou = race.result.fukushou_second + (forecast.user.fukushou || 0)
 
