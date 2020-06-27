@@ -19,7 +19,7 @@ class RacesController < ApplicationController
 
     @honmeis, @taikous, @tananas, @renkas = forecasts.pluck(:honmei, :taikou, :tanana, :renka).transpose
     @twitter_rates = @race.calculate_twitter_rates(@honmeis, @taikous, @tananas, @renkas, @return_rate)
-    @forecasts = forecasts.order('users.tanshou DESC NULLS LAST').page(params[:page])
+    @forecasts = forecasts.joins(user: :user_stat).includes(user: :user_stat).order('users.tanshou DESC NULLS LAST').page(params[:page])
   end
 
   def tweets
