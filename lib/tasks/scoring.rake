@@ -1,7 +1,7 @@
 namespace :scoring do
   desc "ツイートを馬名で検索"
   task :create, ['date'] => :environment do |task, args|
-    regex = /(\s|　|[ァ-ヴ])*/
+    regex = /.*/
     marks = [
         {mark: '◎', type: :honmei},
         {mark: /[○◯]/, type: :taikou},
@@ -9,12 +9,17 @@ namespace :scoring do
         {mark: '△', type: :renka},
     ]
 
-    Race.where(date: "#{Date.today.year}#{args['date']}").each do |race|
+    races = if args['date'].present?
+              Race.where(date: "#{Date.today.year}#{args['date']}")
+            else
+              Race.all
+            end
+    races.each do |race|
       puts "#{race.name} のスコアリング中..."
 
       create_count = 0
       update_count = 0
-      race.tweets.where(tweets: {id: Tweet.group(:user_id).select('max(id)')}).each do |tweet|
+      race.tweets.each do |tweet|
         forecast = {}
         marks.each do |mark|
           race.horses.each do |horse|
