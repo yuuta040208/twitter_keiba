@@ -12,10 +12,6 @@ class User < ApplicationRecord
     self.where('users.name LIKE ?', "%#{search}%")
   end
 
-  def self.stat_columns
-    [:forecasts_count, :return_rate_win, :return_rate_place, :hit_rate_win, :hit_rate_place]
-  end
-
   def veteran?
     forecasts.size >= 5
   end

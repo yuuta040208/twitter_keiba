@@ -2,11 +2,11 @@ class UsersController < ApplicationController
   def index
     @user_stats = UserStat.includes(:user).page(params[:page])
 
-    if params[:order].present? && User.stat_columns.include?(params[:order].to_sym)
-      @user_stats = @user_stats.order("#{params[:order]} desc")
-    else
-      @user_stats = @user_stats.order(forecasts_count: :desc)
-    end
+    @user_stats = if params[:order].present? && UserStat.stat_columns.include?(params[:order].to_sym)
+                    @user_stats.order("#{params[:order]} desc")
+                  else
+                    @user_stats.order(forecasts_count: :desc)
+                  end
 
     if params[:search].present?
       @user_stats = @user_stats.search(params[:search])
