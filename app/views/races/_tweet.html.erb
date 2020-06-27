@@ -1,6 +1,6 @@
 <div class="card mt-2">
   <div class="card-header bg-primary text-white">
-    <%= link_to "#{tweet.user.name}#{user_name_text}", user_path(tweet.user.id), class: 'text-white' %>
+    <%= link_to "#{tweet.user_name}#{user_name_text}", user_path(tweet.user_id), class: 'text-white' %>
     <%= link_to tweet.url, target: '_blank' do %>
       <%= image_tag asset_path('twitter_icon.png') %>
     <% end %>
@@ -9,9 +9,11 @@
     <%= tweet.content %>
   </div>
   <div class="card-footer text-muted">
-    <% forecast_size = tweet.user.forecasts.includes(race: :result).map { |forecast| forecast.race.result }.compact.size %>
-    予想数:<%= forecast_size %>　
-    単勝回収率:<%= tweet.user.tanshou ? ((tweet.user.tanshou.to_f) / (forecast_size * 100) * 100).to_i : 0 %>%　
-    複勝回収率:<%= tweet.user.fukushou ? ((tweet.user.fukushou.to_f) / (forecast_size * 100) * 100).to_i : 0 %>%
+    <% user_stat = tweet.user.user_stat %>
+    予想数:<%= user_stat.forecasts_count %>レース<br>
+    単勝回収率:<%= user_stat.return_rate_win %>%<br>
+    複勝回収率:<%= user_stat.return_rate_place %>%<br>
+    単勝的中率:<%= user_stat.hit_rate_win %>%<br>
+    複勝的中率:<%= user_stat.hit_rate_place %>%
   </div>
 </div>

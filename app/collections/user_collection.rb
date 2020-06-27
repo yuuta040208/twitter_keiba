@@ -1,23 +1,35 @@
 class UserCollection
-  attr_reader :win_kenjitsu_user, :place_kenjitsu_user, :win_ippatsu_user, :place_ippatsu_user
+  attr_reader :win_kenjitsu_user_stat, :place_kenjitsu_user_stat, :win_ippatsu_user_stat, :place_ippatsu_user_stat
 
-  def initialize(users)
-    @users = User.where(id: users.pluck(:id))
+  def initialize(tweets)
+    user_ids = tweets.pluck(:user_id)
 
-    @win_kenjitsu_user = kenjitsu(:win)
-    @place_kenjitsu_user = kenjitsu(:place)
-    @win_ippatsu_user = ippatsu(:win)
-    @place_ippatsu_user = ippatsu(:place)
+    @win_kenjitsu_user_stat = kenjitsu(user_ids, :win)
+    @place_kenjitsu_user_stat = kenjitsu(user_ids, :place)
+    @win_ippatsu_user_stat = ippatsu(user_ids, :win)
+    @place_ippatsu_user_stat = ippatsu(user_ids, :place)
   end
 
 
   private
 
-  def kenjitsu(bet_type)
-    @users.includes(:forecasts).filter { |user| user.veteran? && user.average_win < 10.0 }.max_by { |user| user.hit_rate(bet_type) }
+  def kenjitsu(user_ids, bet_type)
+    UserStat.includes(:user)
+        .joins(:user)
+        .where(user_id: user_ids)
+        .where('users.average_win < 10')
+        .where('forecasts_count >= 5')
+        .order("hit_rate_#{bet_type} desc")
+        .first
   end
 
-  def ippatsu(bet_type)
-    @users.includes(:forecasts).filter { |user| user.veteran? && user.average_win >= 10.0 }.max_by { |user| user.return_rate(bet_type) }
+  def ippatsu(user_ids, bet_type)
+    UserStat.includes(:user)
+        .joins(:user)
+        .where(user_id: user_ids)
+        .where('users.average_win >= 10')
+        .where('forecasts_count >= 5')
+        .order("return_rate_#{bet_type} desc")
+        .first
   end
 end
