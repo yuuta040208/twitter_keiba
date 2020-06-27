@@ -1,6 +1,6 @@
 <h1 class="mb-3 mt-3">
-  <%= link_to @user.url, target: '_blank' do %>
-    <%= @user.name %>
+  <%= link_to @user_stat.user_url, target: '_blank' do %>
+    <%= @user_stat.user_name %>
   <% end %>
 </h1>
 
@@ -9,13 +9,17 @@
   <tr class="text-center">
     <th>単勝回収率</th>
     <th>複勝回収率</th>
+    <th>単勝的中率</th>
+    <th>複勝的中率</th>
   </tr>
   </thead>
 
   <tbody>
   <tr class="text-center">
-    <td><b><%= @user.tanshou ? ((@user.tanshou.to_f) / (@forecast_size * 100) * 100).to_i : 0 %>%</b></td>
-    <td><b><%= @user.fukushou ? ((@user.fukushou.to_f) / (@forecast_size * 100) * 100).to_i : 0 %>%</b></td>
+    <td><b><%= @user_stat.return_rate_win %>%</b></td>
+    <td><b><%= @user_stat.return_rate_place %>%</b></td>
+    <td><b><%= @user_stat.hit_rate_win %>%</b></td>
+    <td><b><%= @user_stat.hit_rate_place %>%</b></td>
   </tr>
   </tbody>
 </table>

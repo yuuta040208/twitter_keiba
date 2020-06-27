@@ -1,47 +1,22 @@
 class UsersController < ApplicationController
   def index
-    select_columns = User.column_names.map { |column| "users.#{column}" }
-    select_columns << 'count(forecasts.id) as forecasts_count'
-    select_columns << '(coalesce(users.tanshou, 0) / count(forecasts.id)) as return_rate_win'
-    select_columns << '(coalesce(users.fukushou, 0) / count(forecasts.id)) as return_rate_place'
-    select_columns << '
-      (select round(count(sub_f) * 1.0 / count(forecasts.id), 2) * 100 from forecasts sub_f
-      inner join hits h on h.forecast_id = sub_f.id
-      where h.honmei_fukushou is not null and sub_f.user_id = users.id) as hit_rate_place
-    '
-    select_columns << '
-      (select round(count(sub_f) * 1.0 / count(forecasts.id), 2) * 100 from forecasts sub_f
-      inner join hits h on h.forecast_id = sub_f.id
-      where h.honmei_tanshou is not null and sub_f.user_id = users.id) as hit_rate_win
-    '
-    order_columns = [:forecasts_count, :return_rate_win, :return_rate_place, :hit_rate_win, :hit_rate_place]
+    @user_stats = UserStat.includes(:user).page(params[:page])
 
-    @users = User.where
-                 .not(tanshou: nil)
-                 .joins(:forecasts)
-                 .preload(:forecasts)
-                 .group('users.id')
-                 .having('count(forecasts.id) >= 5')
-                 .select(select_columns)
-                 .page(params[:page])
-
-    if params[:order].present? && order_columns.include?(params[:order].to_sym)
-      @users = @users.order("#{params[:order]} desc")
+    if params[:order].present? && User.stat_columns.include?(params[:order].to_sym)
+      @user_stats = @user_stats.order("#{params[:order]} desc")
     else
-      @users = @users.order('count(forecasts.id) desc')
+      @user_stats = @user_stats.order(forecasts_count: :desc)
     end
 
     if params[:search].present?
-      @users = @users.search(params[:search])
+      @user_stats = @user_stats.search(params[:search])
     end
   end
 
   def show
-    @user = User.find(params[:id])
-    @forecasts = @user.forecasts.
-        includes(race: :result).
-        includes(:tweet).
-        order(created_at: 'desc')
-    @forecast_size = @forecasts.map { |forecast| forecast.race.result }.compact.size
+    @user_stat = UserStat.includes(:user).find_by(user_id: params[:id])
+    @forecasts = Forecast.includes(race: :result)
+                     .where(user_id: @user_stat.user_id)
+                     .order('race_id desc')
   end
 end

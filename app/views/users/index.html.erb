@@ -7,7 +7,7 @@
   <% end %>
 </div>
 
-<%= paginate @users %>
+<%= paginate @user_stats %>
 
 <div class="row">
   <table class="table table-bordered table-striped table-sm bg-white">
@@ -23,22 +23,22 @@
     </thead>
 
     <tbody>
-    <% @users.each do |user| %>
+    <% @user_stats.each do |user_stat| %>
       <tr style="height: 50px;">
         <td class="align-middle">
-          <%= link_to user_path(user.id) do %>
-            <span>　<%=user.name %></span>
+          <%= link_to user_path(user_stat.user_id) do %>
+            <span><%= user_stat.user_name %></span>
           <% end %>
         </td>
-        <td class="align-middle text-right pr-2"><%= user.forecasts_count %></td>
-        <td class="align-middle text-right pr-2"><%= user.return_rate_win %>%</td>
-        <td class="align-middle text-right pr-2"><%= user.return_rate_place %>%</td>
-        <td class="align-middle text-right pr-2"><%= user.hit_rate_win %>%</td>
-        <td class="align-middle text-right pr-2"><%= user.hit_rate_place %>%</td>
+        <td class="align-middle text-right pr-2"><%= user_stat.forecasts_count %></td>
+        <td class="align-middle text-right pr-2"><%= user_stat.return_rate_win %>%</td>
+        <td class="align-middle text-right pr-2"><%= user_stat.return_rate_place %>%</td>
+        <td class="align-middle text-right pr-2"><%= user_stat.hit_rate_win %>%</td>
+        <td class="align-middle text-right pr-2"><%= user_stat.hit_rate_place %>%</td>
       </tr>
     <% end %>
     </tbody>
   </table>
 </div>
 
-<%= paginate @users %>
+<%= paginate @user_stats %>
