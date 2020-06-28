@@ -31,10 +31,10 @@
           <% end %>
         </td>
         <td class="align-middle text-right pr-2"><%= user_stat.forecasts_count %></td>
-        <td class="align-middle text-right pr-2"><%= user_stat.return_rate_win %>%</td>
-        <td class="align-middle text-right pr-2"><%= user_stat.return_rate_place %>%</td>
-        <td class="align-middle text-right pr-2"><%= user_stat.hit_rate_win %>%</td>
-        <td class="align-middle text-right pr-2"><%= user_stat.hit_rate_place %>%</td>
+        <td class="align-middle text-right pr-2"><%= user_stat.return_rate_win.to_i %>%</td>
+        <td class="align-middle text-right pr-2"><%= user_stat.return_rate_place.to_i %>%</td>
+        <td class="align-middle text-right pr-2"><%= user_stat.hit_rate_win.to_i %>%</td>
+        <td class="align-middle text-right pr-2"><%= user_stat.hit_rate_place.to_i %>%</td>
       </tr>
     <% end %>
     </tbody>

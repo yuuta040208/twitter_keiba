@@ -16,10 +16,10 @@
 
   <tbody>
   <tr class="text-center">
-    <td><b><%= @user_stat.return_rate_win %>%</b></td>
-    <td><b><%= @user_stat.return_rate_place %>%</b></td>
-    <td><b><%= @user_stat.hit_rate_win %>%</b></td>
-    <td><b><%= @user_stat.hit_rate_place %>%</b></td>
+    <td><b><%= @user_stat.return_rate_win.to_i %>%</b></td>
+    <td><b><%= @user_stat.return_rate_place.to_i %>%</b></td>
+    <td><b><%= @user_stat.hit_rate_win.to_i %>%</b></td>
+    <td><b><%= @user_stat.hit_rate_place.to_i %>%</b></td>
   </tr>
   </tbody>
 </table>

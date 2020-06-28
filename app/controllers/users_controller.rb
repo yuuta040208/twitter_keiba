@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   def index
-    @user_stats = UserStat.includes(:user).page(params[:page])
+    @user_stats = UserStat.includes(:user).where('forecasts_count >= 5').page(params[:page])
 
     @user_stats = if params[:order].present? && UserStat.stat_columns.include?(params[:order].to_sym)
                     @user_stats.order("#{params[:order]} desc")

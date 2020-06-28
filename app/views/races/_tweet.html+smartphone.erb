@@ -5,18 +5,18 @@
       <%= image_tag asset_path('twitter_icon.png') %>
     <% end %>
   </div>
-  <div class="card-body">
+  <div class="card-body small-text">
     <%= tweet.content %>
   </div>
-  <div class="card-footer">
+  <div class="card-footer small-text">
     <table class="table table-borderless table-sm">
       <% user_stat = tweet.user.user_stat %>
       <tr class="text-center">
         <td>予想数</td>
-        <td>単勝回収率</td>
-        <td>複勝回収率</td>
-        <td>単勝的中率</td>
-        <td>複勝的中率</td>
+        <td>単回収率</td>
+        <td>複回収率</td>
+        <td>単的中率</td>
+        <td>複的中率</td>
       </tr>
       <tr class="text-center">
         <td><%= user_stat.forecasts_count %>レース</td>
