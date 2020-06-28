@@ -25,7 +25,7 @@ class RacesController < ApplicationController
   def tweets
     per = request.from_smartphone? ? 9 : 30
     @race = Race.find(params[:race_id])
-    @forecasts = @race.cache_forecasts(User::RETURN_RATE_MASTER)
+    @forecasts = @race.cache_forecasts(User::RETURN_RATE_PROFESSIONAL)
     @honmeis = @forecasts.pluck(:honmei)
 
     if params[:horse_number]
