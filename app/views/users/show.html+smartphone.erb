@@ -39,6 +39,7 @@
   <% @forecasts.each do |forecast| %>
     <% race = forecast.race %>
     <% result = race.result %>
+    <% race_horses = race.horses.order(:win).pluck(:name) %>
 
     <% if result.present? %>
       <% horses = [result.first_horse, result.second_horse, result.third_horse] %>
@@ -55,19 +56,23 @@
         </td>
 
         <td class="align-middle" style="<%= result_color(honmei_result) %>">
-          <%= forecast.honmei %> <b><%= "#{horses.index(forecast.honmei) + 1}着" if honmei_result >= 0 %></b>
+          <% honmei_popularity_text =  forecast.honmei ? "(#{race_horses.index(forecast.honmei) + 1}人気)" : "" %>
+          <%= forecast.honmei %><%= honmei_popularity_text %> <b><%= "#{horses.index(forecast.honmei) + 1}着" if honmei_result >= 0 %></b>
         </td>
 
         <td class="align-middle" style="<%= result_color(taikou_result) %>">
-          <%= forecast.taikou %> <b><%= "#{horses.index(forecast.taikou) + 1}着" if taikou_result >= 0 %></b>
+          <% taikou_popularity_text =  forecast.taikou ? "(#{race_horses.index(forecast.taikou) + 1}人気)" : "" %>
+          <%= forecast.taikou %><%= taikou_popularity_text %> <b><%= "#{horses.index(forecast.taikou) + 1}着" if taikou_result >= 0 %></b>
         </td>
 
         <td class="align-middle" style="<%= result_color(tanana_result) %>">
-          <%= forecast.tanana %> <b><%= "#{horses.index(forecast.tanana) + 1}着" if tanana_result >= 0 %></b>
+          <% tanana_popularity_text =  forecast.tanana ? "(#{race_horses.index(forecast.tanana) + 1}人気)" : "" %>
+          <%= forecast.tanana %><%= tanana_popularity_text %> <b><%= "#{horses.index(forecast.tanana) + 1}着" if tanana_result >= 0 %></b>
         </td>
 
         <td class="align-middle" style="<%= result_color(renka_result) %>">
-          <%= forecast.renka %> <b><%= "#{horses.index(forecast.renka) + 1}着" if renka_result >= 0 %></b>
+          <% renka_popularity_text =  forecast.renka ? "(#{race_horses.index(forecast.renka) + 1}人気)" : "" %>
+          <%= forecast.renka %><%= renka_popularity_text %> <b><%= "#{horses.index(forecast.renka) + 1}着" if renka_result >= 0 %></b>
         </td>
       </tr>
     <% end %>

@@ -15,7 +15,8 @@ class UsersController < ApplicationController
 
   def show
     @user_stat = UserStat.includes(:user).find_by(user_id: params[:id])
-    @forecasts = Forecast.includes(race: :result)
+    @forecasts = Forecast.includes(race: [:result, :horses])
+                     .includes(:tweet)
                      .where(user_id: @user_stat.user_id)
                      .order('race_id desc')
   end
