@@ -147,32 +147,77 @@ namespace :scoring do
     races.each do |race|
       race.forecasts.each do |forecast|
         user = forecast.user
+        hit = Hit.new(race_id: race.id, forecast_id: forecast.id)
 
         case forecast.honmei
         when race.result.first_horse then
-          hit = Hit.new(race_id: race.id, forecast_id: forecast.id)
           hit.honmei_tanshou = race.result.tanshou
           hit.honmei_fukushou = race.result.fukushou_first
           user.tanshou = race.result.tanshou + (forecast.user.tanshou || 0)
           user.fukushou = race.result.fukushou_first + (forecast.user.fukushou || 0)
 
         when race.result.second_horse then
-          hit = Hit.new(race_id: race.id, forecast_id: forecast.id)
           hit.honmei_fukushou = race.result.fukushou_second
           user.fukushou = race.result.fukushou_second + (forecast.user.fukushou || 0)
 
         when race.result.third_horse then
-          hit = Hit.new(race_id: race.id, forecast_id: forecast.id)
           hit.honmei_fukushou = race.result.fukushou_third
           user.fukushou = race.result.fukushou_second + (forecast.user.fukushou || 0)
-
-        else
-          next
         end
 
-        hit.save!
-        user.save!
-        puts "#{user.name}: #{hit.honmei_tanshou}円, #{hit.honmei_fukushou}円"
+        case forecast.taikou
+        when race.result.first_horse then
+          hit.taikou_tanshou = race.result.tanshou
+          hit.taikou_fukushou = race.result.fukushou_first
+          user.total_win_taikou = race.result.tanshou + (forecast.user.total_win_taikou || 0)
+          user.total_place_taikou = race.result.fukushou_first + (forecast.user.total_place_taikou || 0)
+
+        when race.result.second_horse then
+          hit.taikou_fukushou = race.result.fukushou_second
+          user.total_place_taikou = race.result.fukushou_second + (forecast.user.total_place_taikou || 0)
+
+        when race.result.third_horse then
+          hit.taikou_fukushou = race.result.fukushou_third
+          user.total_place_taikou = race.result.fukushou_second + (forecast.user.total_place_taikou || 0)
+        end
+
+        case forecast.tanana
+        when race.result.first_horse then
+          hit.tanana_tanshou = race.result.tanshou
+          hit.tanana_fukushou = race.result.fukushou_first
+          user.total_win_tanana = race.result.tanshou + (forecast.user.total_win_tanana || 0)
+          user.total_place_tanana = race.result.fukushou_first + (forecast.user.total_place_tanana || 0)
+
+        when race.result.second_horse then
+          hit.tanana_fukushou = race.result.fukushou_second
+          user.total_place_tanana = race.result.fukushou_second + (forecast.user.total_place_tanana || 0)
+
+        when race.result.third_horse then
+          hit.tanana_fukushou = race.result.fukushou_third
+          user.total_place_tanana = race.result.fukushou_second + (forecast.user.total_place_tanana || 0)
+        end
+
+        case forecast.renka
+        when race.result.first_horse then
+          hit.renka_tanshou = race.result.tanshou
+          hit.renka_fukushou = race.result.fukushou_first
+          user.total_win_renka = race.result.tanshou + (forecast.user.total_win_renka || 0)
+          user.total_place_renka = race.result.fukushou_first + (forecast.user.total_place_renka || 0)
+
+        when race.result.second_horse then
+          hit.renka_fukushou = race.result.fukushou_second
+          user.total_place_renka = race.result.fukushou_second + (forecast.user.total_place_renka || 0)
+
+        when race.result.third_horse then
+          hit.renka_fukushou = race.result.fukushou_third
+          user.total_place_renka = race.result.fukushou_second + (forecast.user.total_place_renka || 0)
+        end
+
+        if hit.honmei_tanshou || hit.honmei_fukushou  || hit.taikou_tanshou || hit.taikou_fukushou || hit.tanana_tanshou || hit.tanana_fukushou || hit.renka_tanshou || hit.renka_fukushou
+          hit.save!
+          user.save!
+          puts "#{user.name}: #{hit.honmei_tanshou}円, #{hit.honmei_fukushou}円"
+        end
       end
     end
   end

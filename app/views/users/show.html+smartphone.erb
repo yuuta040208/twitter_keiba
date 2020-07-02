@@ -7,6 +7,7 @@
 <table class="table table-bordered table-striped table-sm bg-white">
   <thead>
   <tr class="text-center small-text">
+    <th>印</th>
     <th>単勝回収率</th>
     <th>複勝回収率</th>
     <th>単勝的中率</th>
@@ -15,11 +16,33 @@
   </thead>
 
   <tbody>
-  <tr class="text-center small-text">
+  <tr class="text-center">
+    <td><b>◎</b></td>
     <td><b><%= @user_stat.return_rate_win.to_i %>%</b></td>
     <td><b><%= @user_stat.return_rate_place.to_i %>%</b></td>
     <td><b><%= @user_stat.hit_rate_win.to_i %>%</b></td>
     <td><b><%= @user_stat.hit_rate_place.to_i %>%</b></td>
+  </tr>
+  <tr class="text-center">
+    <td><b>○</b></td>
+    <td><b><%= @taikou_user_stat.return_rate_win.to_i %>%</b></td>
+    <td><b><%= @taikou_user_stat.return_rate_place.to_i %>%</b></td>
+    <td><b><%= @taikou_user_stat.hit_rate_win.to_i %>%</b></td>
+    <td><b><%= @taikou_user_stat.hit_rate_place.to_i %>%</b></td>
+  </tr>
+  <tr class="text-center">
+    <td><b>▲</b></td>
+    <td><b><%= @tanana_user_stat.return_rate_win.to_i %>%</b></td>
+    <td><b><%= @tanana_user_stat.return_rate_place.to_i %>%</b></td>
+    <td><b><%= @tanana_user_stat.hit_rate_win.to_i %>%</b></td>
+    <td><b><%= @tanana_user_stat.hit_rate_place.to_i %>%</b></td>
+  </tr>
+  <tr class="text-center">
+    <td><b>△</b></td>
+    <td><b><%= @renka_user_stat.return_rate_win.to_i %>%</b></td>
+    <td><b><%= @renka_user_stat.return_rate_place.to_i %>%</b></td>
+    <td><b><%= @renka_user_stat.hit_rate_win.to_i %>%</b></td>
+    <td><b><%= @renka_user_stat.hit_rate_place.to_i %>%</b></td>
   </tr>
   </tbody>
 </table>

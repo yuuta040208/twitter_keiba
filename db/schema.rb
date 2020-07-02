@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_27_090342) do
+ActiveRecord::Schema.define(version: 2020_07_02_144419) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,6 +37,12 @@ ActiveRecord::Schema.define(version: 2020_06_27_090342) do
     t.integer "honmei_fukushou"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "taikou_tanshou"
+    t.integer "taikou_fukushou"
+    t.integer "tanana_tanshou"
+    t.integer "tanana_fukushou"
+    t.integer "renka_tanshou"
+    t.integer "renka_fukushou"
     t.index ["forecast_id"], name: "index_hits_on_forecast_id"
     t.index ["race_id"], name: "index_hits_on_race_id"
   end
@@ -150,6 +156,12 @@ ActiveRecord::Schema.define(version: 2020_06_27_090342) do
     t.integer "fukushou"
     t.float "average_win"
     t.float "average_place"
+    t.integer "total_win_taikou"
+    t.integer "total_place_taikou"
+    t.integer "total_win_tanana"
+    t.integer "total_place_tanana"
+    t.integer "total_win_renka"
+    t.integer "total_place_renka"
   end
 
   add_foreign_key "odds", "horses"

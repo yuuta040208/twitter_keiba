@@ -15,6 +15,9 @@ class UsersController < ApplicationController
 
   def show
     @user_stat = UserStat.includes(:user).find_by(user_id: params[:id])
+    @taikou_user_stat = TaikouUserStat.includes(:user).find_by(user_id: params[:id])
+    @tanana_user_stat = TananaUserStat.includes(:user).find_by(user_id: params[:id])
+    @renka_user_stat = RenkaUserStat.includes(:user).find_by(user_id: params[:id])
     @forecasts = Forecast.includes(race: [:result, :horses])
                      .includes(:tweet)
                      .where(user_id: @user_stat.user_id)
