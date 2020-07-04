@@ -53,7 +53,7 @@ class RacesController < ApplicationController
     @race = Race.find(params[:race_id])
 
     @user_collection = Rails.cache.fetch("cache_recommendations_#{@race.id}", expired_in: 10.minute) do
-      UserCollection.new(@race.tweets)
+      UserCollection.new(@race.tweets.pluck(:user_id))
     end
   end
 

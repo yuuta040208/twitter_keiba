@@ -4,7 +4,7 @@ namespace :scoring do
     regex = /.*/
     marks = [
         {mark: '◎', type: :honmei},
-        {mark: /[○◯]/, type: :taikou},
+        {mark: /[○◯〇]/, type: :taikou},
         {mark: '▲', type: :tanana},
         {mark: '△', type: :renka},
     ]

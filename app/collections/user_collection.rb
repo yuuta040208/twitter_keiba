@@ -1,9 +1,7 @@
 class UserCollection
   attr_reader :win_kenjitsu_user_stat, :place_kenjitsu_user_stat, :win_ippatsu_user_stat, :place_ippatsu_user_stat
 
-  def initialize(tweets)
-    user_ids = tweets.pluck(:user_id)
-
+  def initialize(user_ids)
     @win_kenjitsu_user_stat = kenjitsu(user_ids, :win)
     @place_kenjitsu_user_stat = kenjitsu(user_ids, :place)
     @win_ippatsu_user_stat = ippatsu(user_ids, :win)
