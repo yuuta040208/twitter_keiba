@@ -1,7 +1,10 @@
 module RacesHelper
   def date_format(str)
     return str if str.length != 8
-    str.dup.insert(4, '/').insert(7, '/')
+
+    date = Date.parse(str)
+    week = %w(日 月 火 水 木 金 土)[date.wday]
+    "#{date.strftime('%Y/%m/%d')} (#{week})"
   end
 
   def race_number(text)
