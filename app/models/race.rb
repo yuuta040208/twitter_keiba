@@ -61,7 +61,7 @@ class Race < ApplicationRecord
       return forecasts.includes(:user, :tweet)
     end
 
-    user_ids = UserStat.where('return_rate_win > ? OR return_rate_place > ?', return_rate * 100, return_rate * 100).pluck(:user_id)
+    user_ids = UserStat.where('return_rate_win > ? OR return_rate_place > ?', (return_rate - 1) * 100, (return_rate - 1) * 100).pluck(:user_id)
     forecasts.includes(:user, :tweet).where(user_id: user_ids.compact.uniq)
   end
 end

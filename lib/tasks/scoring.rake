@@ -1,7 +1,7 @@
 namespace :scoring do
   desc "ツイートを馬名で検索"
   task :create, ['date'] => :environment do |task, args|
-    regex = /.*/
+    regex = /[^ァ-ヶ]*/
     marks = [
         {mark: '◎', type: :honmei},
         {mark: /[○◯〇]/, type: :taikou},
