@@ -53,6 +53,18 @@ class Race < ApplicationRecord
     end
   end
 
+  def line_tweets(limit:)
+    UserStat.includes(user: :tweets)
+        .joins(:user)
+        .where(user_id: forecasts.pluck(:user_id))
+        .where('forecasts_count >= 10')
+        .order('hit_rate_place desc')
+        .order('hit_rate_win desc')
+        .limit(limit)
+        .map(&:user)
+        .map {|user| user.tweets.find_by(race_id: id)}
+  end
+
 
   private
 

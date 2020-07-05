@@ -62,3 +62,6 @@ gem 'kaminari-bootstrap'
 
 gem 'rack-user_agent'
 gem 'dalli'
+
+gem 'line-bot-api'
+gem 'rest-client'

@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   end
 
   resources :users, only: [:index, :show]
+  resources :forecasts, only: [:show]
 
   namespace :admin do
     resources :races, only: [:index, :update]
