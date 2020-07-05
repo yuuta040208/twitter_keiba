@@ -1,7 +1,9 @@
 class RacesController < ApplicationController
   def index
     @date_races = DateRace.all.page(params[:page]).per(2)
-    @races = Race.where(date: @date_races.pluck(:date)).order(date: 'desc').order(:hold)
+    @races = Race.where(date: @date_races.pluck(:date))
+                 .order(date: 'desc')
+                 .order(:hold)
     @last_updated_at = Forecast.last.updated_at.in_time_zone('Tokyo').strftime('%Y/%m/%d %H:%M')
   end
 
