@@ -2,7 +2,7 @@ namespace :line do
   desc 'メッセージを配信'
   task :broadcast, ['id'] => :environment do |_, args|
     race = Race.find(args['id'].to_i)
-    carousels = race.line_tweets(limit: 3).map do |tweet|
+    carousels = race.line_tweets(limit: 10).map do |tweet|
       user_stat = tweet.user.user_stat
       texts = ["単勝回収率: #{user_stat.return_rate_win}%, 複勝回収率: #{user_stat.return_rate_place}%"]
       texts << "◎　#{tweet.forecast.honmei}" if tweet.forecast.honmei
