@@ -26,6 +26,10 @@ task :scheduler => :environment do
           Rails.cache.delete("cache_twitter_rates_#{race.id}_#{return_rate}")
         end
 
+        if race.time.gsub(':', '').to_i - now.to_i <= 10 && now.to_i < race.time.gsub(':', '').to_i
+          Rake::Task['line:broadcast'].invoke(race.id)
+        end
+
         Rails.cache.delete("cache_recommendations_#{race.id}")
       end
 
