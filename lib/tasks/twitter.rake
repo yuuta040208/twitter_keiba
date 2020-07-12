@@ -84,6 +84,15 @@ namespace :twitter do
     end
   end
 
+  desc 'ツイートする'
+  task :tweet, ['id'] => :environment do |_, args|
+    race = Race.find(args['id'].to_i)
+    tweet = race.line_tweets(limit: 1).first
+    text = "#{race.name}の予想が配信されたよ！イチオシの予想家はこちら！\n#{tweet.url}\n\n予想をもっと見たい人は、Webサイトをチェック！\nhttps://twitter-keiba.herokuapp.com/"
+
+    api_client_evikeiba.update(text)
+  end
+
 
   desc "APIのリミットを取得"
   task :limit do
@@ -100,6 +109,15 @@ namespace :twitter do
         consumer_secret: Rails.application.credentials.twitter[:consumer_secret],
         access_token: Rails.application.credentials.twitter[:access_token],
         access_token_secret: Rails.application.credentials.twitter[:access_token_secret],
+    )
+  end
+
+  def api_client_evikeiba
+    Twitter::REST::Client.new(
+        consumer_key: Rails.application.credentials.twitter2[:consumer_key],
+        consumer_secret: Rails.application.credentials.twitter2[:consumer_secret],
+        access_token: Rails.application.credentials.twitter2[:access_token],
+        access_token_secret: Rails.application.credentials.twitter2[:access_token_secret],
     )
   end
 end

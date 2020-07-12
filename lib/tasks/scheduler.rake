@@ -28,6 +28,7 @@ task :scheduler => :environment do
 
         if race.time.gsub(':', '').to_i - now.to_i <= 30 && now.to_i < race.time.gsub(':', '').to_i
           Rake::Task['line:broadcast'].invoke(race.id)
+          Rake::Task['twitter:tweet'].invoke(race.id)
         end
 
         Rails.cache.delete("cache_recommendations_#{race.id}")
