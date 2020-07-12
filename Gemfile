@@ -65,3 +65,5 @@ gem 'dalli'
 
 gem 'line-bot-api'
 gem 'rest-client'
+
+gem 'newrelic_rpm'
