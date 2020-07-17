@@ -13,9 +13,13 @@ namespace :scrape do
 
     puts "#{url} からデータを取得します..."
 
-    count = 0
+    create_count = 0
+    update_count = 0
     doc.css('table.table-bordered').each do |table|
       hold = table.css('tr > th').text.split('天候').first
+      times = hold.split('回').first.scan(/[0-9]/).first.to_i
+      day = hold.split('回').second.scan(/[0-9]/).first.to_i
+      place = hold.split('回').second[0..1]
 
       table.css('tbody tr').each.with_index(1) do |tr, index|
         if index == 11
@@ -24,17 +28,38 @@ namespace :scrape do
                 date: "#{Date.today.year}#{args['date']}",
                 number: tr.css('td:nth-child(1) > div > a').text,
                 time: tr.css('td:nth-child(1) > span').text,
+                times: times,
+                day: day,
+                place: place,
                 hold: hold,
                 name: tr.css('td:nth-child(2) > a').text.sub(/\(.*?\)/, ''),
                 url: tr.css('td:nth-child(2) > a').first[:href],
+                course: tr.css('td:nth-child(2)').text.sub(/\(.*?\)/, '').split("\n\t\t").last.split('m').first[0],
+                distance: tr.css('td:nth-child(2)').text.sub(/\(.*?\)/, '').split("\n\t\t").last.split('m').first[1..4].to_i,
             )
-            count += 1
+            create_count += 1
+          else
+            race = Race.find_by(date: "#{Date.today.year}#{args['date']}", hold: hold, number: tr.css('td:nth-child(1) > div > a').text)
+            race.update!(
+                date: "#{Date.today.year}#{args['date']}",
+                number: tr.css('td:nth-child(1) > div > a').text,
+                time: tr.css('td:nth-child(1) > span').text,
+                times: times,
+                day: day,
+                place: place,
+                hold: hold,
+                name: tr.css('td:nth-child(2) > a').text.sub(/\(.*?\)/, ''),
+                url: tr.css('td:nth-child(2) > a').first[:href],
+                course: tr.css('td:nth-child(2)').text.sub(/\(.*?\)/, '').split("\n\t\t").last.split('m').first[0],
+                distance: tr.css('td:nth-child(2)').text.sub(/\(.*?\)/, '').split("\n\t\t").last.split('m').first[1..4].to_i,
+            )
+            update_count += 1
           end
         end
       end
     end
 
-    puts "#{count}件をデータベースに追加しました。"
+    puts "新規作成: #{create_count}件　更新: #{update_count}件"
   end
 
 
