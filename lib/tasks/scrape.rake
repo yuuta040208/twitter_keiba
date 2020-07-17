@@ -17,8 +17,6 @@ namespace :scrape do
     update_count = 0
     doc.css('table.table-bordered').each do |table|
       hold = table.css('tr > th').text.split('天候').first
-      times = hold.split('回').first.scan(/[0-9]/).first.to_i
-      day = hold.split('回').second.scan(/[0-9]/).first.to_i
       place = hold.split('回').second[0..1]
 
       table.css('tbody tr').each.with_index(1) do |tr, index|
@@ -28,8 +26,6 @@ namespace :scrape do
                 date: "#{Date.today.year}#{args['date']}",
                 number: tr.css('td:nth-child(1) > div > a').text,
                 time: tr.css('td:nth-child(1) > span').text,
-                times: times,
-                day: day,
                 place: place,
                 hold: hold,
                 name: tr.css('td:nth-child(2) > a').text.sub(/\(.*?\)/, ''),
@@ -44,8 +40,6 @@ namespace :scrape do
                 date: "#{Date.today.year}#{args['date']}",
                 number: tr.css('td:nth-child(1) > div > a').text,
                 time: tr.css('td:nth-child(1) > span').text,
-                times: times,
-                day: day,
                 place: place,
                 hold: hold,
                 name: tr.css('td:nth-child(2) > a').text.sub(/\(.*?\)/, ''),
