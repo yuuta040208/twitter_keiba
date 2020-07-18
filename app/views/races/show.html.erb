@@ -21,10 +21,10 @@
         <%= radio_button_tag :return_rate, User::RETURN_RATE_ALL, @return_rate == User::RETURN_RATE_ALL, onChange: 'submit()' %>全て
       </label>
       <label class="btn btn-success <%= @return_rate == User::RETURN_RATE_PROFESSIONAL ? 'active' : '' %>">
-        <%= radio_button_tag :return_rate, User::RETURN_RATE_PROFESSIONAL, @return_rate == User::RETURN_RATE_PROFESSIONAL, onChange: 'submit()' %>100%以上
+        <%= radio_button_tag :return_rate, User::RETURN_RATE_PROFESSIONAL, @return_rate == User::RETURN_RATE_PROFESSIONAL, onChange: 'submit()' %>90%以上
       </label>
       <label class="btn btn-success <%= @return_rate == User::RETURN_RATE_MASTER ? 'active' : '' %>">
-        <%= radio_button_tag :return_rate, User::RETURN_RATE_MASTER, @return_rate == User::RETURN_RATE_MASTER, onChange: 'submit()' %>200%以上
+        <%= radio_button_tag :return_rate, User::RETURN_RATE_MASTER, @return_rate == User::RETURN_RATE_MASTER, onChange: 'submit()' %>100%以上
       </label>
     </div>
   <% end %>
