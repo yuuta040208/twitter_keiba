@@ -28,7 +28,7 @@
 <%= paginate @forecasts, window: 1 %>
 
 <div>
-  <% @forecasts.each do |forecast| %>
+  <% @forecasts.includes(tweet: { user: { stat: :honmei_stat }}).each do |forecast| %>
     <%= render partial: 'tweet', locals: { tweet: forecast.tweet, user_name_text: nil } %>
   <% end %>
 </div>

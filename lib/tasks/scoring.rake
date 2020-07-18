@@ -250,4 +250,40 @@ namespace :scoring do
       end
     end
   end
+
+  desc 'ユーザの統計情報を計算'
+  task :user_stats, ['date'] => :environment do |_, args|
+    races = if args['date'].present?
+              Race.where(date: "#{Date.today.year}#{args['date']}")
+            else
+              Race.all
+            end
+
+    races.each do |race|
+      race.hits.includes(forecast: :user).each do |hit|
+        user = hit.forecast.user
+        stat = Stat.find_or_initialize_by(user_id: user.id)
+        honmei_stat = HonmeiStat.find_or_initialize_by(stat_id: stat.id)
+
+        user_forecasts = user.forecasts.includes(:hit)
+        wins = user_forecasts.select {|forecast| forecast.hit&.honmei_tanshou.present?}
+        places = user_forecasts.select {|forecast| forecast.hit&.honmei_fukushou.present?}
+
+        ActiveRecord::Base.transaction do
+          stat.user_id = user.id
+          stat.forecast_count = user.forecasts.count
+          stat.save!
+
+          honmei_stat.stat_id = stat.id
+          honmei_stat.win_return_rate = wins.sum {|forecast| forecast.hit.honmei_tanshou} / stat.forecast_count * 100
+          honmei_stat.place_return_rate = places.sum {|forecast| forecast.hit.honmei_fukushou} / stat.forecast_count * 100
+          honmei_stat.win_hit_rate = wins.count
+          honmei_stat.place_hit_rate = places.count
+          honmei_stat.save!
+        end
+
+        puts "#{user.name}: #{honmei_stat.attributes}"
+      end
+    end
+  end
 end

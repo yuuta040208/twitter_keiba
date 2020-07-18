@@ -10,7 +10,8 @@
   </div>
   <div class="card-footer">
     <table class="table table-borderless table-sm">
-      <% user_stat = tweet.user.user_stat %>
+      <% stat = tweet.user.stat %>
+      <% honmei_stat = tweet.user.stat.honmei_stat %>
       <tr class="text-center">
         <td>予想数</td>
         <td>単勝回収率</td>
@@ -19,11 +20,11 @@
         <td>複勝的中率</td>
       </tr>
       <tr class="text-center">
-        <td><%= user_stat.forecasts_count %>レース</td>
-        <td><%= user_stat.return_rate_win.to_i %>%</td>
-        <td><%= user_stat.return_rate_place.to_i %>%</td>
-        <td><%= user_stat.hit_rate_win.to_i %>%</td>
-        <td><%= user_stat.hit_rate_place.to_i %>%</td>
+        <td><%= stat.forecast_count %>レース</td>
+        <td><%= honmei_stat.win_return_rate.to_i %>%</td>
+        <td><%= honmei_stat.place_return_rate.to_i %>%</td>
+        <td><%= honmei_stat.win_hit_rate.to_i %>%</td>
+        <td><%= honmei_stat.place_hit_rate.to_i %>%</td>
       </tr>
     </table>
   </div>

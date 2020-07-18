@@ -34,7 +34,7 @@
 <%= paginate @forecasts %>
 
 <div class="row">
-  <% @forecasts.includes(tweet: :user).each_slice(3) do |first, second, third| %>
+  <% @forecasts.includes(tweet: { user: { stat: :honmei_stat }}).each_slice(3) do |first, second, third| %>
     <div class="col-sm-4">
       <%= render partial: 'tweet', locals: { tweet: first.tweet, user_name_text: nil } if first.present? %>
     </div>

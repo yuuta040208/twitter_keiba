@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_17_135657) do
+ActiveRecord::Schema.define(version: 2020_07_18_015359) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,17 @@ ActiveRecord::Schema.define(version: 2020_07_17_135657) do
     t.integer "renka_fukushou"
     t.index ["forecast_id"], name: "index_hits_on_forecast_id"
     t.index ["race_id"], name: "index_hits_on_race_id"
+  end
+
+  create_table "honmei_stats", force: :cascade do |t|
+    t.bigint "stat_id"
+    t.float "win_return_rate"
+    t.float "place_return_rate"
+    t.float "win_hit_rate"
+    t.float "place_hit_rate"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["stat_id"], name: "index_honmei_stats_on_stat_id"
   end
 
   create_table "horses", force: :cascade do |t|
@@ -101,6 +112,15 @@ ActiveRecord::Schema.define(version: 2020_07_17_135657) do
     t.integer "fukushou_second"
     t.integer "fukushou_third"
     t.index ["race_id"], name: "index_results_on_race_id"
+  end
+
+  create_table "stats", force: :cascade do |t|
+    t.string "user_id", null: false
+    t.integer "forecast_count"
+    t.float "average_odds"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_stats_on_user_id"
   end
 
   create_table "thorses", force: :cascade do |t|
