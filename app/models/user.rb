@@ -26,7 +26,7 @@ class User < ApplicationRecord
                 .where(forecasts: { race_id: race_id })
     users.select do |user|
       user.stat.forecast_count >= forecast_count &&
-          (user.stat.honmei_stat.win_return_rate >= return_rate || user.stat.honmei_stat.place_return_rate )
+          (user.stat.honmei_stat.win_return_rate >= return_rate || user.stat.honmei_stat.place_return_rate >= return_rate)
     end
   end
 end
