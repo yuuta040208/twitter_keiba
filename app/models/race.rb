@@ -75,6 +75,7 @@ class Race < ApplicationRecord
 
     user_ids = User.rate_users(id, return_rate).pluck(:id)
     forecasts.includes(:tweet)
+        .joins(user: :stat)
         .includes(user: :stat)
         .where(user_id: user_ids.compact.uniq)
         .order('stats.forecast_count DESC')
