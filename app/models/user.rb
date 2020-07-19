@@ -21,6 +21,7 @@ class User < ApplicationRecord
   def self.rate_users(race_id, return_rate = RETURN_RATE_PROFESSIONAL, forecast_count = VETERAN)
     users = self.joins(:forecasts)
                 .includes(:forecasts)
+                .joins(stat: :honmei_stat)
                 .includes(stat: :honmei_stat)
                 .where(forecasts: { race_id: race_id })
     users.select do |user|
